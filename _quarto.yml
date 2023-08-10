@@ -1,0 +1,47 @@
+lang: pt-br
+project:
+  type: website
+  
+    
+
+website:
+  page-navigation: true
+  title: "Rpsi"
+  page-footer:
+    left: "Esta página foi construída com [Quarto](https://quarto.org/)."
+  navbar:
+    align: center
+    title: "Rpsi"
+    background: "#FDFEFE "
+    search: true
+    collapse-below: lg
+    left:
+      - text: "Proposta"
+        file: index.qmd
+      - text: "Conteúdos"
+        file: conteudos.qmd
+  
+  sidebar:
+    - title: "Conteúdos"
+      style: "floating"
+      align: left
+      contents:
+        - conteudos.qmd
+        - intro.qmd
+        - graficos.qmd
+        - trasnformacao.qmd
+        - iteracao.qmd
+        - importacao.qmd
+        - dados_arrumados.qmd
+
+    
+    
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
+
+

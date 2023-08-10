@@ -1,0 +1,816 @@
+---
+title: "R para análise de dados em Psicologia"
+subtitle: "Uma Introdução"
+execute:
+  echo: true
+author: 
+  - name:  "Francisco Pablo Huascar Aragão Pinheiro"
+    orcid: 0000-0001-9289-845X
+institute: <img src="images/ufc_horizontal.png" width="250">
+format: 
+  revealjs:
+      code-link: true
+      code-tools: true
+      code-line-numbers: false
+      theme: simple
+      fig-width: 6
+      fig-asp: 0.618
+      scrollable: true
+progress: true
+slide-number: true
+logo: images/lappsie.png
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| include: false
+library(tidyverse)
+library(palmerpenguins)
+```
+
+## Quem sou eu
+
+::: {style="line-height: 1;"}
+::: columns
+::: {.column width="40%"}
+![](images/logo_pos.png) ![](images/lappsie.png)
+:::
+
+::: {.column width="60%"}
+::: incremental
+-   [Psicólogo (UFC)]{style="font-size:25pt;"}
+-   [Mestre em Psicologia (UFC)]{style="font-size:25pt;"}
+-   [Doutor em educação (UFC)]{style="font-size:25pt;"}
+-   [Professor do campus Sobral da UFC]{style="font-size:25pt;"}
+-   [Recentemente, um entusiasta do R]{style="font-size:25pt;"}
+:::
+:::
+:::
+:::
+
+::: aside
+Meu [currículo lattes](http://lattes.cnpq.br/8266089190930601): acesse [aqui](http://lattes.cnpq.br/8266089190930601)
+:::
+
+## Por que usar o R?
+
+::: incremental
+-   Gratuito
+-   Pesquisa reprodutível (para outros cientistas e o seu eu do futuro)
+-   Flexível
+-   Milhares de funções para todo tipo de análise
+    -   Novos funções são desenvolvidas o tempo todo ao redor do mundo
+:::
+
+# O que eu preciso saber para participar desse minicurso?
+
+##  {#slide0-id data-menu-title="Windows 11"}
+
+![](images/logo_windows_11.png)
+
+::: incremental
+-   Criar e navegar entre pastas
+-   Abrir arquivos
+-   Criar arquivos etc.
+:::
+
+## Estatística
+
+::: {.fragment .fade-in}
+-   Medidas de tendência central e dispersão
+:::
+
+::: {.fragment .fade-up}
+-   Anova e Teste T
+:::
+
+::: {.fragment .fade-left}
+-   Correlação
+:::
+
+::: {.fragment .fade-right}
+-   Regressão
+:::
+
+## Eu tenho que aprender uma linguagem de programação para usar o R? {transition="zoom" transition-speed="slow"}
+
+::: columns
+::: {.column width="50%"}
+![](images/emogi_screaming.png){width="451"}
+:::
+
+::: {.column width="50%"}
+Sim, mas é como aprender um novo idioma: há desconforto inicial, mas, com a prática, é possível se tornar fluente!
+:::
+:::
+
+::: aside
+E o [tidyverse](https://www.tidyverse.org/ "Tidyverse") facilita muito esse aprendizado
+:::
+
+------------------------------------------------------------------------
+
+##  {#slide2-id data-menu-title="R e R Studio"}
+
+::: {.fragment .fade-up}
+![](images/Rlogo%20(1)-02.png){width="298"}
+:::
+
+::: {.fragment .fade-right}
+![](images/rstudio-logo-flat-02.png){width="760"}
+:::
+
+##  {transition="convex" transition-speed="fast" background-image="images/ferrari.jpg"}
+
+[R]{style="font-size: 150pt;color: white;"}
+
+##  {transition="concave" transition-speed="fast" background-image="images/ferrari_panel.jpg"}
+
+[R Studio]{style="font-size: 100pt;color: white;"}
+
+## [Vamos começar!]{style="font-size: 130pt; line-height: 0.7; text-align: left; display: flex; align-items: center; justify-content: center;"} {transition="fade-in fade-out" transition-speed="slow"}
+
+## Criação de um projeto - Passo 1
+
+![](images/new_project.png){fig-align="left" width="1000"}
+
+## Criação de um projeto - Passo 2
+
+![](images/passo2.png)
+
+## Criação de um projeto - Passo 3
+
+![](images/passo_3.png){fig-align="left"}
+
+## Criação de um projeto - Passo 4
+
+::: columns
+::: {.column width="50%"}
+![](images/passo_4.png){width="717"}
+:::
+
+::: {.column width="50%"}
+-   [É muito importante que todos os arquivos do projeto fiquem dentro de uma mesma pasta]{style="font-size:20pt;"}
+-   [A pasta "raiz" não pode conter caracteres especiais]{style="font-size:20pt;"}
+-   [Dica: crie seus projetos dentro da pasta "documentos" do Windows (ou em uma subpasta "projetos" dentro da pasta "documentos")]{style="font-size:20pt;"}
+:::
+:::
+
+## E você vai chegar aqui
+
+![](images/passo_final.png)
+
+## Criando o seu primeiro Script
+
+![](images/script_creat_1.png){fig-align="center" width="917"}
+
+## Paineis do R Studio
+
+![](images/paineis_r_studio.png)
+
+## Ajuste dos paineis
+
+![](images/ajuste_paineis.png){width="594"}
+
+## Source Code
+
+::: columns
+::: {.column width="30%"}
+É onde o código é escrito. Vários tipos de arquivos podem ser utilizados: Scripts, Rmarkdown etc.
+:::
+
+::: {.column width="70%"}
+![](images/script.png){fig-align="center" width="672"}
+:::
+:::
+
+## Console
+
+Mostra a saída do que é feito no source code. Também pode ser usado para escrever códigos, mas não é possível salvá-los
+
+![](images/console.png){fig-align="left" width="900"}
+
+## Environment/History
+
+![](images/environment.png){fig-align="left" width="706"}
+
+No environment estão os diversos objetos que são criados pelo código: vetores, dataframes (bancos de dados), tibbles etc.
+
+## File/Plots/Packages/Help
+
+Neste painel são mostrados os arquivos do projeto, os gráficos produzidos, a ajuda e informações sobre os pacotes (instalar, ativar, desativar etc).
+
+![](images/files.png){fig-align="left"}
+
+## File/Plots/Packages/Help
+
+![](images/plots.png)
+
+## Cheat Sheets {transition="slide"}
+
+::: columns
+::: {.column width="50%"}
+![](images/rstudio-cheat-sheets_1.jpg)
+:::
+
+::: {.column width="50%"}
+![](images/rstudio-cheat-sheets_2.jpg)
+:::
+:::
+
+## R for Data Science
+
+::: columns
+::: {.column width="50%"}
+Livro base para o mini curso
+:::
+
+::: {.column width="50%"}
+[![](images/r_for_d_s.jpg){fig-alt="Capa do livro R for Data Science. Uma coruja se destaca na ilustração" fig-align="right" width="412"}](https://r4ds.had.co.nz/)
+:::
+:::
+
+## R for Data Science
+
+-   Neste [link](https://r4ds.had.co.nz/ "R for Data Science") você pode acessar a primeira edição do livro:
+
+<https://r4ds.had.co.nz/>
+
+-   E [aqui](https://r4ds.hadley.nz/ "R for Data Science") você pode acessar a segunda edição que ainda está sendo finalizada:
+
+<https://r4ds.hadley.nz/>
+
+::: aside
+Estes slides tem como base o conteúdo da segunda edição
+:::
+
+# 3 Fluxo de trabalho: básico
+
+## 3.1 Noções básicas de codificação
+
+Execução de códigos no Script
+
+-   Atalho de de teclado: ctrl + enter
+
+![](images/rodar_codigo.png)
+
+## Cálculos matemáticos básicos
+
+```{r}
+10+10
+10/2
+10*2+5
+10-3
+10^2
+sqrt(100)
+```
+
+## Exercícios
+
+-   Divida 250 por 10
+-   Eleve 11 ao quadrado
+-   Multiplique 10 por 2 e some 5
+-   Subtraia 10 de 20 e divida por 10
+-   Some 40 e 50 e multiplique por 10
+
+## Respostas
+
+```{r}
+250/10
+11^2
+10*2+5
+(20-10)/10
+(40+50)/10
+```
+
+## Criação de objetos com o operador de atribuição `<-`
+
+```{r}
+
+x <- 3
+x
+y <- 10*10
+y
+```
+
+-   O valores de `x` ou `y` não são impressos; apenas armazenados.
+-   Para visualizar o valor de um `objeto`, execute-o no script.
+
+## Todas as instruções de atribuição têm o mesmo formato
+
+```{r}
+
+nome_do_objeto <- "valor"
+
+nome_do_objeto
+```
+
+::: incremental
+-   Ao ler esse código, diga: "o nome do objeto obtém valor"
+-   Atalho de teclado do R Studio: Alt + "-" (sinal de menos)
+:::
+
+## Exercícios
+
+Crie os seguintes objetos:
+
+-   `a` com valor `2`
+-   `b` com valor `10`
+-   `c` com valor `5`
+-   `d` com valor `10*2`
+
+## Respostas
+
+```{r}
+a <- 2
+a
+b <- 10
+b
+c <- 5
+c
+d <- 10*2
+d
+```
+
+## As operações podem ser realizadas entre objetos
+
+```{r}
+a*b
+a+b
+a/b
+a-b
+```
+
+## Exercícios
+
+-   Divida `c` por `d` e some `a`
+-   Some `a` e `b` e divida por `c`
+-   Multiplique `a` por `b` e some `d`
+-   Some `c` com `d` e divida por `a`
+
+## Respostas
+
+```{r}
+(c/d) + a
+(a+b)/c
+(a*b)+d
+(c+d)/a
+```
+
+## É possível combinar múltiplos elmentos em um vetor com c() - "concatenar"
+
+```{r}
+z <- c(1,2,10,12)
+z
+w <- c(3,5,6,8)
+w
+```
+
+## Aritimética básica nos vetores é aplicada a cada elemento do vetor
+
+```{r}
+z
+z*2
+w
+w*3
+```
+
+## Também é possível realizar operações com vetores
+
+```{r}
+z+w
+z-w
+z-w^2
+```
+
+## Exercícios
+
+::: incremental
+-   Crie os vetores `z <- c(1,2,10,12)` e `w <- c(3,5,6,8)`
+-   Eleve `z` ao quadrado
+-   Some 10 a `w`
+-   Divida `z` por 3
+-   Multiplique `z` e `w`
+-   Divida `z` por `w`
+:::
+
+## Respostas
+
+```{r}
+z <- c(1,2,10,12)
+z
+w <- c(3,5,6,8)
+w
+z^2
+w+10
+z/3
+z+w
+z/w
+
+```
+
+## Dica 1
+
+-   O R diferencia MAIÚSCULAS de minúsculas (case sensitive)
+
+```{r}
+#| code-line-numbers: "|3"
+#| eval: false
+a <- letters
+
+A
+```
+
+```         
+Error: object 'A' not found
+```
+
+```{r}
+#| code-line-numbers: "|3"
+a <- letters
+
+a
+```
+
+## Dica 2
+
+-   Cuidado com erros de digitação
+
+```{r}
+#| code-line-numbers: "|3"
+#| eval: false
+data("cars")
+
+carz
+```
+
+```         
+Error: object 'carz' not found
+```
+
+# Cars
+
+```{r}
+#| code-line-numbers: "|3"
+data("cars")
+
+cars 
+```
+
+## 3.2 Comentários
+
+R irá ignorar qualquer texto após \# para essa linha.
+
+```{r}
+# Criação de um vetor com os 5 primeiros números pares
+
+pares <- c(2,4,6,8,10)
+
+pares
+
+# Elevando os pares ao quadrado
+
+(pares)^2
+```
+
+## Uso dos comentários: Demarcar seções do no código {.smaller}
+
+::: panel-tabset
+### Código
+
+```{r}
+#| code-line-numbers: "|1|5|"
+#| eval: false
+
+# Obtenção dos dados
+
+penguins <- penguins
+
+# Gráficos
+
+penguins |> 
+  filter(!is.na(sex)) |> 
+  ggplot(aes(flipper_length_mm, 
+             bill_length_mm, 
+             color = sex,
+             size = body_mass_g)) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(~species) 
+```
+
+### Gráfico
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+#| eval: true
+#| fig-dpi: 600
+
+penguins |> 
+  filter(!is.na(sex)) |> 
+  ggplot(aes(flipper_length_mm, 
+             bill_length_mm, 
+             color = sex,
+             size = body_mass_g)) +
+  geom_point(
+    alpha = 0.5
+    ) +
+  facet_wrap(~ species) 
+```
+:::
+
+## Outro uso dos comentários: explicações
+
+::: incremental
+-   Use comentários para explicar o porquê do seu código, não o como ou o quê
+-   O que e como do seu código são sempre possíveis de descobrir
+-   Descobrir por que algo foi feito é muito mais difícil
+:::
+
+## Sem explicações para a equipe
+
+```{r}
+#| code-line-numbers: "|1|2|3|4|5|6|7|8|9|10"
+#| fig-align: center
+#| out-width: 70%
+#| output-location: slide
+#| fig-dpi: 600  
+
+penguins |> 
+  filter(island == "Biscoe",
+         !is.na(sex)) |>
+  ggplot(aes(flipper_length_mm, 
+             bill_length_mm, 
+             color = sex, 
+             size =body_mass_g)) +
+  geom_point(
+    alpha = 0.5
+    ) +
+  facet_wrap(~ species)
+```
+
+## Com explicações para a equipe
+
+```{r}
+#| code-line-numbers: "|1|2"
+#| output-location: slide
+#| out-width: 70%
+#| fig-align: center
+#| fig-dpi: 600
+#| message: false
+#| warning: false
+# O relatório 3 só precisava dos 
+#dados da ilha Biscoe
+penguins |> 
+  filter(island == "Biscoe",
+         !is.na(sex)) |>
+  ggplot(aes(flipper_length_mm, 
+             bill_length_mm, color = sex, 
+             size = body_mass_g)) +
+  geom_point(
+    alpha = 0.5
+    ) +
+  facet_wrap(~ species)
+```
+
+## 3.3 O que é um nome?
+
+-   Os nomes dos objetos devem começar com uma letra
+-   Podem conter apenas `letras`, `números`, `_` e `.`
+-   Os nomes de seus objetos devem ser descritivos
+-   Sugerimos a seguinte convenção:
+    -   letras_minúsculas_separadas_com `_`
+
+## Exemplos de nomes
+
+-   i_use_snake_case
+-   otherPeopleUseCamelCase
+-   some.people.use.periods
+-   And_aFew.People_RENOUNCEconvention
+
+## Dica: auto completar
+
+-   Digite ao menos 3 caracteres e use a tecla tab
+-   O R Studio vai dar opções para escolher
+-   A função de auto completar é nossa amiga: use sempre!
+
+## 3.4 Usando Funções
+
+O R possui uma grande coleção de funções integradas que são chamadas desta maneira:
+
+```{r}
+#| eval: false
+nome_da_funcao(argumento1 = valor1, argumento2 = valor2, ...)
+```
+
+Ao pressionar Tab dentro dos parênteses o R irá mostrar os argumentos disponíveis
+
+## Exemplo: Função seq()
+
+[Os dois primeiros argumentos da função seq são: from e to]{style="font-size:20pt;"}
+
+```{r}
+# Crie uma sequência de números de 1 a 10
+seq(from = 1, to = 10)
+```
+
+[Terceiro argumento: by]{style="font-size:20pt;"}
+
+```{r}
+# Agora, o incremento da sequência é por 2
+seq(from = 1, to = 10, by = 2)
+```
+
+[Se os valores dos argumentos estiverem na ordem da função, é possível omití-los]{style="font-size:20pt;"}
+
+```{r}
+seq(1,10,2)
+```
+
+## Exemplo: Função seq()
+
+[Ao explicitar os argumentos, eles podem aparecer em qualquer ordem:]{style="font-size:20pt;"}
+
+```{r}
+seq(by = 2, to = 10, from = 1)
+```
+
+[Porém, não será obitdo o mesmo resultado mudando os valores de lugar sem a explicitação dos argumentos]{style="font-size:20pt;line-height: 50%"}
+
+```{r}
+seq(2,10,1)
+```
+
+## Como saber os argumentos e a função das funções?
+
+```{r}
+#| eval: false
+
+?nome_da_funcao
+
+help(nome_da_funcao)
+
+args(nome_da_funcao)
+```
+
+## Help
+
+```{r}
+#| eval: false
+?seq
+```
+
+![](images/help.png){width="610"}
+
+## `args()`
+
+```{r}
+args(rnorm)
+```
+
+## Exercícios
+
+-   A partir da ajuda, descubra para que servem as funções a seguir e tente utilizá-las:
+    -   `ls`
+    -   `round`
+    -   `rnorm`
+
+## Funções básicas importantes
+
+```{r}
+z <- c(2,2,6,11,9,20)
+sum(z)
+mean(z)
+median(z)
+```
+
+## Funções básicas importantes
+
+```{r}
+f <- c(2,2,6,11,9,20)
+range(f)
+min(f)
+max(f)
+quantile(f)
+```
+
+## Exercícios
+
+::: {style="line-height: 1;font-size:22pt;"}
+-   Use a função `rnorm` e crie um objeto chamado `cem` com cem casos, cuja média seja 30 e o desvio padrão 4
+-   Calcule as seguintes estatísticas do objeto `cem`:
+    -   Soma
+    -   Média
+    -   Desvio padrão
+    -   Mediana
+    -   Mínimo
+    -   Máximo
+    -   Quartis
+:::
+
+## Resposta - Parte 1
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+
+set.seed(123)
+
+cem <- rnorm(n = 100, mean = 30, sd = 4)
+
+hist(cem)
+```
+
+## Resposta - Parte 2
+
+```{r}
+sum(cem)
+
+mean(cem)
+
+sd(cem)
+
+median(cem)
+
+min(cem)
+
+max(cem)
+
+quantile(cem)
+```
+
+## Pacotes (packages)
+
+-   O que é um pacote?
+    -   Coleção de funções, objetos e documentação
+    -   Estendem as capacidades do R e adicionam novos recursos
+    -   Criados pela comunidade
+
+## Como instalar um pacote
+
+```{r}
+#| eval: false
+
+install.packages("tidyverse")
+
+```
+
+-   Só precisa ser feito uma vez
+-   Não coleque a instalação dos pacotes no script
+    -   Se o arquivo for compartilhado, não é legal modificar as configurações de outra pessoa
+
+## Como carregar o pacote
+
+```{r}
+library(tidyverse)
+```
+
+-   Precisa ser feito em cada novo script
+-   A cada novo uso do script
+-   Colocar todos os pacotes no início do script
+
+## Como obter informações sobre as funções do pacote
+
+```{r}
+#| eval: false
+library(tidyverse)
+
+?tidyverse
+
+```
+
+## Exercícios
+
+Instale os seguintes pacotes: `tidyverse`, `car` e `psych`
+
+## Resposta
+
+```{r}
+#| eval: false
+
+install.packages("tidyverse")
+install.packages("car")
+install.packages("psych")
+```
+
+## Exercícios
+
+Carregue os pacotes que foram instalados anteriormente
+
+```{r}
+library(tidyverse)
+library(car)
+library(psych)
+```
+
+## Compartilhar conhecimento sempre!
+
+O código e as imagens utilizados para a construção desse slide estão disponíveis no [link](https://github.com/pablo-huascar/curso_r) a seguir:
+
+<https://github.com/pablo-huascar/curso_r>

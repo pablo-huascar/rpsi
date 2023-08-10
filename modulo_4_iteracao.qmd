@@ -1,0 +1,383 @@
+---
+title: "R para análise de dados em Psicologia"
+subtitle: "Uma Introdução"
+execute:
+  echo: true
+author: 
+  - name:  "Francisco Pablo Huascar Aragão Pinheiro"
+    orcid: 0000-0001-9289-845X
+institute: <img src="images/ufc_horizontal.png" width="250">
+format: 
+  revealjs:
+      code-link: true
+      code-tools: true
+      code-line-numbers: false
+      theme: simple
+      fig-width: 6
+      fig-asp: 0.618
+      scrollable: true
+progress: true
+slide-number: true
+logo: images/lappsie.png
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Quem sou eu
+
+::: {style="line-height: 1;"}
+::: columns
+::: {.column width="40%"}
+![](images/logo_pos.png) ![](images/lappsie.png)
+:::
+
+::: {.column width="60%"}
+::: incremental
+-   [Psicólogo (UFC)]{style="font-size:25pt;"}
+-   [Mestre em Psicologia (UFC)]{style="font-size:25pt;"}
+-   [Doutor em educação (UFC)]{style="font-size:25pt;"}
+-   [Professor do campus Sobral da UFC]{style="font-size:25pt;"}
+-   [Recentemente, um entusiasta do R]{style="font-size:25pt;"}
+:::
+:::
+:::
+:::
+
+::: aside
+Meu [currículo lattes](http://lattes.cnpq.br/8266089190930601): acesse [aqui](http://lattes.cnpq.br/8266089190930601)
+:::
+
+## R for Data Science
+
+::: columns
+::: {.column width="50%"}
+Livro base para o mini curso
+:::
+
+::: {.column width="50%"}
+[![](images/r_for_d_s.jpg){fig-alt="Capa do livro R for Data Science. Uma coruja se destaca na ilustração" fig-align="right" width="412"}](https://r4ds.had.co.nz/)
+:::
+:::
+
+## R for Data Science
+
+-   Neste [link](https://r4ds.had.co.nz/ "R for Data Science") você pode acessar a primeira edição do livro:
+
+<https://r4ds.had.co.nz/>
+
+-   E [aqui](https://r4ds.hadley.nz/ "R for Data Science") você pode acessar a segunda edição que ainda está sendo finalizada:
+
+<https://r4ds.hadley.nz/>
+
+::: aside
+Estes slides tem como base o conteúdo da segunda edição
+:::
+
+# 27 Iteração
+
+```{r}
+#| label: setup
+#| echo: false
+
+library(tidyverse)
+library(nycflights13)
+```
+
+## 27.1 Introdução
+
+-   Iteração: executar repetidamente a mesma ação em diferentes objetos
+-   Evitar copiar e colar código mais de 2 vezes
+    -   Erros que se propagam no código
+
+## Pacotes
+
+```{r}
+#| eval: false
+
+library(tidyverse)
+library(nycflights13)
+```
+
+## Criação de um banco dummy
+
+```{r}
+df <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+```
+
+```{r}
+df
+```
+
+## Exemplos de repetição de código
+
+```{r}
+df |> summarize(
+  n = n(),
+  a = median(a),
+  b = median(b),
+  c = median(c),
+  d = median(d),
+)
+```
+
+-   Repetir a digitação de `median()` várias vezes ou copiar e colar
+
+## `across()`
+
+-   `.cols =`: especifica quais colunas vão estar na iteração
+-   `.fns =`: diz o que fazer com as colunas
+    -   Qual função aplicar
+
+```{r}
+df |> 
+  summarise(
+    across(.cols = a:d,.fns = median)
+  )
+```
+
+::: aside
+O nome da função solicitada nunca deve ser seguido por ()
+:::
+
+## `across()`
+
+-   É possível omitir os argumentos `.cols` e `.fns`
+
+```{r}
+df |> 
+  summarise(
+    across(a:d, mean)
+  )
+```
+
+## Exercícios
+
+No banco de dados `economics` calcule a média das variávels `pce`, `pop` e `psavert` usando a função across
+
+## Resposta - parte 1
+
+```{r}
+glimpse(economics)
+```
+
+## Reposta - parte 2
+
+```{r}
+economics |> 
+  summarise(
+    across(pce:psavert, mean)
+  )
+```
+
+## Selecionando columas com `.cols`
+
+-   Usa as mesmas especificações que `select()`
+    -   `starts_with()`
+    -   `ends_with()`
+    -   `contains()`
+
+## Selecionando columas com `.cols`
+
+```{r}
+glimpse(economics)
+```
+
+## Selecionando columas com `.cols`
+
+```{r}
+economics |> 
+  summarise(
+    across(starts_with("p"),  mean)
+  ) 
+  
+```
+
+## Exercícios
+
+Salve o banco de dados a seguir no objeto `treinos` e, em seguida, dê uma olhada no arquivo
+
+```{r}
+#| echo: false
+#| eval: false
+
+tibble(
+  idade = c(20, 30, 40, 50, 60),
+  altura = c(1.60, 1.70, 1.80, 1.90, 2.00),
+  genero = c("masculino", "masculino", "feminino", "feminino", "feminino"),
+  fumante = c("sim", "não", "não", "sim", "sim"),
+  risco_cardiaco = c("sim", "não", "sim", "não", "sim"),
+  peso_1 = c(60, 70, 80, 90, 100),
+  peso_2 = c(61, 71, 81, 91, 101),
+  peso_3 = c(62, 72, 82, 92, 102),
+  refeicao_preferida = c("arroz e feijão", "pizza", "macarrão", "sushi", "sopa"),
+  treinos_por_semana = c(3, 4, 5, 6, 7),
+  treinador = c("Julia", "Hadley", "Jesse", "Julia", "Hadley"),
+  total_colesterol = c(200, 220, 240, 260, 280),
+  ruim_colesterol = c(100, 120, 140, 160, 180),
+  bom_colesterol = c(100, 100, 100, 100, 100)
+) |> 
+  write_csv("./data/treinos.csv")
+
+```
+
+```{r}
+#| echo: false
+treinos <- read_csv("./data/treinos.csv")
+```
+
+```{r}
+#| eval: false
+treinos <- read_csv("https://tinyurl.com/treinndf")
+```
+
+## Resposta
+
+```{r}
+glimpse(treinos)
+```
+
+## Exercícios
+
+Calcule a média das variáveis que iniciam com `peso` usando uma das especificações de seleção que foi apresentada anteriormente
+
+## Resposta
+
+```{r}
+treinos |> 
+  summarise(
+    across(starts_with("peso"), mean)
+  )
+```
+
+## Exercícios
+
+Calcule a média das variáveis que terminam com `colesterol` usando uma das especificações de seleção que foi apresentada anteriormente
+
+## Resposta
+
+```{r}
+treinos |> 
+  summarise(
+    across(ends_with("colesterol"), mean)
+  )
+```
+
+## Selecionando columas com `.cols`
+
+-   Opções espefícidas de `across()`
+    -   `everything()`: seleciona toda coluna que não seja de agrupamento
+    -   `where()`: seleciona colunas baseado seus tipos
+
+## `everything()`
+
+```{r}
+df |> 
+  slice_head(n = 5)
+```
+
+```{r}
+df |> 
+  summarise(
+    across(everything(),mean)
+  )
+```
+
+## `where()`
+
+-   where(is.numeric) seleciona todas as colunas numéricas.
+-   where(is.character) seleciona todas as colunas de string.
+-   where(is.Date) seleciona todas as colunas de data.
+-   where(is.POSIXct) seleciona todas as colunas de data e hora.
+-   where(is.logical) seleciona todas as colunas lógicas.
+
+## `where()`
+
+```{r}
+glimpse(economics)
+```
+
+```{r}
+economics |> 
+  summarise(
+    across(where(is.numeric), mean)
+  )
+```
+
+## Exercícios
+
+## Chamando mais de um função dentro de `.fns`
+
+-   Use a função `list()` para chamar mais de um função
+-   É importante nomear as funções: nome = funcão
+
+```{r}
+economics |> 
+  summarise(
+    across(pce:pop, list(
+      M = mean, DP = sd,
+      MIN = min, MAX = max)
+      )
+  ) 
+```
+
+## Exercícios
+
+## Usando argumentos dentro das funções chamadas em `.fns`
+
+```{r}
+glimpse(flights)
+```
+
+## Usando argumentos dentro das funções chamadas em `.fns`
+
+```{r}
+flights |> 
+  summarise(
+    across(ends_with("delay"), mean)
+  )
+```
+
+-   Se há um caso com valores ausentes (`NA`) a função retorna `NA`
+-   É necessário usar o argumento `na.rm = T` para resolver esse problema
+
+## Usando argumentos dentro das funções chamadas em `.fns`
+
+-   É possível chamar criar uma função anônima usando `\(x)`
+-   `x` vai representar todas as variáveis para s quais queremos obter a média
+
+```{r}
+flights |> 
+  summarise(
+    across(ends_with("delay"),
+           \(x) mean(x, na.rm = T))
+  )
+```
+
+## Usando argumentos dentro das funções chamadas em `.fns`
+
+-   Também possível fazer o mesmo chando várias funções dentro de `.fns` com `list()`
+
+```{r}
+flights |> 
+  summarise(
+    across(ends_with("delay"),
+           list(
+             M = \(x) mean(x, na.rm = T),
+             SD = \(x) sd(x, na.rm = T)
+           ))
+  )
+```
+
+## Exercícios
+
+## Compartilhar conhecimento sempre!
+
+O código e as imagens utilizados para a construção desse slide estão disponíveis no [link](https://github.com/pablo-huascar/curso_r) a seguir:
+
+<https://github.com/pablo-huascar/curso_r>

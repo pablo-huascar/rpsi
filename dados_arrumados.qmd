@@ -1,0 +1,7 @@
+---
+title: "Dados arrumados"
+---
+
+## Slides, videos e exercícios
+
+![](images/slide.png){width="18"} [Slides](modulo_6_tidy_data.qmd){target="_blank"}

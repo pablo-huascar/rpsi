@@ -1,0 +1,7 @@
+---
+title: "Importação de dados"
+---
+
+## Slides, videos e exercícios
+
+![](images/slide.png){width="18"} [Slides](modulo_5_importacao.qmd){target="_blank"}

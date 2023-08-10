@@ -1,0 +1,7 @@
+---
+title: "Gráficos"
+---
+
+## Slides, videos e exercícios
+
+![](images/slide.png){width="18"} [Slides](modulo_2_graficos.qmd){target="_blank"}

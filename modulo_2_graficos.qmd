@@ -1,0 +1,1680 @@
+---
+title: "R para análise de dados em Psicologia"
+subtitle: "Uma Introdução"
+execute:
+  echo: true
+author: 
+  - name:  "Francisco Pablo Huascar Aragão Pinheiro"
+    orcid: 0000-0001-9289-845X
+institute: <img src="images/ufc_horizontal.png" width="250">
+format: 
+  revealjs:
+      code-link: true
+      code-tools: true
+      code-line-numbers: false
+      theme: simple
+      fig-width: 6
+      fig-asp: 0.618
+      scrollable: true
+progress: true
+slide-number: true
+logo: images/lappsie.png
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| include: false
+library(tidyverse)
+library(ggthemes)
+library(palmerpenguins)
+library(scales)
+library(patchwork)
+library(gt)
+library(gapminder)
+```
+
+## Quem sou eu
+
+::: {style="line-height: 1;"}
+::: columns
+::: {.column width="40%"}
+![](images/logo_pos.png) ![](images/lappsie.png)
+:::
+
+::: {.column width="60%"}
+::: incremental
+-   [Psicólogo (UFC)]{style="font-size:25pt;"}
+-   [Mestre em Psicologia (UFC)]{style="font-size:25pt;"}
+-   [Doutor em educação (UFC)]{style="font-size:25pt;"}
+-   [Professor do campus Sobral da UFC]{style="font-size:25pt;"}
+-   [Recentemente, um entusiasta do R]{style="font-size:25pt;"}
+:::
+:::
+:::
+:::
+
+::: aside
+Meu [currículo lattes](http://lattes.cnpq.br/8266089190930601): acesse [aqui](http://lattes.cnpq.br/8266089190930601)
+:::
+
+# Gráficos
+
+##  {#slide2-id data-menu-title="geom_bar()" transition="slide"}
+
+```{r}
+#| label: barplot
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+
+penguins |> 
+  ggplot(aes(fct_infreq(species),
+             y = after_stat(count/sum(count)),
+             fill = species)) +
+  geom_bar() +
+  labs(
+    x = "Espécies",
+    y = NULL
+    ) +
+  scale_y_continuous(
+    labels = percent
+    ) +
+  theme_classic() +
+  theme(
+    legend.position = "none"
+    ) +
+  scale_color_colorblind()
+
+```
+
+##  {#slide3-id data-menu-title="geom_boxplot()" transition="fade"}
+
+```{r}
+#| label: boxplot
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+penguins |>
+  drop_na() |> 
+  ggplot(aes(species,
+             body_mass_g,
+             color = species)) +
+  geom_boxplot() +
+  geom_jitter(aes(species),
+              alpha = 0.3,
+              size = 3) +
+  labs(
+    x = "Espécies",
+    y = "Massa corporal (gramas)"
+    ) +
+  theme(
+    legend.position = "none"
+    ) +
+  scale_color_colorblind()
+```
+
+##  {#slide4-id data-menu-title="geom_point()" transition="convex" transition-speed="slow"}
+
+```{r}
+#| label: scatterplot
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600 
+penguins |> 
+  ggplot(aes(flipper_length_mm, 
+             body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    ) +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para Adelie, Chinstrap e Gentoo",
+    x = "Comprimento da nadadeira (mm)",
+    y = "Massa corporal (g)",
+    color = "Espécie",
+    shape = "Espécie"
+    ) +
+  scale_color_colorblind()
+```
+
+##  {#slide6-id data-menu-title="geom_histogram()"}
+
+```{r}
+#| label: histogram
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+
+penguins |> 
+  ggplot(aes(body_mass_g)) +
+  geom_histogram(
+    fill = "white",
+    color = "gray"
+    ) +
+  labs(
+    x = "Massa corporal (gramas)", 
+    y = NULL
+    ) +
+  theme_classic()
+```
+
+## R for Data Science
+
+::: columns
+::: {.column width="50%"}
+Livro base para o mini curso
+:::
+
+::: {.column width="50%"}
+[![](images/r_for_d_s.jpg){fig-alt="Capa do livro R for Data Science. Uma coruja se destaca na ilustração" fig-align="right" width="412"}](https://r4ds.had.co.nz/)
+:::
+:::
+
+## R for Data Science
+
+-   Neste [link](https://r4ds.had.co.nz/ "R for Data Science") você pode acessar a primeira edição do livro:
+
+<https://r4ds.had.co.nz/>
+
+-   E [aqui](https://r4ds.hadley.nz/ "R for Data Science") você pode acessar a segunda edição que ainda está sendo finalizada:
+
+<https://r4ds.hadley.nz/>
+
+::: aside
+Estes slides tem como base o conteúdo da segunda edição
+:::
+
+## ggplot2: Elegant Graphics for Data Analysis
+
+::: columns
+::: {.column width="50%"}
+Para apronfundar o conhecimento sobre gráficos
+:::
+
+::: {.column width="50%"}
+[![](images/ggplot.jpg){fig-align="right" width="380"}](https://r4ds.had.co.nz/)
+:::
+:::
+
+## ggplot2: Elegant Graphics for Data Analysis
+
+-   Neste [link](https://ggplot2-book.org/index.html "ggplot2: Elegant Graphics for Data Analysis") você pode acessar a terceira edição do livro que ainda está sendo finalizada:
+
+<https://ggplot2-book.org/index.html>
+
+# 2 Visualização de Dados
+
+## 2.1 Introdução
+
+-   [ggplot2](https://ggplot2.tidyverse.org/): grammar of graphics (gramática dos gráficos)
+    -   [Sistema coerente para descrever e construir gráficos]{style="font-size:20pt;"}
+
+::: panel-tabset
+### `data`
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 33%
+#| fig-dpi: 600
+library(ggplot2)
+library(palmerpenguins)
+
+penguins |> 
+  ggplot()
+```
+
+### `mapping`
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 33%
+#| fig-dpi: 600
+
+penguins |> 
+  ggplot(aes(flipper_length_mm, 
+             body_mass_g))
+```
+
+### `geom_`
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 33%
+#| fig-dpi: 600
+
+penguins |> 
+  ggplot(aes(flipper_length_mm, 
+             body_mass_g)) +
+  geom_point()
+```
+:::
+
+## Pacotes
+
+```{r}
+#| message: true
+#| warning: true
+
+library(tidyverse)
+```
+
+[`there is no package called 'tidyverse'`]{style="font-size:20pt;"}
+
+```{r}
+#| message: false
+#| eval: false
+
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+```{r}
+#| message: false
+#| eval: false
+install.packages("palmerpenguins")
+library(palmerpenguins)
+install.packages("ggthemes")
+library(ggthemes)
+```
+
+##  {#slide7-id data-menu-title="Pinguins" background-image="images/pinguins.png"}
+
+## 2.2 Primeiros Passos
+
+::: incremental
+-   Os pinguins com nadadeiras mais longas pesam mais ou menos que os pinguins com nadadeiras mais curtas?
+-   Como é a relação entre o comprimento da nadadeira e a massa corporal? É positivo? Negativo? Linear? Não linear?
+-   A relação varia de acordo com a espécie do pinguim?
+-   O que nos diz a ilha onde mora o pinguim?
+-   Vamos criar visualizações que podemos usar para responder a essas perguntas.
+:::
+
+## O banco de Dados dos [`penguins`](https://allisonhorst.github.io/palmerpenguins/)
+
+-   Banco de dados: uma coleção retangular de variáveis (nas colunas) e observações (nas linhas)
+-   `penguins`: `r nrow(penguins)` casos/observações
+-   Os dados foram coletados e disponibilizados pela Dra. Kristen Gorman e a Estação Palmer, Antártica LTER
+
+## Algumas Definições
+
+::: incremental
+-   **Variável**: uma quantidade, qualidade ou propriedade que você pode medir
+-   **Valor**: o estado de uma variável quando você a mede
+    -   [O valor de uma variável pode mudar de medição para medição]{style="font-size:20pt;"}
+:::
+
+## Algumas Definições
+
+::: incremental
+-   **Observação/caso**: conjunto de medições feitas em condições semelhantes
+    -   [Todas as medições em uma observação são feitas ao mesmo tempo e no mesmo objeto]{style="font-size:20pt;"}
+-   Uma observação/caso conterá vários valores, cada um associado a uma variável diferente.
+-   `penguins`
+    -   [Variável: atributo de todos os pinguins]{style="font-size:20pt;"}
+    -   [Observação: todos os atributos de um único pinguim]{style="font-size:20pt;"}
+:::
+
+## Algumas Definições
+
+```{r}
+#| tbl-cap: Cinco primeiros casos do banco de dados `penguins`
+#| output-location: slide
+
+penguins |>
+  slice_head(n = 5) |> 
+  gt()
+```
+
+## Dados Tabulares
+
+::: incremental
+-   Conjunto de valores, cada um associado a uma variável e a uma observação.
+-   Os dados tabulares são organizados ("tidy") se cada valor for colocado em sua própria "célula", cada variável em sua própria coluna e cada observação em sua própria linha
+:::
+
+## Tidy data
+
+![](images/tidy.png)
+
+## [`tibble`](https://tibble.tidyverse.org/)
+
+```{r}
+#| echo: true
+
+penguins
+```
+
+-   Oito colunas (variáveis)
+
+## Variáveis
+
+```{r}
+
+glimpse(penguins)
+```
+
+## Variáveis
+
+```{r}
+#| eval: false
+
+view(penguins)
+```
+
+![](images/view.png)
+
+## Variáveis no banco de dados dos `penguins`
+
+::: nonincremental
+1.  `species`: uma espécie de pinguim (Adelie, Chinstrap ou Gentoo)
+2.  `flipper_length_mm`: comprimento da nadadeira de um pinguim, em milímetros
+3.  `body_mass_g`: massa corporal de um pinguim, em gramas
+:::
+
+Para saber mais sobre o banco de dados:
+
+```{r}
+#| eval: false
+
+?penguins
+```
+
+## Objetivo final {transition="convex" transition-speed="slow"}
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| out-width: 70%
+#| fig-align: center
+#| fig-dpi: 600
+
+penguins |> 
+  ggplot(aes(flipper_length_mm, 
+             body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    ) +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para Adelie, Chinstrap e Gentoo",
+    x = "Comprimento da nadadeira (mm)",
+    y = "Massa corporal (g)",
+    color = "Espécie",
+    shape = "Espécie"
+    ) +
+  scale_color_colorblind()
+```
+
+# Criando um [ggplot](https://ggplot2.tidyverse.org/reference/ggplot.html) camada por camada
+
+## Banco de dados
+
+`data`
+
+```{r}
+#| out-width: 70%
+#| fig-align: center
+#| fig-dpi: 600
+
+ggplot(data = penguins)
+```
+
+## Representação visual das informações
+
+`mapping` e `aes`(aesthetics - estética)
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| code-line-numbers: "|2|3|"
+#| fig-dpi: 600
+
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm, 
+                     y = body_mass_g))
+```
+
+## Como representar as informações?
+
+-   **geom**: o objeto geométrico que um gráfico usa para representar dados
+-   Funções que sempre começam com `geom_`
+-   Gráficos de barras: [`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html)
+-   Gráficos de linhas: [`geom_line()`](https://ggplot2.tidyverse.org/reference/geom_path.html)
+-   Gráficos de caixa de bigodes: [`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html)
+-   Gráficos de dispersão: [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)
+
+## [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| code-line-numbers: "|4"
+#| fig-dpi: 600
+
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g)) +
+  geom_point()
+```
+
+## Mensagem de aviso (Warning message):
+
+> Removed 2 rows containing missing values (`geom_point()`).
+
+## Adicionando uma estética (aesthetics)
+
+[`color`](https://ggplot2.tidyverse.org/reference/aes_colour_fill_alpha.html)
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+#| code-line-numbers: "|4"
+
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g, 
+                     color = species)) +
+  geom_point()
+```
+
+## Adicionando uma estética (aesthetics)
+
+`shape`
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: 70% 
+#| code-line-numbers: "|5"
+#| fig-dpi: 600
+
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g, 
+                     color = species,
+                     shape = species)) +
+  geom_point()
+```
+
+## Adicionando uma camada (layer)
+
+[`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| code-line-numbers: "|7|8|9|"
+#| out-width: 70% 
+#| fig-dpi: 600
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g, 
+                     color = species,
+                     shape = species)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm"
+    )
+```
+
+##  {#slide8-id data-menu-title="Objetivo Final"}
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+
+penguins |> 
+  ggplot(aes(flipper_length_mm, 
+             body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    ) +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para Adelie, Chinstrap e Gentoo",
+    x = "Comprimento da nadadeira (mm)",
+    y = "Massa corporal (g)",
+    color = "Espécie",
+    shape = "Espécie"
+    ) +
+  scale_color_colorblind()
+```
+
+## Adicionando uma camada (layer)
+
+[`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| code-line-numbers: "|4|5"
+#| out-width: 70%
+#| fig-dpi: 600 
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm, 
+                     y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    )
+```
+
+## Adicionando rótulos (labels)
+
+[`labs()`](https://ggplot2.tidyverse.org/reference/labs.html)
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| code-line-numbers: "|9|10|11|12|13|14|15|16|"
+#| out-width: 70%
+#| fig-dpi: 600 
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm, 
+                     y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    ) +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para Adelie, Chinstrap e Gentoo",
+    x = "Comprimento da nadadeira (mm)",
+    y = "Massa corporal (g)",
+    color = "Espécie",
+    shape = "Espécie"
+    )
+```
+
+## Cores para daltônicos
+
+[ggthemes](https://cran.r-project.org/package=ggthemes)
+
+```{r}
+#| label: cores para daltônicos 1
+#| echo: true
+#| eval: false
+#| code-line-numbers: "|17|"
+#| fig-dpi: 600
+
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    ) +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para Adelie, Chinstrap e Gentoo",
+    x = "Comprimento da nadadeira (mm)",
+    y = "Massa corporal (g)",
+    color = "Espécie",
+    shape = "Espécie"
+    ) +
+  scale_color_colorblind()
+```
+
+# Cores para daltônicos {style="font-size:20pt;"}
+
+[ggthemes](https://cran.r-project.org/package=ggthemes)
+
+```{r}
+#| label: cores_daltônicos_2
+#| echo: false
+#| fig-align: center
+#| code-line-numbers: "|13"
+#| out-width: 70%
+#| fig-dpi: 600
+ 
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  geom_smooth(
+    method = "lm"
+    ) +
+  labs(
+    title = "Massa corporal e comprimento da nadadeira",
+    subtitle = "Dimensões para Adelie, Chinstrap e Gentoo",
+    x = "Comprimento da nadadeira (mm)",
+    y = "Massa corporal (g)",
+    color = "Espécie",
+    shape = "Espécie"
+    ) +
+  scale_color_colorblind()
+```
+
+## Exercícios
+
+Qual o número de linhas no banco de dados dos `penguins`? Quantas colunas?
+
+## Resposta
+
+```{r}
+#| warning: false
+#| message: false
+
+glimpse(penguins)
+```
+
+## Resposta
+
+```{r}
+nrow(penguins)
+
+ncol(penguins)
+```
+
+## Exercícios
+
+Faça um gráfico de dispersão de `bill_depth_mm` vs. `bill_length_mm`. Ou seja, faça um gráfico de dispersão com `bill_depth_mm` no eixo y e `bill_length_mm` no eixo x. Descreva a relação entre essas duas variáveis.
+
+::: aside
+bill = bico
+:::
+
+## Resposta
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+ggplot(data = penguins,
+       aes(x = bill_length_mm,
+           y = bill_depth_mm)) +
+  geom_point() +
+  geom_smooth()
+```
+
+## Exercícios
+
+O que acontece se você fizer um gráfico de dispersão de `species` versus `bill_depth_mm`? O que poderia ser uma melhor escolha de geom?
+
+## Resposta
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+ggplot(data = penguins,
+       aes(x = species,
+           y = bill_depth_mm)) +
+  geom_point()
+```
+
+## Resposta
+
+```{r}
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600
+ggplot(data = penguins,
+       aes(x = species,
+           y = bill_depth_mm)) +
+  geom_boxplot()
+```
+
+## Exercícios
+
+Recrie a seguinte visualização. Para qual estética o bill_depth_mm deve ser mapeado? E deve ser mapeado no nível global ou no nível do `geom`?
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600
+
+ggplot(data = penguins,
+       aes(x = flipper_length_mm,
+           y = body_mass_g)) +
+  geom_point(aes(color = bill_depth_mm)) +
+  geom_smooth()
+```
+
+## Resposta
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| output-location: slide
+#| code-line-numbers: "|4"
+#| fig-dpi: 600
+
+ggplot(data = penguins,
+       aes(x = flipper_length_mm,
+           y = body_mass_g)) +
+  geom_point(aes(color = bill_depth_mm)) +
+  geom_smooth()
+```
+
+## 2.3 Chamadas do ggplot2
+
+-   `data`
+-   `mapping(aes(x = ... , y = ...)`
+
+::: panel-tabset
+### Código completo
+
+```{r}
+#| eval: false
+ggplot(data = penguins,
+       mapping = aes(x = flipper_length_mm,
+                     y = body_mass_g)) +
+  geom_point()
+
+```
+
+### Código com omissões
+
+```{r}
+#| eval: false
+ggplot(penguins,
+       aes(flipper_length_mm,
+           body_mass_g)) +
+  geom_point()
+```
+
+### Código usando pipe `|>`
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600 
+
+penguins |> 
+  ggplot(aes(flipper_length_mm,
+             body_mass_g)) +
+  geom_point()
+```
+:::
+
+## 2.4 Visualizando distribuições
+
+-   A visualização vai depender do tipo de variável
+    -   Categórica
+    -   Numérica
+
+## Variável categórica
+
+::: {style="line-height: 1;"}
+-   Os números são usados para classificar objetos
+-   1 ≠ 2 ≠ 3
+-   Grupo: frutas
+    -   categorias
+        -   1 = laranja
+        -   2 = maçã
+        -   3 = uva
+    -   laranja ≠ maçã ≠ uva
+:::
+
+## Variável categórica: Gráfico de Barras (`geom_bar()`)
+
+[Altura das barras: número de observações em cada valor de x]{style="font-size:20pt;"}
+
+```{r}
+#| output-location: column-fragment
+#| fig-align: center
+#| out-width: "100%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(species)) +
+  geom_bar()
+```
+
+## Gráfico de Barras (`geom_bar()`): variáveis ordendas pela frequência (decrescente)
+
+```{r}
+#| output-location: column-fragment
+#| fig-align: center
+#| out-width: "100%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(fct_infreq(species))) +
+  geom_bar()
+```
+
+## Gráfico de Barras (`geom_bar()`): variáveis ordendas pela frequência (crescente)
+
+```{r}
+#| output-location: column-fragment
+#| fig-align: center
+#| out-width: "100%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(fct_infreq(species) |> 
+             fct_rev())) +
+  geom_bar()
+```
+
+## Gráfico de Barras (`geom_bar()`): proporções
+
+::: panel-tabset
+## Código para percentuais
+
+```{r}
+#| eval: false
+#| message: false
+#| warning: false
+
+ggplot(penguins,
+       aes(fct_infreq(species),
+           y = after_stat(prop), group = 1),
+           fill = species)+
+  geom_bar() +
+  geom_text(aes(label = percent(after_stat(count/sum(count)))),
+            stat = "count",
+            nudge_y = 0.03) +
+  scale_y_continuous(
+    name = "Percentual",
+    labels = label_percent()
+  )
+
+```
+
+## Gráfico com percentuais
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: "50%"
+#| fig-dpi: 600
+ggplot(penguins,
+       aes(fct_infreq(species),
+           y = after_stat(count/sum(count)),
+           fill = species)) +
+  geom_bar() +
+  geom_text(aes(label = percent(after_stat(count/sum(count)))),
+            stat = "count",
+            nudge_y = 0.01) +
+  theme(
+    legend.position = "none"
+    ) +
+  scale_y_continuous(
+    labels = percent
+    )
+```
+:::
+
+## Variável numérica
+
+::: {style="line-height: 1; font-size:18pt;"}
+-   1 \> 2 \> 3
+    -   2 - 1= 1
+    -   3 - 2 = 1
+    -   3 - 1 = 2
+-   Discreta
+    -   pessoas: 1, 2, 3, ou 4
+        -   1/2 (0,5) pessoa?
+-   Contínua
+    -   comprimento: 1,23 cm, 1,234 cm, 1,2347 cm ...
+    -   valores infintos entre 2 números
+:::
+
+## Histograma (`geom_histogram()`)
+
+::: {style="line-height: 1; font-size:18pt;"}
+-   Divide o eixo x em caixas igualmente espaçadas
+-   Usa a altura de uma barra para exibir o número de observações em cada caixa
+:::
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600
+
+ggplot(penguins, 
+       aes(body_mass_g)) +
+  geom_histogram(
+    binwidth = 200,
+    color = "white"
+    )
+
+```
+
+## Histograma (`geom_histogram()`)
+
+```{r}
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600
+
+ggplot(penguins, 
+       aes(x = body_mass_g)) +
+  geom_histogram(
+    binwidth = 200
+    )
+
+```
+
+## Histograma (`geom_histogram()`): `binwidth()`
+
+-   [Define a largura dos intervalos]{style="font-size:22pt;"}
+
+::: panel-tabset
+## `binwidth(20)`
+
+```{r}
+#| echo: false
+#| out-width: 35%
+#| fig-dpi: 600
+
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram(
+    binwidth = 2000
+    )
+
+```
+
+## `binwidth(2000)`
+
+```{r}
+#| echo: false
+#| out-width: 35%
+#| fig-dpi: 600
+
+ggplot(penguins, aes(body_mass_g)) +
+  geom_histogram(
+    binwidth = 20
+    )
+
+```
+:::
+
+## Exercícios
+
+Faça um gráfico de barras das espécies (`species`) de pinguins, onde você atribui espécies (`species`) ao eixo y. Como esse gráfico é diferente?
+
+## Resposta
+
+```{r}
+#| output-location: fragment
+#| fig-align: center
+#| out-width: "50%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(y = species)) +
+  geom_bar()
+```
+
+## Exercícios
+
+Em que os dois gráficos a seguir são diferentes? Qual estética, cor ou preenchimento, é mais útil para mudar a cor das barras?
+
+```{r}
+#| eval: false
+
+ggplot(penguins, aes(species)) +
+  geom_bar(
+    color = "red"
+    )
+
+ggplot(penguins, aes(species)) +
+  geom_bar(
+    fill = "red"
+    )
+```
+
+## Resposta
+
+```{r}
+#| output-location: fragment
+#| fig-align: center
+#| out-width: "50%"
+#| fig-dpi: 600
+
+ggplot(penguins, aes(species)) +
+  geom_bar(
+    fill = "red"
+    )
+```
+
+## Exercícios
+
+Faça um histograma da variável quilate (`carat`) no conjunto de dados de `diamonds` (diamantes) que está disponível quando você carrega o pacote [tidyverse](https://www.tidyverse.org/). Experimente diferentes larguras de caixa (`bin`). Qual largura de `bin` revela os padrões mais interessantes?
+
+## Resposta
+
+::: panel-tabset
+## `bin` padrão (30)
+
+```{r}
+#| fig-align: center
+#| out-width: 45%
+#| fig-dpi: 600
+ggplot(diamonds,
+       aes(carat)) +
+  geom_histogram()
+```
+
+## histograma base R
+
+```{r}
+#| fig-dpi: 600
+hist(diamonds$carat)
+```
+:::
+
+## 2.5 Visualizando relacionamentos
+
+-   2 variáveis
+    -   categórica x numérica
+    -   categórica x categórica
+    -   numérica x numérica
+-   3 ou mais variáveis
+
+## Variáveis numéricas e categóricas
+
+-   Diagrama de caixa (`geom_boxplot()`)
+    -   Atalho visual para medidas de posição (percentis) que descrevem uma distribuição
+    -   Útil para identificar possíveis outliers
+
+## Entendendo um diagrama de caixa (`geom_boxplot()`)
+
+```{r}
+#| label: boxplot_explicado_2
+#| echo: false
+#| fig-align: center
+#| fig-width: 9.71
+#| out-width: "70%"
+#| fig-dpi: 600                                                    
+
+box_plot <-
+  penguins |> 
+  filter(species == "Chinstrap") |>
+  mutate(
+    species = as.numeric(species)
+    ) |> 
+  ggplot(aes(species,
+             body_mass_g)) +
+  geom_boxplot(
+    color = "gray"
+    ) +
+  scale_x_continuous(
+    breaks = 2,
+    labels = "Chinstrap"
+    ) +
+  theme(
+    axis.ticks = element_blank()
+    )
+  
+box_plot <-
+  box_plot +
+  geom_segment(
+    x = 2.32,
+    y = 3450,
+    xend = 2.32,
+    yend = 4000,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray",
+    alpha = 0.2
+    ) +
+  geom_segment(
+    x = 2.32,
+    y = 4000,
+    xend = 2.32,
+    yend = 3450,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray",
+    alpha = 0.2
+    ) +
+  annotate(
+    "text",
+    x = 2.32, 
+    y = 3420, 
+    label = "Interquartile range (IQR)",
+    color = "gray",
+    hjust = "center"
+    )
+
+box_plot <- 
+  box_plot +
+  geom_segment(
+    x = 2.32,
+    y = 4050,
+    xend = 2.32,
+    yend = 4755,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray",
+    alpha = 0.2
+    ) +
+  geom_segment(
+    x = 2.32,
+    y = 4755,
+    xend = 2.32,
+    yend = 4050,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray",
+    alpha = 0.2
+    )+
+  annotate(
+    "text",
+    x = 2.36,
+    y = 4400,
+    label = "1,5 X IQR",
+    color = "gray")
+  
+box_plot <- 
+  box_plot +
+  geom_segment(
+    x = 2.05,
+    xend = 2.01,
+    y = 4800,
+    yend = 4800,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray"
+    ) +
+  annotate(
+    "text",
+    x = 2.076,
+    y = 4800,
+    label = "outlier",
+    color = "gray"
+    )
+
+box_plot <- 
+  box_plot +
+   geom_segment(
+     x = 2.1,
+     y = 3197.5,
+     xend = 2.1,
+     yend = 3487.5,
+     arrow = arrow(length = unit(0.2, "cm"),
+                   type = "closed"),
+     color = "gray",
+     alpha = 0.2
+     ) +
+  annotate(
+    "text",
+    x = 2.1,
+    y = 3150,
+    label = "percentil 25",
+    color = "gray"
+    ) +
+  geom_segment(
+    x = 2.1,
+    y = 4240,
+    xend = 2.1,
+    yend = 3950,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray",
+    alpha = 0.2
+    ) +
+  annotate(
+    "text",
+    x = 2.1,
+    y = 4350,
+    label = "percentil 75",
+    color = "gray"
+    ) +
+  geom_segment(
+    x = 1.8,
+    y = 3410,
+    xend = 1.8,
+    yend = 3700,
+    arrow = arrow(length = unit(0.2, "cm"),
+                  type = "closed"),
+    color = "gray",
+    alpha = 0.2
+    ) +
+   annotate(
+     "text",
+     x = 1.8,
+     y = 3300,
+     label = "percentil 50 (mediana)",
+     color = "gray"
+     )
+
+box_plot
+```
+
+## Entendendo um diagrama de caixa (`geom_boxplot()`)
+
+```{r}
+#| label: boxplot_explicado
+#| echo: false
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600
+
+
+point <- 
+  penguins |> 
+  filter(species == "Chinstrap") |>  
+  mutate(
+    species == as.numeric(species)
+    ) |> 
+  ggplot(aes(species,
+             body_mass_g)) +
+  geom_point()
+
+histog <- 
+  penguins |> 
+  filter(species == "Chinstrap") |>
+  ggplot(aes(body_mass_g)) +
+  geom_histogram(
+    bins = 20
+    ) +
+  coord_flip()
+
+box_plot <-
+  penguins |> 
+  filter(species == "Chinstrap") |>
+  mutate(
+    species = as.numeric(species)
+    ) |> 
+  ggplot(aes(species,
+             body_mass_g)) +
+  geom_boxplot(
+    color = "gray"
+    ) +
+  scale_x_continuous(
+    breaks = 2,
+    labels = "Chinstrap"
+    ) +
+  theme(
+    axis.ticks = element_blank()
+    )
+  
+point + histog + box_plot
+```
+
+## Duas variáveis categóricas
+
+-   Relacionamento entre ilha (`island`) e espécie (`species`)
+    -   Distribuição das espécies dentro de cada ilha
+
+## Tabela de Frequência
+
+```{r}
+penguins |> 
+  count(island,species) |>
+  pivot_wider(
+    names_from = species,
+    values_from = n
+    ) |>
+  rowwise() |> 
+  mutate(
+    total_island = sum(c_across(Adelie:Chinstrap),na.rm = T)
+    ) |> 
+  ungroup()
+```
+
+## Gráfico de barras emplilhados (stacked bar plots)
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: "60%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(island,
+           fill = species)) +
+  geom_bar()
+```
+
+## Gráfico de frequência relativa (relative frequency plot)
+
+-   `position = "fill"`
+-   útil para comparar a distribuição de espécies nas ilhas
+    -   não é afetado pelo número desigual de pinguins nas ilhas
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: "60%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(island,
+           fill = species))+
+  geom_bar(
+    position = "fill"
+    )
+```
+
+## Grafico de barras
+
+-   `position = "dodge"`
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: "70%"
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(island,
+           fill = species)) +
+  geom_bar(
+    position = "dodge"
+    )
+```
+
+## Duas variáveis numéricas
+
+-   `geom_point()`
+-   `geom_smooth()`
+
+```{r}
+#| label: dispresao
+#| fig-align: center
+#| out-width: "70%"
+#| output-location: slide
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(flipper_length_mm, 
+           body_mass_g)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm"
+    )
+```
+
+## Três ou mais variáveis
+
+-   Podem ser mapeadas para diferntes estéticas (aesthetics)
+-   `color` = espécies (`species`)
+-   `shape` = ilhas (`island`)
+
+```{r}
+#| label: Três ou mais variáveis
+#| fig-align: center
+#| out-width: "70%"
+#| output-location: slide
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(flipper_length_mm,
+           body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = island))
+
+```
+
+## facets
+
+-   Muitas variáveis nas estéticas pode deixar o gráfico confuso
+-   `facet_`
+
+```{r}
+#| label: facets
+#| fig-align: center
+#| out-width: "70%"
+#| output-location: slide
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(flipper_length_mm,
+           body_mass_g)) +
+  geom_point(aes(color = species,
+                 shape = species)) +
+  facet_wrap(~ island)
+
+
+```
+
+## Series temporais
+
+-   `geom_line()`
+-   `geom_point()`
+
+```{r}
+#| output-location: slide
+#| fig-align: center
+#| out-width: "70%"
+#| #| fig-dpi: 600
+gapminder |>
+  group_by(continent,year) |> 
+  summarise(
+    lifeExpm = mean(lifeExp)
+  ) |> 
+  ggplot(aes(year,lifeExpm,
+             color = continent)) +
+  geom_line() +
+  geom_point() + 
+  scale_color_colorblind()
+```
+
+## Exercícios
+
+O banco de dados `mpg` que acompanha o pacote ggplot2 contém `r nrow(mpg)` observações coletadas pela Agência de Proteção Ambiental dos EUA em `r mpg |> distinct(model) |> nrow()` modelos de carros. Quais variáveis em mpg são categóricas? Quais variáveis são numéricas? (Dica: digite `?mpg` para ler a documentação do banco de dados.) Como você pode ver essas informações ao executar `mpg`?
+
+## Reposta
+
+```{r}
+
+glimpse(mpg)
+```
+
+## Exercícios
+
+Faça um gráfico de dispersão de hwy vs. displ usando o banco de dados mpg Em seguida, mapeie uma terceira variável numérica para `color`, depois para `size`, então para `color` e `size` ao mesmo tempo, então para `shape.` Como essas estéticas se comportam de maneira diferente para variáveis categóricas e numéricas?
+
+## Resposta
+
+```{r}
+#| label: Color, size e shape 1
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+p <- 
+  ggplot(mpg,
+            aes(hwy,
+                displ)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm",
+    se = F
+    )
+
+p
+```
+
+## Resposta
+
+```{r}
+#| label: Color, size e shape 2
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+p + geom_point(aes(color = cty))
+```
+
+## Resposta
+
+```{r}
+#| label: Color, size e shape 3
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+p + geom_point(aes(size = cty))
+```
+
+## Resposta
+
+```{r}
+#| label: Color, size e shape 4
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+p + geom_point(aes(color = cty,
+                   size = cty))
+```
+
+## Resposta
+
+```{r}
+#| label: Color, size e shape 5
+#| eval: false 
+
+p + geom_point(aes(shape = cty))
+```
+
+> Error in `geom_point()`: ! Problem while computing aesthetics. ℹ Error occurred in the 2nd layer. Caused by error in `scale_f()`: ! A continuous variable cannot be mapped to the shape aesthetic ℹ choose a different aesthetic or use `scale_shape_binned()` Run `rlang::last_error()` to see where the error occurred.
+
+## Resposta
+
+```{r}
+#| label: Color, size e shape 6
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+p + geom_point(aes(color = cty,
+                 size = cty,
+                 shape = drv))
+```
+
+## Exercícios
+
+O que acontece se você mapear a mesma variável para várias estéticas?
+
+## Resposta
+
+```{r}
+#| label: Mesma variáviel, vários aes()
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(flipper_length_mm,
+           body_mass_g)) +
+  geom_point(aes(color = sex,
+                 shape = sex))
+```
+
+## Exercícios
+
+Faça um gráfico de dispersão de bill_depth_mm vs. bill_length_mm. Você deve colorir os pontos por espécies. O que a adição de coloração por espécie revela sobre a relação entre essas duas variáveis? Que tal facetar por espécie?
+
+## Resposta
+
+```{r}
+#| label: Gráfico de dispersão com cores
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(bill_depth_mm,
+           bill_length_mm)) +
+  geom_point(aes(color = species)) +
+  geom_smooth(
+    method = "lm",
+    se = F
+    )
+```
+
+## Resposta
+
+```{r}
+#| label: Gráfico de dispersão com facetas
+#| fig-align: center
+#| output-location: slide
+#| out-width: 65%
+#| fig-dpi: 600
+
+ggplot(penguins,
+       aes(bill_depth_mm,
+           bill_length_mm)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm",
+    se = F
+    ) +
+  facet_wrap(~ species)
+  
+```
+
+## 2.5 Salvando seus gráficos
+
+-   `ggsave()`
+-   Gráficos ficam salvos no diretório de trabalho
+    -   `getwd()`
+-   É possível especificar `width` (largura) e `height` (altura)
+-   `?ggsave()`
+
+## Código
+
+```{r}
+#| label: ggsave()
+
+histograma <- 
+  ggplot(penguins,
+         aes(body_mass_g)) +
+  geom_histogram(
+    color = "gray",
+    fill = "white"
+    )+
+  theme_classic()
+
+ggsave(filename = "histograma.png",dpi = 600)
+```
+
+## Resultado
+
+![](images/ggsave.png)
+
+## Gráfico como imagem
+
+![](histograma.png)
+
+## Compartilhar conhecimento sempre!
+
+O código e as imagens utilizados para a construção desse slide estão disponíveis no [link](https://github.com/pablo-huascar/curso_r) a seguir:
+
+<https://github.com/pablo-huascar/curso_r>
