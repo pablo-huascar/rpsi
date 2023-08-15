@@ -1675,6 +1675,6 @@ ggsave(filename = "histograma.png",dpi = 600)
 
 ## Compartilhar conhecimento sempre!
 
-O código e as imagens utilizados para a construção desse slide estão disponíveis no [link](https://github.com/pablo-huascar/curso_r) a seguir:
+O código e as imagens utilizados para a construção desse slide estão disponíveis no [link](https://github.com/pablo-huascar/rpsi) a seguir:
 
-<https://github.com/pablo-huascar/curso_r>
+<https://github.com/pablo-huascar/rpsi>
