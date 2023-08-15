@@ -24,6 +24,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Quem sou eu
+
 ```{r}
 #| label: setup
 #| include: false
@@ -32,8 +34,6 @@ library(tidyverse)
 library(janitor)
 library(gt)
 ```
-
-## Quem sou eu
 
 ::: {style="line-height: 1;"}
 ::: columns
