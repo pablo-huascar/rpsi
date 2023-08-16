@@ -205,5 +205,4 @@ Para saber mais sobre este banco use `?mtcars`. Se quiser ver outros banco de da
 #| eval: false
 colnames()
 ```
-
 :::

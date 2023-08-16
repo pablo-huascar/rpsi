@@ -6,5 +6,4 @@ title: "Introdução ao R"
 
 ![](images/slide.png){width="18"} [Slides](modulo_1_basico.qmd){target="_blank"}
 
-![](images/exercicios.png){width="18"}
-[Exercícios](basico_exe.qmd){target="_blank"}
+![](images/exercicios.png){width="18"} [Exercícios](basico_exe.qmd){target="_blank"}

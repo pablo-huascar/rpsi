@@ -7,12 +7,13 @@ project:
 website:
   page-navigation: true
   title: "Rpsi"
+  repo-url: https://github.com/pablo-huascar/rpsi
   page-footer:
     left: "Esta página foi construída com [Quarto](https://quarto.org/)."
   navbar:
     align: center
     title: "Rpsi"
-    background: "#FDFEFE "
+    background: "#FDFEFE"
     search: true
     collapse-below: lg
     left:
@@ -20,6 +21,15 @@ website:
         file: index.qmd
       - text: "Conteúdos"
         file: conteudos.qmd
+    right: 
+      - icon: github
+      - href: https://github.com/pablo-huascar/rpsi
+      - icon: "{{< fa brands github >}}"
+        href: https://github.com/pablo-huascar/rpsi
+      - text: "{{< fa brands github size=2x >}}"
+        href: https://github.com/pablo-huascar/rpsi
+      
+        
   
   sidebar:
     - title: "Conteúdos"
@@ -41,6 +51,7 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
+    code-copy: true
 
 editor: visual
 

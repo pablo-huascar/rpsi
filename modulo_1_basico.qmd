@@ -1,6 +1,5 @@
 ---
-title: "R para análise de dados em Psicologia"
-subtitle: "Uma Introdução"
+title: "Introdução ao R para análise de dados em Psicologia"
 execute:
   echo: true
 author: 
