@@ -3,7 +3,7 @@ sidebar: false
 title: "Bem-vindos"
 ---
 
-Sejam bem-vindos a oficia "Introdução ao R para análise de dados em Psicologia". Temos como proposta ajudar pesquisadores e estudantes a fazer a transição de software proprietários e/ou com interfaces gráficas para uma linguagem de programação livre, gratuita e flexível.
+Sejam bem-vindos à oficia "Introdução ao R para análise de dados em Psicologia". Temos como proposta ajudar pesquisadores e estudantes a fazer a transição de software proprietários e/ou com interfaces gráficas para uma linguagem de programação livre, gratuita e flexível.
 
 Faz algum tempo, fizemos (e continuamos fazendo) essa transição e, partindo da premissa de que conhecimento que não se compartilha é conhecimento que se perde, decidimos criar esta oficina. Mas o que diferencia nossa proposta de vários outros cursos que ensinam R? Há excelentes cursos disponíveis, todavia, em muitos casos, o aprendizado é direcionado à Ciência de Dados ou à Estatística. Dessa forma, os conteúdos, e forma com são apresentados, têm uma complexidade que se afasta das tarefas mais rotineiras que são demandadas de pesquisadores da Psicologia ou das Ciências Humanas e Sociais de modo geral.
 
