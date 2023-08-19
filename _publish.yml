@@ -1,6 +1,4 @@
 - source: project
   quarto-pub:
-    - id: aad293aa-251e-49f3-a706-4b8609f3f23c
-      url: 'https://fphap.quarto.pub/rpsi'
     - id: 1a7dc8c2-ae8f-4e7e-9a61-af6b931920b7
       url: 'https://fphap.quarto.pub/rpsi'

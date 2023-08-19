@@ -48,6 +48,8 @@ website:
     
 format:
   html:
+    code-link: true
+    code-line-numbers: false
     theme: cosmo
     css: styles.css
     toc: true

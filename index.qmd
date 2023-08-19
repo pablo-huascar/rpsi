@@ -3,21 +3,21 @@ sidebar: false
 title: "Bem-vindos"
 ---
 
-Sejam bem-vindos à oficia "Introdução ao R para análise de dados em Psicologia". Temos como proposta ajudar pesquisadores e estudantes a fazer a transição de software proprietários e/ou com interfaces gráficas para uma linguagem de programação livre, gratuita e flexível.
+Sejam bem-vindos à oficina "Introdução ao R para análise de dados em Psicologia". Temos como proposta ajudar pesquisadores e estudantes a fazer a transição de software proprietários e/ou com interfaces gráficas para uma linguagem de programação livre, gratuita e flexível.
 
-Faz algum tempo, fizemos (e continuamos fazendo) essa transição e, partindo da premissa de que conhecimento que não se compartilha é conhecimento que se perde, decidimos criar esta oficina. Mas o que diferencia nossa proposta de vários outros cursos que ensinam R? Há excelentes cursos disponíveis, todavia, em muitos casos, o aprendizado é direcionado à Ciência de Dados ou à Estatística. Dessa forma, os conteúdos, e forma com são apresentados, têm uma complexidade que se afasta das tarefas mais rotineiras que são demandadas de pesquisadores da Psicologia ou das Ciências Humanas e Sociais de modo geral.
+Faz algum tempo, fizemos (e continuamos fazendo) essa transição e, partindo da premissa de que conhecimento que não se compartilha é conhecimento que se perde, decidimos criar esta oficina. Mas o que diferencia nossa proposta de vários outros cursos que ensinam R? Há excelentes cursos disponíveis, porém, em muitos casos, o aprendizado é direcionado à Ciência de Dados ou à Estatística. Dessa forma, os conteúdos, e forma com são apresentados, têm uma complexidade que se afasta das tarefas mais rotineiras que são demandadas de pesquisadores da Psicologia ou das Ciências Humanas e Sociais de modo geral.
 
 Não temos a pretensão de esgotar as possibilidades que o R traz como linguagem de programação, mas adaptá-las as necessidades de nossas áreas. Por outro lado, também pretendemos fazer com que essa linguagem possa ser aprendida de forma intuitiva. A codificação a partir das funções básicas do R é muito poderosa e consegue implementar soluções incríveis, todavia, parece não ter sido criada para se adaptar a nossa linguagem do dia a dia.
 
 Nesse ponto, o uso de um conjunto de pacotes[^1] chamado [tidyverse](https://www.tidyverse.org/){target="_blank"} aproxima a codificação para a nossa linguagem natural, de modo que, além de ser lida por um computador, ela pode ser compreendida por um ser humano. São verbos, advérbios, substantivos e pronomes que facilitam o entendimento sobre de onde estamos partindo e para onde queremos chegar com as funções que utilizamos. Aqui, há um pequeno revés: todas as funções estão em inglês, de maneira que um pequeno conhecimento sobre este idioma facilita o aprendizado. Assim, talvez essa oficina fosse mais bem caracterizada como uma oficina sobre R através do [tidyverse](https://www.tidyverse.org/){target="_blank"}.
 
+[^1]: Um pacote R é um conjunto de funções, dados, documentação e outros recursos que podem ser instalados e usados no R. Os pacotes são uma forma de organizar e compartilhar código e dados, e podem ser usados para estender a funcionalidade do R.
+
 ::: column-margin
 [![](./images/tidyverse.png){width="128"}](https://www.tidyverse.org/)
 :::
 
-[^1]: Um pacote R é um conjunto de funções, dados, documentação e outros recursos que podem ser instalados e usados no R. Os pacotes são uma forma de organizar e compartilhar código e dados, e podem ser usados para estender a funcionalidade do R.
-
-É preciso lembrar que, tal como conhecer novos idiomas, se familiarizar com uma linguagem de programação tem uma curva de aprendizado lenta no início, mas que pode se tornar uma curva ascendente de forma bastante suave. O ambiente adequado para o aprendizado (nossos laptops ou usar o R online) está sempre disponível. Além disso, de um jeito ou de outro, o próprio programa nos dá feedbacks sobre nossos erros.
+É preciso lembrar que, tal como conhecer novos idiomas, se familiarizar com uma linguagem de programação tem uma curva de aprendizado lenta no início, mas que pode ganhar velocidade rapidamente. O ambiente adequado para o aprendizado (nossos laptops ou usar o R online) está sempre disponível. Além disso, de um jeito ou de outro, o próprio programa nos dá feedbacks sobre nossos erros.
 
 Contudo, repetição é necessária. Nunca copie e cole um código. Mesmo que você já tenha feito uma tarefa similar antes, ou até no script[^2] que você está escrevendo, digite novamente as funções[^3]. Além de evitar erros, isto a ajuda a tornar natural o seu uso e a internalizar a compreensão sobre para que servem. Por outro lado, é preciso deliberadamente se dispor a tentar codificar. Nesse sentido, o R traz consigo inúmeros bancos dados que podem ser utilizados praticar. A despeito de todas essas advertências, não se preocupem, pois em pouco tempo, tenho certeza que codificar vai ser tão natural quando ler e escrever em português.
 
