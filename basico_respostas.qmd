@@ -1,0 +1,138 @@
+---
+sidebar: false
+title: "Básico do R"
+subtitle: "Soluções"
+format: 
+  html:
+      code-link: true
+      code-line-numbers: false
+editor_options: 
+  chunk_output_type: console
+---
+
+### Exercício 1
+
+Encontre o log natural, log na base 10, log na base 2 e a raiz quadrada de `12.43`. Some os resultados os resultados encontrados e arredonde a soma para duas casas decimais.
+
+```{r}
+log_natural <- log(12.43)
+
+log_10 <- log10(12.43)
+
+log_2 <- log2(12.43)
+
+raiz <- sqrt(12.43)
+
+soma <- log_natural + log_10 + log_2 + raiz
+
+round(soma, 2)
+
+```
+
+Resposta
+
+c)  10.78
+
+### Exercício 2
+
+Determine a área de um círculo com diâmetro de `20` cm e atribua o resultado a um objeto chamado area_circulo. Eis a fórmula para calcular a área do círculo:
+
+$$ A = \pi r^2 $$
+
+```{r}
+r <- 20/2
+
+area_circulo <- pi*(r^2)
+
+print(area_circulo)
+```
+
+Resposta
+
+b)  314.1593
+
+### Exercício 3
+
+Calcule a raiz cúbica de $14*0.51$.
+
+```{r}
+(14*0.51)^1/3
+```
+
+Resposta
+
+a)  2.38
+
+### Exercício 4
+
+Para encontrar as soluções para uma equação do formato $ax^{2} + bx + c$, use a equação quadrática:
+
+$x = \frac{-b \pm \sqrt{(b^2-4ac)}}{2a}$.
+
+Ache as duas soluções para $2x^2-x-4=0$. Arredonde o resultado para duas casas decimais
+
+```{r}
+a <- 2
+
+b <- -1
+
+c <- -4
+
+x1 <- (-b + sqrt(b^2 - 4*a*c))/(2*a)
+
+x2 <- (-b - sqrt(b^2 - 4*a*c))/(2*a)
+
+round(x1, 2)
+
+round(x2, 2)
+```
+
+Resposta
+
+c)  1.69 e -1.19
+
+### Exercício 5
+
+Crie um vetor chamado `peso` contendo o peso (em kg) de 4 pessoas: `80.2, 56.3, 70.5 e 60.3`. Agora, calcule a média e o desvio padrão do vetor `peso`. Arredonde os resultados para uma casa decimal.
+
+```{r}
+peso <- c(80.2, 56.3, 70.5, 60.3)
+
+round(mean(peso),1)
+
+round(sd(peso),1) 
+
+```
+
+Resposta
+
+d)  66.8 e 10.7
+
+### Exercício 6
+
+Crie o objeto `altura` com os valores (em cm) para a altura das mesmas quatro pessoas que tiveram o peso registrado anteriormente: `175, 160, 165 e 172`. Agora, transforme o objeto `altura` de modo que os valores sejam apresentados em metros. Salve o resultado para um novo objeto chamado `altura_m`.
+
+Quais os valores encontrados para a mediana, o mínimo e o máximo do objeto `altura_m`, respectivamente?"
+
+```{r}
+altura <- c(175, 160, 165, 172)
+
+altura_m <- altura/100
+
+median(altura_m)
+
+min(altura_m)
+
+max(altura_m)
+
+```
+
+Resposta
+
+a)  1.685, 1.6 e 1.75
+
+
+
+
+
+
