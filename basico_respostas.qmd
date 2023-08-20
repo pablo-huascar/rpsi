@@ -131,8 +131,110 @@ Resposta
 
 a)  1.685, 1.6 e 1.75
 
+### Exercício 7
+
+Sabendo que o Índice de Massa Corpórea (IMC) é obtido dividindo o peso (em kg) pela altura (em metros) ao quadrado, recrie os objetos `peso` e `altura_m` e crie um objeto `imc` com os valores do IMC de cada caso.
+
+Qual o imc médio dessa amostra de quatro pessoas? Arredonde o resultado para três casas decimais.
+
+```{r}
+peso <- c(80.2, 56.3, 70.5, 60.3)
+
+altura <- c(175, 160, 165, 172)
+
+altura_m <- altura/100
+
+imc <- peso/altura_m^2
+
+round(mean(imc),3)
+```
+
+Resposta
+
+c)  23.614
+
+### Exercício 8
+
+No R, é possível usar funções de dentro de funções. Veja o exemplo a seguir:
+
+```{r}
+#| echo: true
+a <- c(2.567,3.786,4.89,5.765,9.27) 
+
+round(mean(a), 2) 
+```
+
+Nesse código, criamos um objeto `a` e, em seguida, usamos a função `mean()` dentro da função `round()` para obter um resultado com duas casas decimais.
+
+Com as funções `paste()` e `rep()`, em uma única linha de código, crie um objeto `questoes` com os seguintes elementos `q1,q2,q3,q4 e q5`. Em uma segunda linha, imprima o objeto `questoes` com a função `print()` para conferir o resultado.
+
+```{r}
+questoes <- paste(rep("q",5), 1:5, sep = "")
+
+print(questoes)
+```
+
+### Exercício 9
+
+Agora, crie um objeto `questoes_` com os seguintes elementos: `q_1,q_2,q_3,q_4 e q_5`. Em seguida, em uma nova linha, imprima o objeto `questoes_` com a função `print()` para conferir o resultado.
+
+```{r}
+questoes_ <- paste(rep("q",5), 1:5, sep = "_")
+
+print(questoes_)
+```
+
+### Exercício 10
+
+Agora, tente criar novamente o objeto `questoes` com os elementos `q1,q2,q3,q4 e q5`, mas utilizando o operador pipe (`|>` ou `%>%`). Em uma terceira linha, imprima o objeto `questoes` com a função `print()`
 
 
+```{r}
+questoes <- rep("q",5) |> 
+  paste(1:5, sep = "")
 
+print(questoes)
+```
+
+### Exercício 11
+
+Crie um objeto `mil` com 1000 valores que tenham uma distribuição normal com média 20 e desvio padrão 5. Em seguida, crie um histograma usando a função básica do R.
+
+```{r}
+set.seed(123)
+
+mil <- rnorm(1000, 20, 5)
+
+hist(mil)
+
+```
+
+### Exercício 12
+
+Use a função `replace()` para substituir os valores do objeto `a` que estão como caracteres pelo valor numérico correspondente.
+
+```{r}
+a <- c(1,2,"três",4,"cinco")
+
+print(a)
+```
+
+```{r}
+replace(a, c(3,5), c(3,5))
+```
+
+### Exercício 13
+
+Extraía o nome das variáveis do banco de dados `mtcars` e salve num objeto chamado `colunas`. Em seguinda, imprima o objeto criado.
+
+`mtcars` é um banco de dados que vem com R e apresenta dados extraídos da revista Motor Trend US de 1974 e compreende o consumo de combustível e 10 aspectos do design e desempenho de automóveis para 32 automóveis (modelos de 1973 a 1974).
+
+Para saber mais sobre este banco use `?mtcars`. Se quiser ver outros banco de dados disponíveis no R, use a função `data()`
+
+```{r}
+colunas <- colnames(mtcars)
+
+print(colunas)
+```
 
 

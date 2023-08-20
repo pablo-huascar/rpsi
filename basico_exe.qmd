@@ -163,7 +163,7 @@ Agora, crie um objeto `questoes_` com os seguintes elementos: `q_1,q_2,q_3,q_4 e
 
 ### Exercício 10
 
-Agora, tente criar novamente o objeto `questoes` com os elementos `q1,q2,q3,q4 e q5`, mas utilizando o operador pipe (`|>` ou `%>%`). Em uma segunda linha, imprima o objeto `questoes` com a função `print()`
+Agora, tente criar novamente o objeto `questoes` com os elementos `q1,q2,q3,q4 e q5`, mas utilizando o operador pipe (`|>` ou `%>%`). Em uma terceira linha, imprima o objeto `questoes` com a função `print()`
 
 ### Exercício 11
 
