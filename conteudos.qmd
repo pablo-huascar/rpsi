@@ -16,9 +16,23 @@ Gráficos são uma ferramenta muito importante para explorar os dados assim como
 
 Antes de analisarmos os dados que colhemos, algumas tarefas são essenciais: criar variáveis a partir daquelas coletadas inicialmente, filtrar valores e arranjá-los de forma ascendente ou descendente. Eventualmente, também é necessário selecionar variáveis, renomeá-las e mudá-las de posição. Sumariar alguns resultados é, ainda, uma atividade importante nessa fase de manipulação dos dados. Todas essas tarefas podem ser feitas com o pacote `dplyr` e é sobre ele que vamos nos debruçar nesse módulo.
 
+## Iteração
+
+No contexto do [tidyverse](https://www.tidyverse.org/){target="_blank"}, iteração diz respeito a executar repetidamente a mesma ação em diferentes objetos. É possível, por exemplo, com a função `summarise` calcular a média e o desvio padrão de várias colunas de uma só vez ou transformá-las com a função `mutate`. A iteração é importante porque evitar copiar e colar funções mais de 2 vezes, o que pode gerar erros que se propagam no código. Essa é uma capacidade do tidyverse muito poderosa, contudo, dado o caráter introdutório da oficina, vamos nos deter na função `across`.
+
 ## Importação de dados
 
 Trabalhar com os bancos de dados que acompanham o R e alguns pacotes foi muito divertido, mas é hora de analisar seus próprios dados. A importação de dados é uma tarefa simples, mas que pode ter nuances que demandam atenção. Vamos aprender a importar arquivos csv (valores separados por vírgula), csv2 (valores separados por ponto e vírgula), .sav (SPSS), .xlsx (Excel). Também teremos algumas dicas sobre como organizar os dados e os nomes das variáveis. Além disso, vamos aprender a exportar os dados no formato csv. Para tanto, vamos utilizar os pacotes `readr`, `haven` e `readxl`.
+
+## Dados arrumados
+
+Este talvez seja o módulo que mais se distancia do cotiando de pesquisadores de psicologia e de ciências humanas. Usualmente, trabalhamos com dados que nós coletamos e, ao importá-los ou alimentarmos planilhas, já os temos no formato *tidy* (arrumado). Este formato se refere ao seguinte:
+
+1.  Cada variável é uma coluna; cada coluna é uma variável.
+2.  Cada observação é uma linha; cada linha é uma observação.
+3.  Cada valor é uma célula; cada célula é um único valor.
+
+Contudo, não é incomum que trabalhemos com, por exemplo, bancos de dados públicos ou que não coletamos diretamente, de sorte que é essencial arrumá-los para que possamos executar nossas análises. Nesse sentido, vamos dar um pequeno passeio pela função `pivot_longer`
 
 ::: callout-warning
 A página da oficina está em construção e passando por constantes atualizações e revisões.
