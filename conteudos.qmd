@@ -2,7 +2,7 @@
 title: "Conteúdos da Oficina"
 ---
 
-Até o momento, foram desenvolvidos seis módulos para a oficina. Em breve, serão acrescentadas discussões sobre estatística descritiva e sobre as análises mais básicas: correlação, test t, anova, qui-quadrado e regressão. Em cada módulo, você também vai encontrar um conjunto de exercícios que acompanha a oficina. Siga com as atividades no seu ritmo, mas é interessante que, a cada módulo, você tente responder o bloco de exercícios correspondente. Também aproveite a oportunidade para discutir com os seus colegas sobre os códigos utilizados.
+Até o momento, foram desenvolvidos seis módulos para a oficina "Introdução ao R para análise de dados em Psicologia". Em breve, serão acrescentadas discussões sobre estatística descritiva e sobre as análises mais básicas: correlação, test t, anova, qui-quadrado e regressão. Em cada módulo, você também vai encontrar um conjunto de exercícios que acompanha a oficina. Siga com as atividades no seu ritmo, mas é interessante que, a cada módulo, você tente responder o bloco de exercícios correspondente. Também aproveite a oportunidade para discutir com os seus colegas sobre os códigos utilizados.
 
 ## Introdução ao R
 
