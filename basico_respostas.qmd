@@ -1,6 +1,6 @@
 ---
 sidebar: false
-title: "Básico do R"
+title: "Introdução ao R"
 subtitle: "Soluções"
 format: 
   html:
@@ -67,7 +67,9 @@ a)  2.38
 
 Para encontrar as soluções para uma equação do formato $ax^{2} + bx + c$, use a equação quadrática:
 
-$x = \frac{-b \pm \sqrt{(b^2-4ac)}}{2a}$.
+$$
+x = \frac{-b \pm \sqrt{(b^2-4ac)}}{2a}
+$$
 
 Ache as duas soluções para $2x^2-x-4=0$. Arredonde o resultado para duas casas decimais
 
@@ -188,7 +190,6 @@ print(questoes_)
 
 Agora, tente criar novamente o objeto `questoes` com os elementos `q1,q2,q3,q4 e q5`, mas utilizando o operador pipe (`|>` ou `%>%`). Em uma terceira linha, imprima o objeto `questoes` com a função `print()`
 
-
 ```{r}
 questoes <- rep("q",5) |> 
   paste(1:5, sep = "")
@@ -236,5 +237,3 @@ colunas <- colnames(mtcars)
 
 print(colunas)
 ```
-
-

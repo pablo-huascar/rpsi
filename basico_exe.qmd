@@ -1,6 +1,6 @@
 ---
 sidebar: false
-title: "Básico do R"
+title: "Introdução ao R"
 format: 
   html:
       code-link: true
@@ -78,7 +78,9 @@ d)  1.93
 
 Para encontrar as soluções para uma equação do formato $ax^{2} + bx + c$, use a equação quadrática:
 
-$x = \frac{-b \pm \sqrt{(b^2-4ac)}}{2a}$.
+$$
+x = \frac{-b \pm \sqrt{(b^2-4ac)}}{2a}
+$$
 
 Ache as duas soluções para $2x^2-x-4=0$. Arredonde o resultado para duas casas decimais
 

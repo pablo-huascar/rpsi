@@ -1,0 +1,241 @@
+---
+sidebar: false
+title: "Gráficos com ggplot2"
+subtitle: "Soluções"
+format: 
+  html:
+      code-link: true
+      code-line-numbers: false
+editor_options: 
+  chunk_output_type: console
+---
+
+![](images/ggplot_logo.png){width="102"}
+
+### Pacotes necessários
+
+Para fazer estes exercícios, acione os pacotes a seguir:
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(gapminder)
+library(ggthemes)
+```
+
+### Bancos de dados
+
+`starwars`
+
+```{r}
+glimpse(starwars)
+```
+
+`gapminder`
+
+```{r}
+glimpse(gapminder)
+```
+
+### Exercício 1
+
+```{r}
+starwars |>
+  drop_na(sex) |> 
+  ggplot(aes(sex)) +
+  geom_bar()
+```
+
+### Exercício 2
+
+```{r}
+starwars |>
+  drop_na(sex) |> 
+  ggplot(aes(fct_infreq(sex), fill = sex)) +
+  geom_bar() +
+  labs(
+    x = "Sexo",
+    y = "Contagem"
+    ) +
+  theme_classic() +
+  theme(
+    legend.position = "none"
+    )
+  
+```
+
+### Exercício 3
+
+```{r}
+starwars |> 
+  drop_na(sex,gender) |> 
+  ggplot(aes(gender, fill = sex)) +
+  geom_bar(
+    position = "fill"
+    )
+```
+
+### Exercício 4
+
+```{r}
+starwars |> 
+  drop_na(sex,gender) |> 
+  ggplot(aes(gender, fill = sex)) +
+  geom_bar(
+    position = "fill"
+    ) +
+  labs(
+    x = "Gênero",
+    y = "Contagem",
+    fill = "Sexo"
+  ) +
+  theme_classic()
+```
+
+### Exercício 5
+
+```{r}
+starwars |> 
+  ggplot(aes(height)) +
+  geom_histogram(bins = 18)
+```
+
+### Exercício 6
+
+```{r}
+starwars |> 
+  ggplot(aes(height)) +
+  geom_histogram(
+    bins = 18,
+    color = "black", 
+    fill = "gray"
+    ) +
+  labs(
+    x = "Altura (cm)",
+    y = NULL
+  ) + 
+  theme_light() 
+```
+
+### Exercício 7
+
+```{r}
+starwars |>
+  drop_na(species, height) |>  
+  mutate(
+    species = fct_lump_n(species, n = 3)
+  ) |> 
+  ggplot(aes(species, height)) +
+  geom_boxplot()
+```
+
+### Exercício 8
+
+```{r}
+starwars |> 
+  drop_na(species, height) |> 
+  mutate(
+    species = fct_lump_n(species, 3)
+  ) |> 
+  ggplot(aes(fct_reorder(species, height),height)) +
+  geom_boxplot() + 
+  geom_jitter(
+    color = "red",
+    alpha = 0.2
+    ) +
+  labs(
+    x = "Espécies",
+    y = "Altura"
+  ) +
+  theme_light()
+```
+
+### Exercício 9
+
+```{r}
+gapminder |>
+  filter(year == 2007) |> 
+  ggplot(aes(gdpPercap, lifeExp)) +
+  geom_point()
+```
+
+### Exercício 10
+
+```{r}
+gapminder |>
+  filter(year == 2007) |> 
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(aes(color = continent,
+                 shape = continent)) +
+  labs(
+    x = "PIB per capita",
+    y = "Expectativa de vida",
+    color = "Continente",
+    shape = "Continente",
+    title = "Relação entre expectativa de vida e PIB per capita:",
+    subtitle = "Distribuição por continente em 2007"
+  ) +
+  scale_color_colorblind() +
+  theme_classic()
+```
+
+### Exercício 11
+
+```{r}
+gapminder |> 
+  filter(year == 1952) |> 
+  ggplot(aes(log(gdpPercap) , lifeExp, )) +
+  geom_point(aes(color = continent, shape = continent)) +
+  scale_color_colorblind() +
+  facet_wrap(~ continent)
+```
+
+### Exercício 12
+
+```{r}
+gapminder |> 
+  filter(year == 1952) |> 
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(aes(color = continent, shape = continent)) +
+  facet_wrap(~ continent) +
+  labs(
+    x = "PIB per capita",
+    y = "Expectativa de Vida",
+    title = "Relação entre PIB per capita e expectativa de vida por continente",
+    subtitle = "1952"
+  ) +
+  scale_color_colorblind() +
+  theme_clean() +
+  theme(legend.position = "none")
+
+```
+
+### Exercício 13
+
+```{r}
+gapminder |> 
+  group_by(continent, year) |> 
+  summarise(lifeExp = mean(lifeExp)) |> 
+  ggplot(aes(year, lifeExp, color = continent)) +
+  geom_line() +
+  geom_point()
+```
+
+### Exercício 14
+
+```{r}
+    gapminder |> 
+  group_by(continent, year) |> 
+  summarise(lifeExp = mean(lifeExp)) |> 
+  ggplot(aes(year, lifeExp, color = continent)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Ano",
+    y = "Expectativa de vida média",
+    color = "Continente"
+  ) +
+  scale_color_colorblind() +
+  theme_classic()
+```

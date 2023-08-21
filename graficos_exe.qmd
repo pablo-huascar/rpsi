@@ -1,0 +1,450 @@
+---
+sidebar: false
+title: "Gráficos com ggplot2"
+format: 
+  html:
+      code-link: true
+      code-line-numbers: false
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introdução
+
+![](images/ggplot_logo.png){width="102"}
+
+Neste bloco de exercícios você vai utilizar o pacote `ggplot2` para construir os seguintes gráficos:
+
+-   Gráfico de barras (barplot)
+-   Histograma (histogram)
+-   Diagrama de caixa (boxplot)
+-   Gráficos de dispersão (scatter plot)
+-   Séries temporais (time series)
+
+### Pacotes necessários
+
+Para fazer estes exercícios, acione os pacotes a seguir:
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(gapminder)
+library(ggthemes)
+```
+
+### Bancos de datos
+
+Entre os exercícios 1 e 8, o banco de dados `starwars` vai ser empregado. `starwars` contém características de 87 personagens da franquia criada por George Lucas.
+
+A partir do exercício 9, o banco de dados `gapminder` vai ser utilizado. `gapminder` contém informações sobre expectativa de vida, população e PIB per capita de 142 países entre os anos de 1952 e 2007.
+
+Para saber mais sobre esses dados, utilize:
+
+```{r}
+#| eval: false
+#| echo: true
+
+?starwars
+
+?gapminder
+```
+
+Para dar uma olhada nas variávies dos bancos de dados, você pode utilizar o comando a seguir:
+
+```{r}
+#| eval: false
+#| echo: true
+
+glimpse()
+```
+
+Tente executar a função `glimpse()` nos bancos de dados `starwars` e `gapminder`
+
+### Exercício 1
+
+Lembre-se: do exercício 1 até o exercício 8, você vai utilizar o banco de dados `starwars`
+
+Reproduza o seguinte gráfico:
+
+```{r}
+#| echo: false
+starwars |>
+  drop_na(sex) |> 
+  ggplot(aes(sex)) +
+  geom_bar()
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+drop_na()
+```
+:::
+
+### Exercício 2
+
+Modifique o gráfico do exercício anterior, de modo que ele fique como na imagem a seguir:
+
+```{r}
+#| echo: false
+starwars |>
+  drop_na(sex) |> 
+  ggplot(aes(fct_infreq(sex), fill = sex)) +
+  geom_bar() +
+  labs(
+    x = "Sexo",
+    y = "Contagem"
+    ) +
+  theme_classic() +
+  theme(
+    legend.position = "none"
+    )
+  
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+fct_infreq()
+
+fill =
+
+labs()
+
+theme_
+
+```
+:::
+
+### Exercício 3
+
+Refaça o gráfico a seguir:
+
+```{r}
+#| echo: false
+starwars |> 
+  drop_na(sex,gender) |> 
+  ggplot(aes(gender, fill = sex)) +
+  geom_bar(
+    position = "fill"
+    )
+```
+
+```{r}
+#| eval: false
+
+drop_na()
+
+fill = 
+
+position =
+```
+
+### Exercício 4
+
+Modifique o gráfico do exercício anterior, de modo que ele fique como na imagem a seguir:
+
+```{r}
+#| echo: false
+starwars |> 
+  drop_na(sex,gender) |> 
+  ggplot(aes(gender, fill = sex)) +
+  geom_bar(
+    position = "fill"
+    ) +
+  labs(
+    x = "Gênero",
+    y = "Contagem",
+    fill = "Sexo"
+  ) +
+  theme_classic()
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+labs()
+
+theme_
+
+```
+:::
+
+### Exercício 5
+
+Recrie o gráfico abaixo:
+
+```{r}
+#| echo: false
+#| warning: false
+starwars |> 
+  ggplot(aes(height)) +
+  geom_histogram(bins = 18)
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+
+bins = 18
+
+```
+:::
+
+### Exercício 6
+
+Transforme o gráfico anterior para que ele se pareça com a imagem abaixo:
+
+```{r}
+#| echo: false
+#| warning: false
+starwars |> 
+  ggplot(aes(height)) +
+  geom_histogram(
+    bins = 18,
+    color = "black", 
+    fill = "gray"
+    ) +
+  labs(
+    x = "Altura (cm)",
+    y = NULL
+  ) + 
+  theme_light() 
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+color =
+  
+fill = 
+
+labs()
+
+theme_
+```
+:::
+
+### Exercício 7
+
+Complete o código a seguir para construir o gráfico abaixo:
+
+```{r}
+#| echo: false
+starwars |>
+  drop_na(species, height) |>  
+  mutate(
+    species = fct_lump_n(species, n = 3)
+  ) |> 
+  ggplot(aes(species, height)) +
+  geom_boxplot()
+```
+
+```{r}
+#| eval: false
+starwars |>
+  drop_na(species, height) |>
+  mutate(
+    species = fct_lump_n(species, n = 3)
+  )
+```
+
+### Exercício 8
+
+Modifique o código do gráfico anterior para que ele fique com essa aparência:
+
+```{r}
+#| echo: false
+starwars |> 
+  drop_na(species, height) |> 
+  mutate(
+    species = fct_lump_n(species, 3)
+  ) |> 
+  ggplot(aes(fct_reorder(species, height),height)) +
+  geom_boxplot() + 
+  geom_jitter(
+    color = "red",
+    alpha = 0.2
+    ) +
+  labs(
+    x = "Espécies",
+    y = "Altura"
+  ) +
+  theme_light()
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+fct_reorder()
+
+geom_jitter()
+
+labs()
+
+theme_
+```
+:::
+
+### Exercício 9
+
+A partir deste exercício, você vai utilizar o banco de dados `gapminder`.
+
+Complete o código adiante para reproduzir o gráfico a seguir:
+
+```{r}
+#| echo: false
+gapminder |>
+  filter(year == 2007) |> 
+  ggplot(aes(gdpPercap, lifeExp)) +
+  geom_point()
+```
+
+```{r}
+#| eval: false
+gapminder |> 
+  filter(year == 2007) |> 
+```
+
+### Exercício 10
+
+Modifique o código do exercício anterior para que o gráfico ganhe as características abaixo:
+
+```{r}
+#| echo: false
+gapminder |>
+  filter(year == 2007) |> 
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(aes(color = continent,
+                 shape = continent)) +
+  labs(
+    x = "PIB per capita",
+    y = "Expectativa de vida",
+    color = "Continente",
+    shape = "Continente",
+    title = "Relação entre expectativa de vida e PIB per capita:",
+    subtitle = "Distribuição por continente em 2007"
+  ) +
+  scale_color_colorblind() +
+  theme_classic()
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+log()
+
+labs()
+
+theme_
+
+scale_
+```
+:::
+
+### Exercício 11
+
+Complete o código a seguir e construa um gráfico como este:
+
+```{r}
+#| echo: false
+gapminder |> 
+  filter(year == 1952) |> 
+  ggplot(aes(log(gdpPercap) , lifeExp, )) +
+  geom_point(aes(color = continent, shape = continent)) +
+  scale_color_colorblind() +
+  facet_wrap(~ continent)
+```
+
+```{r}
+#| eval: false
+gapminder |> 
+  filter(year == 1952) |>
+```
+
+### Exercício 12
+
+Modifique o gráfico do exercício acima para que ele se pareça com a imagem a seguir:
+
+```{r}
+#| echo: false
+gapminder |> 
+  filter(year == 1952) |> 
+  ggplot(aes(log(gdpPercap), lifeExp)) +
+  geom_point(aes(color = continent, shape = continent)) +
+  facet_wrap(~ continent) +
+  labs(
+    x = "PIB per capita",
+    y = "Expectativa de Vida",
+    title = "Relação entre PIB per capita e expectativa de vida por continente",
+    subtitle = "1952"
+  ) +
+  scale_color_colorblind() +
+  theme_clean() +
+  theme(legend.position = "none")
+
+```
+
+::: callout-tip
+```{r}
+#| eval: false
+
+labs()
+
+theme_
+
+theme()
+
+```
+:::
+
+### Exercício 13
+
+Complete o código a seguir para criar um gráfico como o seguinte:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+gapminder |> 
+  group_by(continent, year) |> 
+  summarise(lifeExp = mean(lifeExp)) |> 
+  ggplot(aes(year, lifeExp, color = continent)) +
+  geom_line() +
+  geom_point()
+```
+
+```{r}
+#| eval: false
+gapminder |> 
+  group_by(continent, year) |> 
+  summarise(lifeExp = mean(lifeExp)) |> 
+```
+
+### Exercício 14
+
+Modifique o código anterior para o gráfico gerado se assemelhe a figura abaixo:
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+gapminder |> 
+  group_by(continent, year) |> 
+  summarise(lifeExp = mean(lifeExp)) |> 
+  ggplot(aes(year, lifeExp, color = continent)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    x = "Ano",
+    y = "Expectativa de vida média",
+    color = "Continente"
+  ) +
+  scale_color_colorblind() +
+  theme_classic()
+```
+
+::: callout-tip
+Sem dicas dessa vez
+:::

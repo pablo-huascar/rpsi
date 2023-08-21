@@ -37,7 +37,7 @@ website:
       align: left
       contents:
         - conteudos.qmd
-        - intro.qmd
+        - basico.qmd
         - graficos.qmd
         - trasnformacao.qmd
         - iteracao.qmd

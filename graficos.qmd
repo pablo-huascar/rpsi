@@ -5,3 +5,7 @@ title: "Gráficos"
 ## Slides, videos e exercícios
 
 ![](images/slide.png){width="18"} [Slides](modulo_2_graficos.qmd){target="_blank"}
+
+![](images/exercicios.png){width="18"} [Exercícios](graficos_exe.qmd){target="_blank"}
+
+![](images/respostas.png){width="18"} [Soluções](graficos_respostas.qmd){target="_blank"}
