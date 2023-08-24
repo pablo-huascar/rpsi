@@ -10,6 +10,9 @@ website:
   repo-url: https://github.com/pablo-huascar/rpsi
   page-footer:
     left: "Esta página foi construída com [Quarto](https://quarto.org/)."
+    right: 
+      <img src="images/logo_pos.png" width="200"> 
+      <img src="images/lappsie.png" width="200">
   navbar:
     align: center
     title: "Rpsi"

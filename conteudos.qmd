@@ -26,7 +26,7 @@ Trabalhar com os bancos de dados que acompanham o R e alguns pacotes foi muito d
 
 ## Dados arrumados
 
-Este talvez seja o módulo que mais se distancia do cotiando de pesquisadores de psicologia e de ciências humanas. Usualmente, trabalhamos com dados que nós coletamos e, ao importá-los ou alimentarmos planilhas, já os temos no formato *tidy* (arrumado). Este formato se refere ao seguinte:
+Este talvez seja o módulo que mais se distancia do cotidiano de pesquisadores de psicologia e de ciências humanas. Usualmente, trabalhamos com dados que nós coletamos e, ao importá-los ou alimentarmos planilhas, já os temos no formato *tidy* (arrumado). Este formato se refere ao seguinte:
 
 1.  Cada variável é uma coluna; cada coluna é uma variável.
 2.  Cada observação é uma linha; cada linha é uma observação.
