@@ -5,3 +5,7 @@ title: "Transformação de dados"
 ## Slides, videos e exercícios
 
 ![](images/slide.png){width="18"} [Slides](modulo_3_transformacao.qmd){target="_blank"}
+
+![](images/exercicios.png){width="18"} [Exercícios](transformacao_exe.qmd){target="_blank"}
+
+![](images/respostas.png){width="18"} [Soluções](transformacao_respostas.qmd)

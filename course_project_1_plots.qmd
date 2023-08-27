@@ -1,0 +1,19 @@
+---
+sidebar: false
+title: "Projeto de Curso 1"
+format: 
+  html:
+      code-link: true
+      code-line-numbers: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(scales)
+library(ggrepel)
+```
+

@@ -1,0 +1,83 @@
+---
+sidebar: false
+title: "Transformação de dados"
+format: 
+  html:
+      code-link: true
+      code-line-numbers: false
+editor_options: 
+  chunk_output_type: console
+---
+
+![](images/dplyr.png){width="102"}
+
+### Pacotes necessários
+
+Para fazer estes exercícios, acione os pacotes a seguir:
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+```
+
+### Obtenção dos dados
+
+Para obter os dados, execute o código a seguir:
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+ufo <- read_csv("./data/ufo_sightings.csv")
+```
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+ufo <- read_csv("https://tinyurl.com/ufo-avist")
+```
+
+### Exercício 1
+
+Considere a coluna intitulada `reported_date_time_utc` e filtre as linhas para todos os avistamentos ocorridos após 10 de setembro de 1993[^1].
+
+[^1]: Esta é a data de estreia da série Arquivo X.
+
+Conte o número de avistamentos de ovnis com formato chevron por cada estado dos EUA (US) e classifique em ordem decrescente, com o estado com mais avistamentos no topo e os estados com menos avistamentos na parte inferior.
+
+Qual o número de avistamentos do segundo estado dos EUA com maior número de aparições de ovnis com formato chevron?
+
+```{r}
+ufo |> 
+  filter(reported_date_time_utc > ymd("1993-9-10"),
+         country_code == "US",
+         shape == "chevron") |> 
+  count(state, sort = T)
+```
+
+Resposta: 84
+
+### Exercício 2
+
+Os avistamento ocorrem em diversos estados dos EUA.
+
+Qual o tempo médio de duração (em horas) do estado que mais tem avistamentos de objetos com o foramto cigar?
+
+```{r}
+ufo |> 
+  mutate(
+    dur_horas = duration_seconds/3600
+  ) |>
+  filter(country_code == "US",
+         shape == "cigar") |>
+  group_by(state) |> 
+  summarise(
+    n = n(),
+    M = mean(dur_horas)
+  ) |> 
+  arrange(desc(n))
+```
+
+Resposta: 2,39 horas
