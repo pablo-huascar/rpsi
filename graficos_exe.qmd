@@ -63,7 +63,9 @@ Tente executar a função `glimpse()` nos bancos de dados `starwars` e `gapminde
 
 ### Exercício 1
 
+::: {.callout-note}
 Lembre-se: do exercício 1 até o exercício 8, você vai utilizar o banco de dados `starwars`
+:::
 
 Reproduza o seguinte gráfico:
 
@@ -289,7 +291,9 @@ theme_
 
 ### Exercício 9
 
+::: {.callout-note}
 A partir deste exercício, você vai utilizar o banco de dados `gapminder`.
+:::
 
 Complete o código adiante para reproduzir o gráfico a seguir:
 

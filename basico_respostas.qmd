@@ -29,9 +29,7 @@ round(soma, 2)
 
 ```
 
-Resposta
-
-c)  10.78
+**Resposta**: c)  10.78
 
 ### Exercício 2
 
@@ -47,9 +45,7 @@ area_circulo <- pi*(r^2)
 print(area_circulo)
 ```
 
-Resposta
-
-b)  314.1593
+**Resposta**: b)  314.1593
 
 ### Exercício 3
 
@@ -59,9 +55,7 @@ Calcule a raiz cúbica de $14*0.51$.
 (14*0.51)^1/3
 ```
 
-Resposta
-
-a)  2.38
+**Resposta**: a)  2.38
 
 ### Exercício 4
 
@@ -89,9 +83,7 @@ round(x1, 2)
 round(x2, 2)
 ```
 
-Resposta
-
-c)  1.69 e -1.19
+**Resposta**: c)  1.69 e -1.19
 
 ### Exercício 5
 
@@ -106,9 +98,7 @@ round(sd(peso),1)
 
 ```
 
-Resposta
-
-d)  66.8 e 10.7
+**Resposta**: d)  66.8 e 10.7
 
 ### Exercício 6
 
@@ -129,9 +119,7 @@ max(altura_m)
 
 ```
 
-Resposta
-
-a)  1.685, 1.6 e 1.75
+**Resposta**: a)  1.685, 1.6 e 1.75
 
 ### Exercício 7
 
@@ -151,9 +139,7 @@ imc <- peso/altura_m^2
 round(mean(imc),3)
 ```
 
-Resposta
-
-c)  23.614
+**Resposta**: c)  23.614
 
 ### Exercício 8
 

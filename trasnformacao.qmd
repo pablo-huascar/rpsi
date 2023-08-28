@@ -8,4 +8,4 @@ title: "Transformação de dados"
 
 ![](images/exercicios.png){width="18"} [Exercícios](transformacao_exe.qmd){target="_blank"}
 
-![](images/respostas.png){width="18"} [Soluções](transformacao_respostas.qmd)
+![](images/respostas.png){width="18"} [Soluções](transformacao_respostas.qmd){target="_blank"}
