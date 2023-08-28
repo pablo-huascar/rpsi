@@ -142,4 +142,4 @@ Em qual ano houve o maior número de pessoas feridas em decorrência de desastre
 
 ### Exercício 7
 
-Em qual ano houve o maior número de fatalidades em decorrência de desastres naturais nos Estados Unidos? Qual tipo de evento que causou essas mortes?
+Em qual ano houve o maior número de fatalidades em decorrência de desastres naturais nos Estados Unidos? Qual tipo de evento causou essas mortes?
