@@ -14,7 +14,7 @@ editor_options:
 
 ### Pacotes necessários
 
-Para fazer estes exercícios, acione os pacotes a seguir:
+Para fazer estes exercícios, acione os pacotes do tidyverse:
 
 ```{r}
 #| warning: false
@@ -33,6 +33,8 @@ Para obter os dados, execute o código a seguir:
 ufo <- read_csv("./data/ufo_sightings.csv")
 
 eventos <- read_csv("./data/noaa_data_clean.csv")
+
+srq20 <- read_csv("./data/srq_20_simulado.csv")
 ```
 
 ```{r}
@@ -42,13 +44,15 @@ eventos <- read_csv("./data/noaa_data_clean.csv")
 ufo <- read_csv("https://tinyurl.com/ufo-avist")
 
 eventos <- read_csv("https://tinyurl.com/noaa-clean")
-```
 
-### Exercício 1
+srq20 <- read_csv("https://tinyurl.com/srq20toy")
+```
 
 ::: callout-note
 Lembre-se: do exercício 1 até o exercício 5, você vai utilizar o banco de dados `ufo_sightings.csv`
 :::
+
+### Exercício 1
 
 Considere a coluna intitulada `reported_date_time_utc` e filtre as linhas para todos os avistamentos ocorridos após 10 de setembro de 1993[^1].
 
@@ -135,7 +139,7 @@ ufo |>
 ### Exercício 6
 
 ::: callout-note
-A partir deste exercício, você vai utilizar o banco de dados `noaa_data`.
+Entre os exercícios 6 e 13, você vai utilizar o banco de dados `noaa_data`.
 :::
 
 Em qual ano houve o maior número de pessoas feridas em decorrência de desastres naturais nos Estados Unidos? Qual tipo de evento que causou esses ferimentos?
@@ -166,3 +170,216 @@ eventos |>
 ```
 
 **Resposta**: Calor excessivo (excessive heat) em 1995
+
+### Exercício 8
+
+Qual evento levou ao maior número de pessoas feridas nos EUA?
+
+```{r}
+eventos |>
+  group_by(evtype) |> 
+  summarise(
+    total_de_ferimentos = sum(injuries)
+  ) |> 
+  arrange(desc(total_de_ferimentos))
+```
+
+**Resposta**: Tornados
+
+### Exercício 9
+
+Qual evento que, em média, levou ao maior número de pessoas feridas nos EUA?
+
+```{r}
+eventos |> 
+  group_by(evtype) |> 
+  summarise(
+    media_de_ferimentos = mean(injuries)
+  ) |> 
+  arrange(desc(media_de_ferimentos))
+```
+
+**Resposta**: Furacões (Hurricane)
+
+### Exercício 10
+
+Qual evento causou o maior número de fatalidades nos EUA?
+
+```{r}
+eventos |> 
+  group_by(evtype) |> 
+  summarise(
+    total_de_fatalidades = sum(fatalities)
+  ) |> 
+  arrange(desc(total_de_fatalidades))
+```
+
+**Resposta**: Tornados
+
+### Exercício 11
+
+Qual evento que, em média, levou ao maior número de fatalidades nos EUA?
+
+```{r}
+eventos |> 
+  group_by(evtype) |> 
+  summarise(
+    media_de_fatalidades = mean(fatalities)
+  ) |> 
+  arrange(desc(media_de_fatalidades))
+```
+
+**Resposta**: Calor excessivo (Excessive heat)
+
+### Exercício 12
+
+Qual estado tem, em média, o maior prejuízo a plantações causado por desastres naturais nos EUA?
+
+```{r}
+eventos |> 
+  group_by(state, evtype) |> 
+  summarise(
+    media_platacoes = mean(cropdmg)
+  ) |> 
+  arrange(desc(media_platacoes))
+```
+
+**Resposta**: MS (Mississippi)
+
+### Exercício 13
+
+Qual estado tem, em média, o maior prejuízo a propriedades causado por desastres naturais nos EUA?
+
+```{r}
+eventos |> 
+  group_by(state, evtype) |> 
+  summarise(
+    media_propriedades = mean(propdmg)
+  ) |> 
+  arrange(desc(media_propriedades))
+```
+
+**Resposta**: LA (Louisiana)
+
+::: callout-note
+A partir do exercício 14, você vai utilizar o banco de dados `srq_20_simulado.csv`
+:::
+
+### Exercício 14
+
+Qual o percentual de casos do banco de dados que tem indicativo de TMCs?
+
+#### Recodificação das variáveis do SRQ-20
+
+```{r}
+srq20 <- srq20 |> 
+  mutate(
+    across(srq1:srq20, \(x) case_when(x == "sim" ~ 1,
+                                      .default = 0))
+  )
+```
+
+#### Criação da variável que totaliza o resultado do SRQ-20
+
+```{r}
+srq20 <- srq20 |>
+  rowwise() |> 
+  mutate(
+    srq_soma = sum(c_across(srq1:srq20))
+  ) |> 
+  ungroup()
+```
+
+#### Criação da variável qualitativa de rastreio dos TMCs
+
+```{r}
+srq20 <- srq20 |> 
+  mutate(
+    srq_corte = case_when(srq_soma <= 7 ~ "Não",
+                          .default = "Sim")
+  )
+```
+
+-   Segunda opção com a função `cut`
+
+```{r}
+#| eval: false
+srq20 <- srq20 |> 
+  mutate(
+    srq_corte = cut(srq_soma,
+                    breaks = c(-Inf,7,+Inf),
+                    labels = c("Não", "Sim"))
+  )
+```
+
+#### Calculo do percentual
+
+```{r}
+srq20 |>
+  count(srq_corte) |>
+  mutate(
+    "%" = formattable::percent(n/sum(n))  
+  )
+```
+
+**Resposta**: 84.27%
+
+### Exercício 15
+
+Qual o percentual de casos com indicativo de tmcs entre os participantes que declararam o gênero feminino?
+
+```{r}
+srq20 |> 
+  count(genero, srq_corte) |> 
+  mutate(
+    "%" = formattable::percent(n/sum(n))
+  )
+```
+
+**Resposta**: 32.58%
+
+### Exercício 16
+
+Qual a média, o devio padrão, o máximo e mínimo do resultado do SRQ-20 entre todos os participantes?
+
+```{r}
+srq20 |> 
+  summarise(
+    M = mean(srq_soma),
+    DP = sd(srq_soma),
+    MAX = max(srq_soma),
+    MIN = min(srq_soma)
+  )
+```
+
+**Resposta**: M = 9,92; DP = 2.28; MAX = 13 e MIN = 6
+
+### Exercício 17
+
+Qual a média, o devio padrão, o máximo e mínimo do resultado do SRQ-20 entre s participantes que declararam o gênero masculino?
+
+```{r}
+srq20 |> 
+  group_by(genero) |> 
+  summarise(
+    M = mean(srq_soma),
+    DP = sd(srq_soma),
+    MAX = max(srq_soma),
+    MIN = min(srq_soma)
+  )
+```
+
+-   Segunda opção com a função `filter`:
+
+```{r}
+srq20 |> 
+  filter(genero == "masculino") |> 
+  summarise(
+    M = mean(srq_soma),
+    DP = sd(srq_soma),
+    MAX = max(srq_soma),
+    MIN = min(srq_soma)
+  )
+```
+
+**Resposta**: M = 10,4; DP = 1.74; MAX = 13 e MIN = 8

@@ -33,21 +33,18 @@ library(gapminder)
 library(ggthemes)
 ```
 
-### Bancos de datos
+### Primeiro bloco de exercícios
+
+#### Bancos de dados
 
 Entre os exercícios 1 e 8, o banco de dados `starwars` vai ser empregado. `starwars` contém características de 87 personagens da franquia criada por George Lucas.
-
-A partir do exercício 9, o banco de dados `gapminder` vai ser utilizado. `gapminder` contém informações sobre expectativa de vida, população e PIB per capita de 142 países entre os anos de 1952 e 2007.
 
 Para saber mais sobre esses dados, utilize:
 
 ```{r}
 #| eval: false
 #| echo: true
-
 ?starwars
-
-?gapminder
 ```
 
 Para dar uma olhada nas variávies dos bancos de dados, você pode utilizar o comando a seguir:
@@ -62,10 +59,6 @@ glimpse()
 Tente executar a função `glimpse()` nos bancos de dados `starwars` e `gapminder`
 
 ### Exercício 1
-
-::: {.callout-note}
-Lembre-se: do exercício 1 até o exercício 8, você vai utilizar o banco de dados `starwars`
-:::
 
 Reproduza o seguinte gráfico:
 
@@ -188,9 +181,7 @@ starwars |>
 ::: callout-tip
 ```{r}
 #| eval: false
-
 bins = 18
-
 ```
 :::
 
@@ -289,11 +280,30 @@ theme_
 ```
 :::
 
-### Exercício 9
+### Segundo bloco de exercícios
 
-::: {.callout-note}
-A partir deste exercício, você vai utilizar o banco de dados `gapminder`.
-:::
+#### Bancos de dados
+
+A partir do exercício 9, o banco de dados `gapminder` vai ser utilizado. `gapminder` contém informações sobre expectativa de vida, população e PIB per capita de 142 países entre os anos de 1952 e 2007.
+
+Para saber mais sobre esses dados, utilize:
+
+```{r}
+#| eval: false
+#| echo: true
+?gapminder
+```
+
+Para dar uma olhada nas variávies dos bancos de dados, você pode utilizar o comando a seguir:
+
+```{r}
+#| eval: false
+#| echo: true
+
+glimpse()
+```
+
+### Exercício 9
 
 Complete o código adiante para reproduzir o gráfico a seguir:
 

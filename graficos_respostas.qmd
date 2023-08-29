@@ -38,6 +38,10 @@ glimpse(starwars)
 glimpse(gapminder)
 ```
 
+::: callout-note
+Do exercício 1 até o exercício 8, você vai utilizar o banco de dados `starwars`
+:::
+
 ### Exercício 1
 
 ```{r}
@@ -150,6 +154,10 @@ starwars |>
   ) +
   theme_light()
 ```
+
+::: callout-note
+A partir do exercício 9, você vai utilizar o banco de dados `gapminder`.
+:::
 
 ### Exercício 9
 
