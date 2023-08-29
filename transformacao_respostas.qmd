@@ -52,6 +52,11 @@ srq20 <- read_csv("https://tinyurl.com/srq20toy")
 Lembre-se: do exercício 1 até o exercício 5, você vai utilizar o banco de dados `ufo_sightings.csv`
 :::
 
+```{r}
+glimpse(ufo)
+```
+
+
 ### Exercício 1
 
 Considere a coluna intitulada `reported_date_time_utc` e filtre as linhas para todos os avistamentos ocorridos após 10 de setembro de 1993[^1].
@@ -141,6 +146,11 @@ ufo |>
 ::: callout-note
 Entre os exercícios 6 e 13, você vai utilizar o banco de dados `noaa_data`.
 :::
+
+```{r}
+glimpse(eventos)
+```
+
 
 Em qual ano houve o maior número de pessoas feridas em decorrência de desastres naturais nos Estados Unidos? Qual tipo de evento que causou esses ferimentos?
 
@@ -264,6 +274,11 @@ eventos |>
 ::: callout-note
 A partir do exercício 14, você vai utilizar o banco de dados `srq_20_simulado.csv`
 :::
+
+```{r}
+glimpse(srq20)
+```
+
 
 ### Exercício 14
 

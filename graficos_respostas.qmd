@@ -233,7 +233,7 @@ gapminder |>
 ### Exercício 14
 
 ```{r}
-    gapminder |> 
+gapminder |> 
   group_by(continent, year) |> 
   summarise(lifeExp = mean(lifeExp)) |> 
   ggplot(aes(year, lifeExp, color = continent)) +

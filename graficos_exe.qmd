@@ -13,7 +13,7 @@ editor_options:
 
 ![](images/ggplot_logo.png){width="102"}
 
-Neste bloco de exercícios você vai utilizar o pacote `ggplot2` para construir os seguintes gráficos:
+Neste blocos de exercícios você vai utilizar o pacote `ggplot2` para construir os seguintes gráficos:
 
 -   Gráfico de barras (barplot)
 -   Histograma (histogram)

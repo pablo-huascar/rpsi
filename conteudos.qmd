@@ -18,7 +18,7 @@ Antes de analisarmos os dados que colhemos, algumas tarefas são essenciais: cri
 
 ## Iteração
 
-No contexto do [tidyverse](https://www.tidyverse.org/){target="_blank"}, iteração diz respeito a executar repetidamente a mesma ação em diferentes objetos. É possível, por exemplo, com a função `summarise` calcular a média e o desvio padrão de várias colunas de uma só vez ou transformá-las com a função `mutate`. A iteração é importante porque evitar copiar e colar funções mais de 2 vezes, o que pode gerar erros que se propagam no código. Essa é uma capacidade do tidyverse muito poderosa, contudo, dado o caráter introdutório da oficina, vamos nos deter na função `across`.
+No contexto do [tidyverse](https://www.tidyverse.org/){target="_blank"}, iteração diz respeito a executar repetidamente a mesma ação em diferentes objetos. É possível, por exemplo, com a função `summarise` calcular a média e o desvio padrão de várias colunas de uma só vez ou transformá-las com a função `mutate`. A iteração é importante porque evita copiar e colar funções mais de 2 vezes, o que pode gerar erros que se propagam no código. Essa é uma capacidade do tidyverse muito poderosa, contudo, dado o caráter introdutório da oficina, vamos nos deter na função `across`.
 
 ## Importação de dados
 

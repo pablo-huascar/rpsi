@@ -13,7 +13,7 @@ editor_options:
 
 ![](images/dplyr.png){width="102"}
 
-Neste bloco de exercícios você vai utilizar o pacote `dplyr` para responder as questões a seguir, de modo a trabalhar as seguintes habilidades:
+Neste blocos de exercícios você vai utilizar o pacote `dplyr` para responder as questões a seguir, de modo a trabalhar as seguintes habilidades:
 
 -   Filtrar dados (`filter`)
 -   Criar e modificar variáveis (`mutate`)
@@ -40,7 +40,7 @@ Entre os exercícios 1 e 5, o banco de dados `ufo_sightings.csv` vai ser emprega
 O livro de códigos dos dados inclui 11 variáveis:
 
 | Variável               | Classe    | Descrição                                                                                                                                                                                                                                                                                                                                                                   |
-|:----------------|:----------------|:-------------------------------------|
+|:-----------------|:-----------------|:------------------------------------|
 | reported_date_time     | datetime  | A hora e data do avistamento, conforme aparece nos dados originais do NUFORC.                                                                                                                                                                                                                                                                                               |
 | reported_date_time_utc | datetime  | A hora e data do avistamento, normalizadas para UTC.                                                                                                                                                                                                                                                                                                                        |
 | posted_date            | datetime  | A data em que o avistamento foi publicado no NUFORC.                                                                                                                                                                                                                                                                                                                        |
@@ -124,7 +124,7 @@ Qual a quinta cidade dos EUA com o maior número de avistamentos? Em qual estado
 Entre os exercícios 6 e 13, o banco de dados `noaa_data` vai ser empregado. Estes dados trazem informações sobre desastres naturais nos Estados Unidos vindos do U.S. National Oceanic and Atmospheric Administration's (NOAA). A versão aqui utilizada foi limpa e simplificada, de modo que seu livro de códigos inclui 7 variáveis:
 
 | Variável   | Classe    | Descrição                                                               |
-|:----------------|:----------------|:--------------------------------------|
+|:-----------------|:-----------------|:------------------------------------|
 | year       | double    | Ano em que ocorreu o evento                                             |
 | state      | character | Sigla do estado em que o evento ocorreu                                 |
 | evtype     | character | Tipo de evento                                                          |
@@ -193,7 +193,7 @@ A SRQ-20 é uma ferramenta de triagem amplamente utilizada em contextos clínico
 O livro de códigos desse banco simulado mostra as seguintes variáveis:
 
 | Variável | Classe    | Descrição                                               |
-|:----------------|:----------------|:--------------------------------------|
+|:-----------------|:-----------------|:------------------------------------|
 | id       | double    | Código de identificação do caso no banco de dados       |
 | genero   | character | Gênero do participante (masculino ou feminino)          |
 | srq1     | character | Assusta-se com facilidade?                              |
