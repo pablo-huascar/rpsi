@@ -33,14 +33,14 @@ library(tidyverse)
 
 ### Primeiro bloco de exercícios
 
-#### Bancos de dados
+#### Banco de dados
 
 Entre os exercícios 1 e 5, o banco de dados `ufo_sightings.csv` vai ser empregado. Estes dados trazem informações sobre o avistamento de objetos voadores não identificados (ovinis ou ufo, na sigla em inglês). Os dados vêm do [National UFO Reporting Center](https://nuforc.org/webreports/ndxshape.html), limpos e enriquecidos com dados da [sunrise-sunset.org](https://sunrise-sunset.org/) por [Jon Harmon](https://github.com/jonthegeek/apis/).
 
 O livro de códigos dos dados inclui 11 variáveis:
 
 | Variável               | Classe    | Descrição                                                                                                                                                                                                                                                                                                                                                                   |
-|:---------------|:---------------|:---------------------------------------|
+|:----------------|:----------------|:-------------------------------------|
 | reported_date_time     | datetime  | A hora e data do avistamento, conforme aparece nos dados originais do NUFORC.                                                                                                                                                                                                                                                                                               |
 | reported_date_time_utc | datetime  | A hora e data do avistamento, normalizadas para UTC.                                                                                                                                                                                                                                                                                                                        |
 | posted_date            | datetime  | A data em que o avistamento foi publicado no NUFORC.                                                                                                                                                                                                                                                                                                                        |
@@ -119,12 +119,12 @@ Qual a quinta cidade dos EUA com o maior número de avistamentos? Em qual estado
 
 ### Segundo bloco de exercícios
 
-#### Bancos de dados
+#### Banco de dados
 
 Entre os exercícios 6 e 13, o banco de dados `noaa_data` vai ser empregado. Estes dados trazem informações sobre desastres naturais nos Estados Unidos vindos do U.S. National Oceanic and Atmospheric Administration's (NOAA). A versão aqui utilizada foi limpa e simplificada, de modo que seu livro de códigos inclui 7 variáveis:
 
 | Variável   | Classe    | Descrição                                                               |
-|:--------------|:--------------|:-----------------------------------------|
+|:----------------|:----------------|:--------------------------------------|
 | year       | double    | Ano em que ocorreu o evento                                             |
 | state      | character | Sigla do estado em que o evento ocorreu                                 |
 | evtype     | character | Tipo de evento                                                          |
@@ -178,7 +178,7 @@ Qual estado tem, em média, o maior prejuízo a propriedades causado por desastr
 
 ### Terceiro bloco de exercícios
 
-#### Bancos de dados
+#### Banco de dados
 
 No último bloco de exercícios, você vai utilizar um banco de dados toy[^2] srq_20_simulado.csv que simula uma coleta de dados de participantes que responderam o Self-Reporting Questionnaire-20 (SRQ-20).
 
@@ -193,7 +193,7 @@ A SRQ-20 é uma ferramenta de triagem amplamente utilizada em contextos clínico
 O livro de códigos desse banco simulado mostra as seguintes variáveis:
 
 | Variável | Classe    | Descrição                                               |
-|:--------------|:--------------|:-----------------------------------------|
+|:----------------|:----------------|:--------------------------------------|
 | id       | double    | Código de identificação do caso no banco de dados       |
 | genero   | character | Gênero do participante (masculino ou feminino)          |
 | srq1     | character | Assusta-se com facilidade?                              |

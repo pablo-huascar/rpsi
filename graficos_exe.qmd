@@ -35,7 +35,7 @@ library(ggthemes)
 
 ### Primeiro bloco de exercícios
 
-#### Bancos de dados
+#### Banco de dados
 
 Entre os exercícios 1 e 8, o banco de dados `starwars` vai ser empregado. `starwars` contém características de 87 personagens da franquia criada por George Lucas.
 
@@ -282,7 +282,7 @@ theme_
 
 ### Segundo bloco de exercícios
 
-#### Bancos de dados
+#### Banco de dados
 
 A partir do exercício 9, o banco de dados `gapminder` vai ser utilizado. `gapminder` contém informações sobre expectativa de vida, população e PIB per capita de 142 países entre os anos de 1952 e 2007.
 
