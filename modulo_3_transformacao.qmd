@@ -747,7 +747,7 @@ glimpse(economics)
 ## Banco para exercícios [`economics`](https://ggplot2.tidyverse.org/reference/economics.html)
 
 | Variável |                                                                                       |
-|--------------|----------------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | date     | Mês da coleta de dados (`r min(year(economics$date))`- `r max(year(economics$date))`) |
 | pce      | Gastos de consumo pessoal, em bilhões de dólares                                      |
 | pop      | População total, em milhares                                                          |
@@ -1411,6 +1411,102 @@ dass_simulado_seq <- dass_simulado_seq |>
 dass_simulado_seq |> 
   glimpse()
 ```
+
+## `mutate()` e `case_when()`: Transformando uma variável contínua em categórica
+
+-   Avaliação qualitativa de escalas de rastreio (SRQ-20, DASS-21 etc.)
+-   Criação de faixas de idade, renda, dentre outras
+-   Avaliação qualitativa de medidas em geral que tem pontos de corte
+
+## `acompanhamento_nutri`: importação do banco
+
+```{r}
+#| echo: false 
+
+ac_nutri <- read_csv("./data/acompanhamento_nutri.csv")
+```
+
+```{r}
+#| eval: false
+ac_nutri <- read_csv("https://tinyurl.com/ac-nutri")
+```
+
+```{r}
+print(ac_nutri)
+```
+
+## Criação da variável: `idade_fases`
+
+| Fase         | Faixa        |
+|--------------|--------------|
+| 12 a 20 anos | adolescência |
+| 21 a 65      | fase adulta  |
+| acima de 65  | velhice      |
+
+## Criação da variável: `idade_fases`
+
+```{r}
+#| output-location: slide
+case_ac_nutri <- ac_nutri |>
+  mutate(
+    idade_corte = case_when(idade <= 20 ~ "adolescente",
+                            idade >= 21 & idade <= 65 ~ "adulto",
+                            idade > 65 ~ "idoso")
+  ) |> 
+  relocate(idade_corte, .after = idade)
+
+print(case_ac_nutri)
+```
+
+## `mutate()` e `cut()`: Transformando uma variável contínua em categórica
+
+```{r}
+#| output-location: slide
+cut_ac_nutri <- ac_nutri |> 
+  mutate(
+    idade_corte = cut(idade, 
+                      breaks = c(-Inf, 20, 65, +Inf),
+                      labels = c("adolescente", "adulto", "idoso"))
+  ) |> 
+  relocate(idade_corte, .after = idade)
+
+print(cut_ac_nutri)
+```
+
+## Comparando os resultados de `cut()` e `case_when()`
+
+```{r}
+case_ac_nutri$idade_corte == cut_ac_nutri$idade_corte
+```
+
+## Exercícios {.smaller}
+
+Transforme as variáveis `imc` e `frequencia_treino` do banco `acompanhamento_nutri` conforme os pontos de corte a seguir a seguir:
+
+::: {style="font-size: 75%;"}
+
+::: {layout-ncol="2";}
+
+| IMC                                    | Faixa         |
+|----------------------------------------|---------------|
+| abaixo de 18,5                         | baixo peso    |
+| maior ou igual a 18,5 e menor que 25,0 | peso adequado |
+| maior ou igual a 25,0 e menor que 30,0 | sobrepeso     |
+| maior ou igual a 30,0                  | obesidade     |
+
+: Pontos de Corte para IMC em adultos
+
+| Frequência  | Faixa           |
+|-------------|-----------------|
+| 1 a 2 vezes | pouco frequente |
+| 3 a 5 vezes | frequente       |
+| 6 a 7 vezes | muito frequente |
+
+: Pontos de corte para frequência aos treinos
+
+:::
+
+:::
 
 ## [`select()`](https://dplyr.tidyverse.org/reference/select.html)
 
