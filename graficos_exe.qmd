@@ -56,7 +56,7 @@ Para dar uma olhada nas variávies dos bancos de dados, você pode utilizar o co
 glimpse()
 ```
 
-Tente executar a função `glimpse()` nos bancos de dados `starwars` e `gapminder`
+Tente executar a função `glimpse()` no banco de dados `starwars`.
 
 ### Exercício 1
 

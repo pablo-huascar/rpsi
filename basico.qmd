@@ -10,10 +10,4 @@ title: "Introdução ao R"
 
 ![](images/respostas.png){width="18"} [Soluções](basico_respostas.qmd){target="_blank"}
 
-### Posit Cloud: como utilizar o R Studio online
 
-Trecho do primeiro encontro da oficina "Introdução ao R para análise de dados em Psicologia" em que é apresentado como utilizar o serviço [Posit Cloud](https://posit.cloud/) para usar o R Studio online:
-
-<https://posit.cloud/>
-
-{{< video https://youtu.be/YZ5r-8tjO7A >}}

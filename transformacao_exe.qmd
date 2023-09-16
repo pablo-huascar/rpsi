@@ -40,7 +40,7 @@ Entre os exercícios 1 e 5, o banco de dados `ufo_sightings.csv` vai ser emprega
 O livro de códigos dos dados inclui 11 variáveis:
 
 | Variável               | Classe    | Descrição                                                                                                                                                                                                                                                                                                                                                                   |
-|:-----------------|:-----------------|:------------------------------------|
+|:-----------------|:-----------------|:-----------------------------------|
 | reported_date_time     | datetime  | A hora e data do avistamento, conforme aparece nos dados originais do NUFORC.                                                                                                                                                                                                                                                                                               |
 | reported_date_time_utc | datetime  | A hora e data do avistamento, normalizadas para UTC.                                                                                                                                                                                                                                                                                                                        |
 | posted_date            | datetime  | A data em que o avistamento foi publicado no NUFORC.                                                                                                                                                                                                                                                                                                                        |
@@ -124,7 +124,7 @@ Qual a quinta cidade dos EUA com o maior número de avistamentos? Em qual estado
 Entre os exercícios 6 e 13, o banco de dados `noaa_data` vai ser empregado. Estes dados trazem informações sobre desastres naturais nos Estados Unidos vindos do U.S. National Oceanic and Atmospheric Administration's (NOAA). A versão aqui utilizada foi limpa e simplificada, de modo que seu livro de códigos inclui 7 variáveis:
 
 | Variável   | Classe    | Descrição                                                               |
-|:-----------------|:-----------------|:------------------------------------|
+|:-----------------|:-----------------|:-----------------------------------|
 | year       | double    | Ano em que ocorreu o evento                                             |
 | state      | character | Sigla do estado em que o evento ocorreu                                 |
 | evtype     | character | Tipo de evento                                                          |
@@ -184,16 +184,16 @@ No último bloco de exercícios, você vai utilizar um banco de dados toy[^2] sr
 
 [^2]: Um banco de dados toy é um conjunto de dados simulado usado para fins educativos, de demonstração ou de teste, que ajuda a ilustrar tarefas de manipulação de dados, análises estatísticas, dentre outras.
 
-O SRQ-20 é uma ferramenta de triagem que é usada para avaliar a presença de Transtornos Mentais Comuns (TMCs) em indivíduos. Ela consiste em um questionário com 20 perguntas que abordam diferentes sintomas e questões relacionadas ao estado emocional e mental das pessoas.
+O SRQ-20 é uma ferramenta de triagem utilizada para avaliar a presença de Transtornos Mentais Comuns (TMCs) em indivíduos. Ela consiste em um questionário com 20 perguntas que abordam diferentes sintomas e questões relacionadas ao estado emocional e mental das pessoas.
 
-Cada pergunta no SRQ-20 tem duas opções de resposta: "sim" e "não". Dependendo das respostas dadas pelo indivíduo, é possível calcular uma pontuação total que varia de 0 a 20. O ponto de corte comumente utilizado é 7. Isso significa que se a pontuação total do indivíduo for igual ou inferior a 7, ele não apresenta indicativos significativos de Transtornos Mentais Comuns. No entanto, se a pontuação for maior do que 7, isso pode indicar a presença de sintomas que sugerem a necessidade de avaliação adicional ou intervenção profissional para possíveis problemas de saúde mental.
+Cada pergunta no SRQ-20 tem duas opções de resposta: "sim" (1) e "não" (0). Dependendo das respostas dadas pelo indivíduo, é possível calcular uma pontuação total que varia de 0 a 20. O ponto de corte comumente utilizado é 7. Isso significa que se a pontuação total do indivíduo for igual ou inferior a 7, ele não apresenta indicativos significativos de Transtornos Mentais Comuns. No entanto, se a pontuação for maior do que 7, isso pode indicar a presença de sintomas que sugerem a necessidade de avaliação adicional ou intervenção profissional para possíveis problemas de saúde mental.
 
-A SRQ-20 é uma ferramenta de triagem amplamente utilizada em contextos clínicos e de pesquisa para identificar sinais iniciais de problemas de saúde mental em uma população. No entanto, é importante observar que a SRQ-20 é uma ferramenta de triagem e não uma ferramenta diagnóstica definitiva. Uma pontuação alta na SRQ-20 indica a possibilidade de problemas de saúde mental, mas um diagnóstico preciso requer avaliação mais aprofundada por profissionais de saúde mental qualificados.
+O SRQ-20 é uma ferramenta de triagem amplamente utilizada em contextos clínicos e de pesquisa para identificar sinais iniciais de problemas de saúde mental em uma população. No entanto, é importante observar que o SRQ-20 não é uma ferramenta diagnóstica definitiva. Uma pontuação alta na SRQ-20 indica a possibilidade de problemas de saúde mental, mas um diagnóstico preciso requer avaliação mais aprofundada por profissionais de saúde mental qualificados.
 
 O livro de códigos desse banco simulado mostra as seguintes variáveis:
 
 | Variável | Classe    | Descrição                                               |
-|:-----------------|:-----------------|:------------------------------------|
+|:-----------------|:-----------------|:-----------------------------------|
 | id       | double    | Código de identificação do caso no banco de dados       |
 | genero   | character | Gênero do participante (masculino ou feminino)          |
 | srq1     | character | Assusta-se com facilidade?                              |
