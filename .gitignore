@@ -3,5 +3,6 @@
 .RData
 .Ruserdata
 *.R
+_site/
 
 /.quarto/
