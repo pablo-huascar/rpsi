@@ -3,7 +3,7 @@ sidebar: false
 title: "Bem-vindos"
 ---
 
-Sejam bem-vindos à oficina "Introdução ao R para análise de dados em Psicologia". Temos como proposta ajudar pesquisadores e estudantes a fazer a transição de *software* proprietários e/ou com interfaces gráficas para uma linguagem de programação livre, gratuita e flexível.
+Sejam bem-vindos à oficina "Introdução ao R para análise de dados em Psicologia". Temos como proposta ajudar pesquisadores e estudantes a fazer a transição de *softwares* proprietários e/ou com interfaces gráficas para uma linguagem de programação livre, gratuita e flexível.
 
 Faz algum tempo, fizemos (e continuamos fazendo) essa transição e, partindo da premissa de que conhecimento que não se compartilha é conhecimento que se perde, decidimos criar esta oficina. Mas o que diferencia nossa proposta de vários outros cursos que ensinam R? Há excelentes cursos disponíveis, porém, em muitos casos, o aprendizado é direcionado à Ciência de Dados ou à Estatística. Dessa forma, os conteúdos, e a maneira como são apresentados, têm uma complexidade que se afasta das tarefas mais rotineiras que são demandadas de pesquisadores da Psicologia ou das Ciências Humanas e Sociais de modo geral.
 
@@ -19,7 +19,7 @@ Nesse ponto, o uso de um conjunto de pacotes[^1] chamado [tidyverse](https://www
 
 É preciso lembrar que, tal como conhecer novos idiomas, se familiarizar com uma linguagem de programação tem uma curva de aprendizado lenta no início, mas que pode ganhar velocidade rapidamente. O ambiente adequado para o aprendizado (nossos laptops ou usar o R online) está sempre disponível. Além disso, de um jeito ou de outro, o próprio programa nos dá feedbacks sobre nossos erros.
 
-Contudo, repetição é necessária. Nunca copie e cole um código. Mesmo que você já tenha feito uma tarefa similar antes, ou até no script[^2] que você está escrevendo, digite novamente as funções[^3]. Além de evitar erros, isto a ajuda a tornar natural o seu uso e a internalizar a compreensão sobre para que servem. Por outro lado, é preciso deliberadamente se dispor a tentar codificar. Nesse sentido, o R traz consigo inúmeros bancos dados que podem ser utilizados praticar. A despeito de todas essas advertências, não se preocupem, pois em pouco tempo, temos certeza de que codificar vai ser tão natural quanto ler e escrever em português.
+Contudo, repetição é necessária. Nunca copie e cole um código. Mesmo que você já tenha feito uma tarefa similar antes, ou até no script[^2] que você está escrevendo, digite novamente as funções[^3]. Além de evitar erros, isto ajuda a tornar natural o seu uso e a internalizar a compreensão sobre para que servem. Por outro lado, é preciso deliberadamente se dispor a tentar codificar. Nesse sentido, o R traz consigo inúmeros bancos de dados que podem ser utilizados praticar. A despeito de todas essas advertências, não se preocupem, pois em pouco tempo, temos certeza de que codificar vai ser tão natural quanto ler e escrever em português.
 
 [^2]: Um script no R é um arquivo de texto que contém uma sequência de comandos e instruções em linguagem R. Ele permite aos usuários escrever, armazenar e executar várias operações de análise de dados, modelagem estatística e outras tarefas. Os scripts R são usados para automatizar processos, documentar análises e facilitar a reprodução dos resultados. Eles podem ser executados linha por linha ou em conjunto, oferecendo uma abordagem organizada e reutilizável para trabalhar com R.
 
@@ -33,7 +33,7 @@ Contudo, repetição é necessária. Nunca copie e cole um código. Mesmo que vo
 ![](images/lappsie.png){width="427"}
 :::
 
-Esta oficina está sendo desenvolvida e implementada pelo Laboratório de Práticas e Pesquisas em Psicologia e Educação, vinculado ao [Programa de Pós-graduação Profissional em Psicologia e Políticas Públicas](https://psipolpublicas.ufc.br/pt/){target="_blank"} do campus Sobral da Universidade Federal do Ceará.
+Esta oficina está sendo desenvolvida e implementada pelo Laboratório de Práticas e Pesquisas em Psicologia e Educação (LAPPSIE), vinculado ao [Programa de Pós-graduação Profissional em Psicologia e Políticas Públicas](https://psipolpublicas.ufc.br/pt/){target="_blank"} do campus Sobral da Universidade Federal do Ceará.
 
 Desejamos a todos e todas uma ótima caminhada em direção a uma ciência aberta, reprodutível, compartilhável e, acima de tudo, solidária.
 

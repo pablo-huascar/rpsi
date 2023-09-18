@@ -1,0 +1,814 @@
+---
+title: "Introdução ao R para análise de dados em Psicologia"
+execute:
+  echo: true
+author: 
+  - name:  "Francisco Pablo Huascar Aragão Pinheiro"
+    orcid: 0000-0001-9289-845X
+institute: <img src="images/ufc_horizontal.png" width="250">
+format: 
+  revealjs:
+      code-link: true
+      code-tools: true
+      code-line-numbers: false
+      theme: simple
+      fig-width: 6
+      fig-asp: 0.618
+      scrollable: true
+progress: true
+slide-number: true
+logo: images/lappsie.png
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Quem sou eu
+
+::: {style="line-height: 1;"}
+::: columns
+::: {.column width="40%"}
+![](images/logo_pos.png) ![](images/lappsie.png)
+:::
+
+::: {.column width="60%"}
+::: incremental
+-   [Psicólogo (UFC)]{style="font-size:25pt;"}
+-   [Mestre em Psicologia (UFC)]{style="font-size:25pt;"}
+-   [Doutor em educação (UFC)]{style="font-size:25pt;"}
+-   [Professor do campus Sobral da UFC]{style="font-size:25pt;"}
+-   [Recentemente, um entusiasta do R]{style="font-size:25pt;"}
+:::
+:::
+:::
+:::
+
+::: aside
+Meu [currículo lattes](http://lattes.cnpq.br/8266089190930601): acesse [aqui](http://lattes.cnpq.br/8266089190930601)
+:::
+
+# Regressão
+
+## Statistical Inference via Data Science: A ModernDive into R and the Tidyverse
+
+::: columns
+::: {.column width="50%"}
+Livro base para o aprendizado sobre regressão
+:::
+
+::: {.column width="50%"}
+[![](images/modern_dive.png){fig-alt="Capa do livro R for Data Science. Uma coruja se destaca na ilustração" fig-align="right" width="334"}](https://r4ds.had.co.nz/)
+:::
+:::
+
+## Statistical Inference via Data Science: A ModernDive into R and the Tidyverse
+
+-   Neste [link](https://moderndive.com/index.html) você pode acessar o livro:
+
+<https://moderndive.com/index.html/>
+
+## Pacotes utilizados
+
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(tidymodels)
+```
+
+## Obtenção do banco de dados
+
+```{r}
+#| label: dados
+#| include: false
+
+  
+df <- read_csv("./data/contexto_sm.csv")
+
+```
+
+```{r}
+#| eval: false
+if(!file.exists("./data")){dir.create("./data")}
+
+df <- read_csv("https://tinyurl.com/contextosm")
+
+```
+
+## Uma olhada no banco de dados
+
+```{r}
+glimpse(df)
+```
+
+## Variáveis Compostas: Saúde Mental
+
+```{r}
+#| label: manipulação dos dados - VDs
+
+df <- 
+  df |>
+  rowwise() |> 
+  mutate(
+    tmcs = sum(c_across(srq1:srq20)),
+    ans = sum(c_across(a1:a7)),
+    dep = sum(c_across(d1:d7)),
+    est = sum(c_across(e1:e7))
+  ) |> 
+  ungroup()
+```
+
+## Variáveis Compostas: Saúde Mental
+
+```{r}
+#| code-fold: show
+df |> 
+  select(tmcs:est)
+```
+
+## Variáveis Compostas: Contexto de Trabalho
+
+```{r}
+#| label: manipulação dos dados - VIs
+
+df <- 
+  df |> 
+  rowwise() |> 
+  mutate(
+    org = mean(c(ct1,ct4,ct7,ct8,
+                      ct12,ct13,ct14,ct17,
+                      ct19,ct21,ct22,ct23,
+                      ct24,ct30,ct37)),
+    cond = mean(c(ct9,ct16,ct18,ct20,
+                       ct26,ct33,ct36,ct38)),
+    rel = mean(c(ct5,ct6,ct10,ct11,
+                       ct15,ct27,ct29,ct32,
+                       ct35,ct39))
+  ) |> 
+  ungroup()
+```
+
+## Variáveis Compostas: Contexto de Trabalho
+
+```{r}
+#| code-fold: show
+df |> 
+  select(org:rel)
+```
+
+## Usos da Regressão
+
+-   Examinar o efeito de diferentes variáveis (preditoras / independentes) em uma única variável de resultado (dependente)
+
+-   O uso o termo predição é essencial, pois a análise examina se uma variável prediz (explica ou repercute) outra variável
+
+## Simulação da Linha de Regressão
+
+```{r}
+#| label: tibble para regline
+#| echo: false
+
+x <- c(0,1,2,3,4)
+
+y <- 2 + 2*x
+
+reg_line <- tibble(x,y)
+
+reg_line
+```
+
+## A Linha de Regressão
+
+```{r}
+#| label: linha de regressão
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+#| output-location: slide
+
+reg_line |> 
+  ggplot(aes(x,y)) +
+  geom_smooth(
+    method = "lm",
+    se = F,
+    color = "blue"
+    ) +
+  geom_point(
+    color = "red",
+    size = 3
+    ) +
+  theme_classic()
+
+```
+
+## A linha de regressão
+
+$$
+y = a + bx
+$$
+
+-   y = VI
+-   x = VD
+-   a = constante (local onde a linha intercepta o eixo y, ou seja, onde x = 0)
+-   b = inclinação da linha (cada vez que "x" aumenta 1 unidade, "y" aumenta "b" unidades)
+
+## A Linha de Regressão
+
+```{r}
+reg_line
+```
+
+::: incremental
+-   a = 2
+-   b = 2
+:::
+
+## Regressão Linear Simples
+
+::: {style="line-height: 1;"}
+-   Correlação
+    -   Magnitude e direção
+-   Regressão
+    -   Descobrir o tamanho do efeito de uma variável x (independente, previsora ou explicativa) em uma variável y (dependente, critério ou desfecho)
+-   Questões
+    -   Quanto a pontuação em TMCs pode variar em função da organização do trabalho?
+    -   Quanto a pontuação em TMCs pode variar em função do pertencimento ao grupo de risco para covid-19?
+:::
+
+## Regressão Linear Simples: Uma Variável Independente Contínua
+
+-   Quanto a pontuação em TMCs pode variar em função da organização do trabalho?
+
+## Análise de Dados Exploratória
+
+::: {style="line-height: 1;"}
+-   Estatística descritiva
+    -   Mínimo
+    -   Máximo
+    -   Média
+    -   Desvio padrão
+    -   Histogramas
+-   Correlações
+    -   Bivariadas
+    -   Gráficos de dispersão
+:::
+
+## Análise de Dados Exploratória: Uma Olhada nos Dados {.smaller}
+
+```{r}
+#| code-fold: show
+df |>
+  select(org, tmcs) |> 
+  slice_head(n = 10)
+```
+
+## Análise de Dados Exploratória: Estatísticas Univariadas {.smaller}
+
+```{r}
+#| code-fold: show
+
+df |>
+  summarise(
+    across(c(tmcs,org),
+           list("M" = mean,
+                "DP" = sd,
+                "MIN" = min,
+                "MAX" = max))
+    ) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = c("Variável", ".value"),
+    names_sep = "_"
+    )
+```
+
+## Análise de Dados Exploratória: Estatísticas Univariadas {.smaller}
+
+```{r}
+#| label: histograma - organização do trabalho
+#| fig-align: center
+#| out-width: 60%
+#| fig-dpi: 600
+#| output-location: slide
+df |> 
+  ggplot(aes(org)) +
+  geom_histogram(
+    fill = "white",
+    color = "gray"
+    ) +
+  labs(
+    y = NULL,
+    x = "Organização do Trabalho"
+    ) +
+  theme_classic()
+```
+
+## Análise de Dados Exploratória: Estatísticas Univariadas {.smaller}
+
+```{r}
+#| label: histograma - tmcs
+#| fig-align: center
+#| out-width: 60%
+#| fig-dpi: 600
+#| output-location: slide
+
+df |> 
+  ggplot(aes(tmcs)) +
+  geom_histogram(
+    fill = "white",
+    color = "gray",
+    bins = 20
+    ) +
+  labs(
+    y = NULL,
+    x = "TMCs"
+    ) +
+  theme_classic()
+
+
+```
+
+## Análise de Dados Exploratória: Estatísticas Bivariadas {.smaller}
+
+-   2 variáveis numéricas
+    -   Coeficiente de Correlação
+
+## Análise de Dados Exploratória: Estatísticas Bivariadas {.smaller}
+
+```{r}
+#| code-fold: show
+
+cor.test(df$org,df$tmcs)
+
+```
+
+::: aside
+Para aprender a calcular os valores de T e *p* em uma correlação, consulte: <https://www.statology.org/t-test-for-correlation/>
+:::
+
+## Análise de Dados Exploratória: Estatísticas Bivariadas {.smaller}
+
+```{r}
+#| fig-align: center
+#| out-width: 60%
+#| fig-dpi: 600
+#| output-location: slide
+df |> 
+  ggplot(aes(org,tmcs)) +
+  geom_jitter() +
+  geom_smooth(
+    method = "lm",
+    se = F,
+    color = "red"
+    ) +
+  labs(
+    x = "Organização do Trabalho",
+    y = "Transtornos Mentais Comuns"
+    ) +
+  theme_classic()
+  
+```
+
+## Regressão Linear Simples
+
+[$$
+y = a + bx
+$$]{style="text-align: left"}
+
+-   A partir do gráfico e do teste de correlação de pearson, o que sabemos até agora sobre entre TMCs e a organização do trabalho? O que podemos dizer sobre a nossa equação?
+    -   b tem uma inclinação positiva!
+    -   Pessoas com piores avaliações da organização do trabalho (escores mais altos) tendem a ter piores índices nos TMCs (pontuações maiores)
+
+## Regressão Linear Simples
+
+$$
+y = a + bx
+$$
+
+-   Qual o valor numérico para a incliação (slope) *b*?
+-   E o valor do intercepto *a*?
+-   Vamos utilizar a regressão linear simples para obter essas respostas
+
+## Regressão Linear Simples
+
+Notação da regressão:
+
+-   "\~"
+
+-   VD \~ VI1 + VI2 + VIn
+
+```{r}
+
+fit_cont <- lm(tmcs ~ org, data = df) 
+
+```
+
+## Sumário da saída
+
+```{r}
+#| code-fold: show
+summary(fit_cont)
+```
+
+## Tabela de Regressão
+
+```{r}
+#| code-line-numbers: "|1|2|"
+#| code-fold: show
+
+fit_cont |> 
+  tidy() |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x,2))
+  )
+```
+
+::: aside
+Para uma melhor vizualização da saída, é possíve usar a função `tidy()` do pacote [broom](https://broom.tidymodels.org/)
+:::
+
+## Tabela de Regressão
+
+```{r}
+#| code-line-numbers: "|2|3|1|"
+
+tabela_de_regressao <- 
+  fit_cont |> 
+  tidy() |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x,2))
+    ) |>
+  mutate(
+    p.value = case_when(p.value == 0 ~ "< .001")
+  ) |> 
+  rename(
+    "Preditor" = term,
+    "Estimativas" = estimate,
+    "Erro-padrão" = std.error,
+    "t" = statistic,
+    "p" = p.value
+    )
+```
+
+## Interpretando a Tabela de Regressão {.smaller}
+
+```{r}
+#| code-fold: show
+tabela_de_regressao
+```
+
+$$
+y = a + bx
+$$
+
+-   Estimativas
+    -   a = Estimativa do Intercepto = -2.57
+    -   b = Estimativa da `org` = 2.50
+
+$$
+tmcs = -2.57 + 2.50org
+$$
+
+::: aside
+Enquanto o intercepto da linha de regressão tem uma interpretação matemática, ela não tem nenhuma interpretação prática, pois observar um valor de `org` igual a 0 é impossível
+:::
+
+## Interpretando a Tabela de Regressão {.smaller}
+
+```{r}
+#| code-fold: show
+tabela_de_regressao
+
+```
+
+$$
+tmcs = -2.57 + 2.50org
+$$
+
+::: {style="line-height: 1; font-size: 20pt"}
+-   Quais conclusões podemos tirar dessa equação?
+    -   O sinal de b é positivo, portanto há uma relação positiva entre as variáveis
+        -   Quanto maior a pontuação em `org` maior a pontuação em `tmcs`
+        -   Ou seja: piores avaliações da organização do trabalho estão associados a maiores prejuízos a saúde mental
+    -   Interpretação do valor de b (estimativa de `org`):
+        -   Para cada aumento de 1 unidade em `org`, há um aumento associado de, em média, 2.50 unidades de `tmcs`
+:::
+
+## Interpretando a Tabela de Regressão {.smaller}
+
+```{r}
+#| code-fold: show
+
+cor_org_tmcs <- cor.test(df$org,df$tmcs)
+
+cor_org_tmcs
+
+r <- cor_org_tmcs$estimate
+
+r^2 |> 
+  round(4)
+
+summary(fit_cont)
+```
+
+## Valores Observados/Ajustados e os Resíduos
+
+$$
+tmcs = -2.57 + 2.50org
+$$
+
+```{r}
+#| code-fold: show
+
+df |>
+  mutate(
+    id = 1:nrow(df)
+  ) |> 
+  select(id,tmcs,org) |> 
+  slice(15) 
+```
+
+::: {style="line-height: 1;"}
+-   Valor observado dos tmcs = 4
+:::
+
+$$
+tmcs = -2.57 + 2.50*2.867 = 4.598
+$$
+
+::: {style="line-height: 1;"}
+-   Valor ajustado/previsto = 4.598
+-   Resíduos: a diferença entre o que foi ajustado/previsto e o valor observado
+:::
+
+$$
+resíduo = 4 - 4.598 = -0.598
+$$
+
+## Valores Observados/Ajustados e os Resíduos
+
+```{r}
+#| include: false
+fit_cont |> 
+  augment() |>
+  filter(tmcs == 20)
+```
+
+```{r}
+#| out-width: 55%
+#| output-location: slide
+
+df |> 
+  ggplot(aes(org,tmcs)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm",
+    se = F,
+    color = "red"
+    ) +
+  labs(
+    x = "Organização do Trabalho",
+    y = "Transtornos Mentais Comuns"
+    ) +
+  theme_classic()+
+  geom_segment(aes(x = 2.867, y = 4, 
+                   xend = 2.867, yend = 4.598),
+               color = "blue")+
+  geom_segment(aes(x = 4.07, y = 20,
+                   xend = 4.07, yend = 7.59),
+               color = "blue") +
+  geom_segment(aes(x = 3.4, y = 10,
+                   xend = 3.4, yend = 5.92),
+               color = "blue")
+  
+```
+
+## Valores Observados/Ajustados e os Resíduos
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "|1|2|"
+fit_cont |> 
+  augment() |> 
+  select(tmcs:.resid) |>
+  mutate(
+    id = 1:nrow(df),
+    .before = tmcs
+    ) |> 
+  slice_head(n = 15) |> 
+  mutate(
+    across(.fitted:.resid,
+           \(x) round(x,3))
+    )
+```
+
+::: aside
+Para acessar os valores previstos (`.fitted`) e os resídudos (`.resid`), é possíve usar a função [`augment()`](https://generics.r-lib.org/reference/augment.html) do pacote [broom](https://broom.tidymodels.org/)
+:::
+
+## Regressão Linear Simples: Uma Variável Independente Categórica
+
+Quanto a pontuação em TMCs pode variar em função do pertencimento ao grupo de risco para covid-19?
+
+## Análise de Dados Exploratória
+
+::: {style="font-size:26pt;line-height:1;"}
+-   Estatística descritiva
+    -   Variável Dependente (contínua)
+        -   Mínimo
+        -   Máximo
+        -   Média
+        -   Desvio padrão
+    -   Variável independente (categórica)
+        -   Tabela de frequência
+    -   Gráficos para comparação entre médias/medianas
+        -   Boxplot
+    -   Tabelas para compração entre grupos
+    -   Teste T para amostras independentes (VI dicotômica)
+:::
+
+## Análise de Dados Exploratória: Uma Olhada nos Dados
+
+```{r}
+#| code-fold: show
+df |> 
+  select(tmcs, grupo_de_risco) |> 
+  slice_head(n = 10) 
+```
+
+## Análise de Dados Exploratória: Estatísticas Univariadas {.smaller}
+
+```{r}
+#| code-fold: show
+df |>
+  summarise(
+    across(c(tmcs),
+           list("M" = mean,
+                "DP" = sd,
+                "MIN" = min,
+                "MAX" = max))
+    ) |>
+  pivot_longer(
+    cols = everything(),
+    names_to = c("Variável", ".value"),
+    names_sep = "_"
+    )
+```
+
+## Análise de Dados Exploratória: Estatísticas Univariadas {.smaller}
+
+```{r}
+#| fig-align: center
+#| out-width: 65%
+#| fig-dpi: 600
+#| output-location: slide
+df |> 
+  ggplot(aes(tmcs)) +
+  geom_histogram(
+    fill = "white",
+    color = "gray",
+    bins = 20
+    ) +
+  labs(
+    y = NULL,
+    x = "TMCs"
+    ) +
+  theme_classic()
+```
+
+## Análise de Dados Exploratória: Tabelas de Frequência
+
+```{r}
+#| code-fold: show
+df |> 
+  count(grupo_de_risco) |> 
+  mutate(
+    "%"   = (n/sum(n))*100
+         )
+```
+
+## Comparação entre Grupos
+
+```{r}
+#| output-location: slide
+#| out-width: 70%
+#| fig-align: center
+#| fig-dpi: 600
+df |> 
+  ggplot(aes(grupo_de_risco,tmcs))+
+  geom_boxplot() +
+  geom_jitter(aes(grupo_de_risco),
+              alpha = 0.1,
+              size = 1.5,
+              color = "blue") +
+  labs(
+    x = "Grupo de Risco para covid-19",
+    y = "TMCs"
+    ) +
+  theme_classic()
+```
+
+## Resultados entre Grupos
+
+```{r}
+#| code-fold: show
+
+df |> 
+  group_by(grupo_de_risco) |> 
+  summarise(
+    M = mean(tmcs),
+    DP = sd(tmcs),
+    MD = median(tmcs),
+    MIN = min(tmcs),
+    MAX = max(tmcs)
+    )
+  
+```
+
+## Diferenças Entre as Médias
+
+```{r}
+#| code-fold: show
+
+medias <- df |> 
+  group_by(grupo_de_risco) |> 
+  summarise(
+    M = mean(tmcs)
+    )
+
+dif <- medias |>
+  mutate(
+    DIF = M - (medias |> 
+                 filter(grupo_de_risco == "Não") |> 
+                 select(M) |> 
+                 unlist(use.names = F))
+)
+
+dif
+```
+
+## Diferenças Entre as Médias
+
+```{r}
+#| code-fold: show
+
+t.test(tmcs ~ fct_relevel(grupo_de_risco, "Sim"), data = df,var.equal = T)
+```
+
+## Regressão Linear Simples
+
+```{r}
+fit_cat <- lm(tmcs ~ grupo_de_risco, data = df) 
+```
+
+## Sumário da Regressão
+
+```{r}
+#| code-fold: show
+summary(fit_cat)
+```
+
+## Tabela de Regressão
+
+```{r}
+#| code-fold: show
+tabela_de_regressao_cat <- 
+  fit_cat |>
+  tidy() |> 
+  mutate(
+    across(where(is.double),
+                \(x) round(x,2))
+    ) |>
+  mutate(
+    p.value = case_when(p.value == 0 ~ "< .001")
+  ) |> 
+  rename(
+    "Preditor" = term,
+    "Estimativas" = estimate,
+    "Erro-padrão" = std.error,
+    "t" = statistic,
+    "p" = p.value
+    )
+```
+
+## Interpretando a Tabela de Regressão
+
+```{r}
+#| code-fold: true
+tabela_de_regressao_cat
+```
+
+::: {style="font-size:20pt;line-height: 1;"}
+-   Estimativa do Intercepto = média do grupo_de_riscoNão = 4.53
+-   Estimativa do grupo_de_riscoSim = diferença entre a média do grupo_de_riscoNao e a média grupo_de_riscoSim = 1.10
+:::
+
+```{r}
+#| code-fold: true
+dif
+```
+

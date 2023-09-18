@@ -1,0 +1,7 @@
+---
+title: "Regressão Linear"
+---
+
+## Slides, videos e exercícios
+
+![](images/slide.png){width="18"} [Slides](modulo_regressao.qmd){target="_blank"}

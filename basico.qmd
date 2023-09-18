@@ -9,5 +9,3 @@ title: "Introdução ao R"
 ![](images/exercicios.png){width="18"} [Exercícios](basico_exe.qmd){target="_blank"}
 
 ![](images/respostas.png){width="18"} [Soluções](basico_respostas.qmd){target="_blank"}
-
-

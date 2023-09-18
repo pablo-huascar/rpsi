@@ -26,12 +26,22 @@ Neste blocos de exercícios você vai utilizar o pacote `ggplot2` para construir
 Para fazer estes exercícios, acione os pacotes a seguir:
 
 ```{r}
+#| label: setup
 #| warning: false
 #| message: false
 library(tidyverse)
 library(gapminder)
 library(ggthemes)
 ```
+
+Caso ainda não tenha instalado os pacotes, use:
+```{r}
+#| eval: false
+install.packages("tidyverse")
+install.packages("gapminder")
+install.packages("ggthemes")
+```
+
 
 ### Primeiro bloco de exercícios
 
@@ -221,7 +231,7 @@ theme_
 
 ### Exercício 7
 
-Complete o código a seguir para construir o gráfico abaixo:
+Construa o gráfico abaixo:
 
 ```{r}
 #| echo: false
@@ -232,15 +242,6 @@ starwars |>
   ) |> 
   ggplot(aes(species, height)) +
   geom_boxplot()
-```
-
-```{r}
-#| eval: false
-starwars |>
-  drop_na(species, height) |>
-  mutate(
-    species = fct_lump_n(species, n = 3)
-  )
 ```
 
 ### Exercício 8
@@ -305,7 +306,7 @@ glimpse()
 
 ### Exercício 9
 
-Complete o código adiante para reproduzir o gráfico a seguir:
+Reproduza o gráfico a seguir, que só contém dados do ano de 2007:
 
 ```{r}
 #| echo: false
@@ -313,12 +314,6 @@ gapminder |>
   filter(year == 2007) |> 
   ggplot(aes(gdpPercap, lifeExp)) +
   geom_point()
-```
-
-```{r}
-#| eval: false
-gapminder |> 
-  filter(year == 2007) |> 
 ```
 
 ### Exercício 10
@@ -359,22 +354,16 @@ scale_
 
 ### Exercício 11
 
-Complete o código a seguir e construa um gráfico como este:
+Construa um gráfico como este (os dados referem-se somente ao ano de 1952):
 
 ```{r}
 #| echo: false
 gapminder |> 
   filter(year == 1952) |> 
-  ggplot(aes(log(gdpPercap) , lifeExp, )) +
+  ggplot(aes(log(gdpPercap) , lifeExp)) +
   geom_point(aes(color = continent, shape = continent)) +
   scale_color_colorblind() +
   facet_wrap(~ continent)
-```
-
-```{r}
-#| eval: false
-gapminder |> 
-  filter(year == 1952) |>
 ```
 
 ### Exercício 12
@@ -415,7 +404,7 @@ theme()
 
 ### Exercício 13
 
-Complete o código a seguir para criar um gráfico como o seguinte:
+Crie um gráfico como o seguinte:
 
 ```{r}
 #| echo: false
@@ -427,13 +416,6 @@ gapminder |>
   ggplot(aes(year, lifeExp, color = continent)) +
   geom_line() +
   geom_point()
-```
-
-```{r}
-#| eval: false
-gapminder |> 
-  group_by(continent, year) |> 
-  summarise(lifeExp = mean(lifeExp)) |> 
 ```
 
 ### Exercício 14

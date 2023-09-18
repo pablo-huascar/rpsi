@@ -41,11 +41,12 @@ website:
       contents:
         - conteudos.qmd
         - basico.qmd
-        - graficos.qmd
         - trasnformacao.qmd
         - iteracao.qmd
         - importacao.qmd
+        - graficos.qmd
         - dados_arrumados.qmd
+        - regressao.qmd
 
     
     
