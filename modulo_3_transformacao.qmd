@@ -254,7 +254,7 @@ flights |>
 
 ## Exercício
 
--   No banco de dados `mpg`, encontre os carros que tem um rendimento na cidade maior do que 17 galões por milha (`cty`)
+-   No banco de dados `mpg`, encontre os carros que tem um rendimento na cidade maior do que 17 milhas por galão (`cty`)
 
 ## Resposta
 
@@ -747,7 +747,7 @@ glimpse(economics)
 ## Banco para exercícios [`economics`](https://ggplot2.tidyverse.org/reference/economics.html)
 
 | Variável |                                                                                       |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | date     | Mês da coleta de dados (`r min(year(economics$date))`- `r max(year(economics$date))`) |
 | pce      | Gastos de consumo pessoal, em bilhões de dólares                                      |
 | pop      | População total, em milhares                                                          |
@@ -1484,9 +1484,7 @@ case_ac_nutri$idade_corte == cut_ac_nutri$idade_corte
 Transforme as variáveis `imc` e `frequencia_treino` do banco `acompanhamento_nutri` conforme os pontos de corte a seguir a seguir:
 
 ::: {style="font-size: 75%;"}
-
 ::: {layout-ncol="2";}
-
 | IMC                                    | Faixa         |
 |----------------------------------------|---------------|
 | abaixo de 18,5                         | baixo peso    |
@@ -1503,9 +1501,7 @@ Transforme as variáveis `imc` e `frequencia_treino` do banco `acompanhamento_nu
 | 6 a 7 vezes | muito frequente |
 
 : Pontos de corte para frequência aos treinos
-
 :::
-
 :::
 
 ## [`select()`](https://dplyr.tidyverse.org/reference/select.html)
