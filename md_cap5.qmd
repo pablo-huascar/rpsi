@@ -1,0 +1,8 @@
+# Capítulo 5 Regressão Básica {#sec-regressao_basica .unnumbered}
+
+
+
+```{r}
+
+```
+

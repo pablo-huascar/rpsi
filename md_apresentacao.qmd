@@ -1,0 +1,16 @@
+# Tradução do livro *Statistical Inference via Data Science: A ModernDive into R and the Tidyverse!*
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />
+Nos links a seguir, você encontrará traduções de capítulos do livro [*Statistical Inference via Data Science: A ModernDive into R and the Tidyverse!*]( https://moderndive.com/index.html){target="_blank"}, de [Chester Ismay]( https://chester.rbind.io/){target="_blank"} and [Albert Y. Kim]( https://rudeboybert.rbind.io/){target="_blank"}. Tal como o material original, esta versão está licenciada sob uma <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. Nesta versão, optamos por manter a seriação originial dos capítulos, de modo que, posteriormente, seja possível viabilizar uma versão completa do livro traduzido. 
+
+::: column-margin
+[![](./images/modern_dive.png){width="128"}](https://moderndive.com/index.html){target="_blank"}
+:::   
+
+Houve, ainda, uma escolha metodológica distinta: na versão original, várias ações são realizadas ao longo do texto utilizando-se funções embrulhadas (*wrapper functions*) do pacote [`moderndive`: Tidyverse-Friendly Introductory Linear Regression]( https://cran.r-project.org/web/packages/moderndive/index.html){target="_blank"}. Esse tipo de função é utilizado para encapsular uma série de operações ou chamadas de função, oferecendo uma maneira mais simplificada ou específica de realizar tarefas comuns. Nesta tradução contudo, mantivemos o *pipeline* com as funções do [tidyverse]( https://www.tidyverse.org/){target="_blank"}, bem como utilizamos suas versões mais atualizadas, de modo a reforçar o aprendizado que vem sendo obtido ao longo da oficina.
+
+[Capítulo 5](md_cap5.qmd){target="_blank"}
+
+::: callout-warning
+As traduções ainda não passaram por revisão textual ou das análises realizadas. Use este material com esta ressalva.
+:::
