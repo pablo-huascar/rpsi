@@ -6,9 +6,11 @@
 [![](./images/modern_dive.png){width="128"}](https://moderndive.com/index.html)
 :::
 
-Houve, ainda, escolhas metodológicas e de formatação distintas. Na versão original, várias ações são realizadas ao longo do texto utilizando-se funções embrulhadas (*wrapper functions*) do pacote [`moderndive`: Tidyverse-Friendly Introductory Linear Regression](https://cran.r-project.org/web/packages/moderndive/index.html){target="_blank"}. Esse tipo de função é utilizado para encapsular uma série de operações ou chamadas de função, oferecendo uma maneira mais simplificada ou específica de realizar tarefas comuns. Nesta tradução contudo, mantivemos o *pipeline* com as funções do [tidyverse](https://www.tidyverse.org/){target="_blank"}, bem como utilizamos suas versões mais atualizadas, de modo a reforçar o aprendizado que vem sendo obtido ao longo da oficina. Também privilegiamos o uso de funções básicas do R, quando possível. Em algum momentos, gráficos novos foram incluídos para facilitar a compreensão dos conceitos.
+Houve, ainda, escolhas metodológicas e de formatação distintas. Na versão original, várias ações são realizadas ao longo do texto utilizando-se funções embrulhadas (*wrapper functions*) do pacote [`moderndive`: Tidyverse-Friendly Introductory Linear Regression](https://cran.r-project.org/web/packages/moderndive/index.html){target="_blank"}. Esse tipo de função é utilizado para encapsular uma série de operações ou chamadas de função, oferecendo uma maneira mais simplificada ou específica de realizar tarefas comuns. Nesta tradução contudo, mantivemos o *pipeline* com as funções do [tidyverse](https://www.tidyverse.org/){target="_blank"}, bem como utilizamos suas versões mais atualizadas, de modo a reforçar o aprendizado que vem sendo obtido ao longo da oficina. 
 
-Mantivemos como separador decimal o `.` e não `,`, como deveria ser em português. O `.` é o padrão do R, então, para evitar confusões na escrita do código, o mantivemos na tradução. Ademais, estamos utilizando normas de formatação da APA, sétima edição, e acrescentamos textos alternativos para as figuras.
+Também privilegiamos o uso de funções básicas do R, quando possível. Em algum momentos, gráficos novos foram incluídos para facilitar a compreensão dos conceitos. Além disso, deixamos explícitos os códigos que geram tabelas e, para criá-las, utilizamos o pacote [`gt`](https://gt.rstudio.com/), 
+
+Ademais, mantivemos como separador decimal o `.` e não `,`, como deveria ser em português. O `.` é o padrão do R, então, para evitar confusões na escrita do código, o mantivemos na tradução. Estamos utilizando normas de formatação da APA, sétima edição, e acrescentamos textos alternativos para as figuras.
 
 [Capítulo 5](md_cap5.qmd){target="_blank"}
 

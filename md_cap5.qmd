@@ -13,13 +13,18 @@ code-tools: true
 code-line-numbers: false
 ---
 
-```{r}
-#| echo: false
-# Corrigir as referências cruzadas de tabelas, figuras e seções
-# Tornar dinâmicas informações sobre análises que estão dentro do texto.
-```
 
 # Capítulo 5: Regressão Básica {#sec-regressao_basica .unnumbered}
+
+
+```{r}
+#| echo: false
+#| label: lembretes
+
+# Corrigir as referências cruzadas de tabelas, figuras e seções
+# Tornar dinâmicas informações sobre análises que estão dentro do texto.
+# colocar links par todos os pacotes
+```
 
 ```{r}
 #| label: setup
@@ -40,6 +45,16 @@ set.seed(76)
 
 theme_set(theme_cowplot())
 ```
+
+```{r}
+#| label: dfs
+#| echo: false
+evals_ch5 <- evals |> 
+  select(ID, score, bty_avg, age) |> 
+  clean_names()
+```
+
+
 
 Agora que estamos equipados com habilidades de visualização de dados do Capítulo 2, habilidades de manipulação de dados do Capítulo 3 e uma compreensão de como importar dados e do conceito de um formato de dados "organizado" do Capítulo 4, vamos agora prosseguir com a modelagem de dados. A premissa fundamental da modelagem de dados é tornar explícita a relação entre:
 
@@ -145,17 +160,19 @@ Uma descrição completa de todas as variáveis incluídas em `evals` pode ser e
 Uma maneira alternativa de olhar os valores brutos dos dados é escolhendo uma amostra aleatória das linhas em `evals_ch5` utilizando a função `slice_sample()` do pacote `dplyr`. Aqui definimos o argumento `n` como 5, indicando que queremos uma amostra aleatória de 5 linhas. Exibimos os resultados na @tbl-amostra. Note que, devido à natureza aleatória da amostragem, é provável que você acabe com um subconjunto diferente de 5 linhas.Para garantir evitar essa variação, podemos utilizar a função `set.seed()`, que é usada para definir a semente para a geração de números aleatórios, garantindo a reprodutibilidade dos resultados.
 
 ```{r}
-#| eval: false
 set.seed(76)
 
 evals_ch5 |> 
   slice_sample(n = 5)
 ```
 
+Podemos colocar esses dados em uma tabela para melhorar a visualização: 
+
 ```{r}
-#| echo: false
 #| label: tbl-amostra
 #| tbl-cap: Uma amostra aleatória de 5 dos 463 cursos da UT Austin
+set.seed(76)
+
 evals_ch5 |> 
   slice_sample(n = 5) |>  
   gt() |> 
@@ -442,9 +459,11 @@ Podemos obter os valores do intercepto $b_0$ e a inclinação para bty_avg $b_1$
 2.  Obtemos a tabela de regressão aplicando a função tidy() do pacote [`broom`](https://broom.tidymodels.org/) em `score_model`.
 
 ```{r}
-# Ajuste o modelo de regressão
+# Ajuste o modelo de regressão:
 
 score_model <- lm(score ~ bty_avg, data = evals_ch5)
+
+# Obtenha a tabela de regressão:
 
 score_model |> 
   tidy(conf.int = T) |> 
@@ -485,4 +504,53 @@ $$
 \widehat{\text{score}} &= b_0 + b_{\text{bty\_avg}} \cdot \text{bty\_avg} \\
 &= 3.88 + 0.067 \cdot \text{bty\_avg}\\
 \end{align*}
-$$ O intercepto $b_0 = 3.88$ é a nota média de ensino $\hat{y} = \widehat{score}$ para aqueles cursos onde o instrutor tinha uma pontuação de "beleza" bty_avg de 0. Ou, em termos gráficos, é onde a linha intersecta o eixo $y$ quando $x = 0$. No entanto, observe que, embora o intercepto da linha de regressão tenha uma interpretação matemática, ele não tem uma interpretação prática aqui, já que observar um bty_avg de 0 é impossível; ele é a média das pontuações de "beleza" de seis avaliadores, variando de 1 a 10. Além disso, olhando para o gráfico de dispersão com a linha de regressão na Figura 5.4, nenhum instrutor tinha uma pontuação de "beleza" próxima de 0.
+$$ 
+
+O intercepto $b_0 = 3.88$ é a nota média de ensino $\hat{y} = \widehat{score}$ para aqueles cursos onde o instrutor tinha uma pontuação de "beleza" bty_avg de 0. Ou, em termos gráficos, é onde a linha intercepta o eixo $y$ quando $x = 0$. No entanto, observe que, embora o intercepto da linha de regressão tenha uma interpretação matemática, ele não tem uma interpretação prática aqui, já que observar um bty_avg de 0 é impossível; ele é a média das pontuações de "beleza" de seis avaliadores, variando de 1 a 10. Além disso, olhando para o gráfico de dispersão com a linha de regressão na Figura 5.4, nenhum instrutor tinha uma pontuação de "beleza" próxima de 0.
+
+O mais importante é a inclinação $b_1 = b_{bty\_avg}$ para `bty_avg` de 0.067, pois isso resume a relação entre as variáveis de pontuação de ensino e "beleza". Observe que o sinal é positivo, sugerindo uma relação positiva entre essas duas variáveis, o que significa que professores com pontuações de "beleza" mais altas também tendem a ter pontuações de ensino mais altas. Lembre-se de que, anteriormente, o coeficiente de correlação era 0.187. Ambos têm o mesmo sinal positivo, mas têm um valor diferente. Lembre-se ainda que a interpretação da correlação é a "força da associação linear". A interpretação da inclinação é um pouco diferente:
+
+>  Para cada aumento de 1 unidade em `bty_avg`, há um aumento associado de, em média, 0.067 unidades em `score.`
+
+Afirmamos apenas que existe um aumento *associado* e não necessariamente um aumento *causal*. Por exemplo, talvez pontuações de "beleza" mais altas não causem diretamente pontuações de ensino mais altas. Em vez disso, o seguinte pode ser verdadeiro: indivíduos de origens mais ricas tendem a ter formações educacionais mais fortes e, portanto, têm pontuações de ensino mais altas, enquanto ao mesmo tempo esses indivíduos ricos também tendem a ter pontuações de "beleza" mais altas. Em outras palavras, apenas porque duas variáveis estão fortemente associadas, isso não significa necessariamente que uma cause a outra. Isso é resumido na frase frequentemente citada, "correlação não é necessariamente causalidade". Discutimos essa ideia mais adiante na Subseção 5.3.1.
+
+Além disso, dizemos que esse aumento associado é, em média, de 0.067 unidades na pontuação de ensino, porque você pode ter dois instrutores cujas pontuações `bty_avg` diferem por 1 unidade, mas a diferença em suas pontuações de ensino não será necessariamente exatamente 0.067. O que a inclinação de 0.067 está dizendo é que, em todos os cursos possíveis, a diferença média na pontuação de ensino entre dois instrutores cujas pontuações de "beleza" diferem por um é de 0.067.
+
+Agora que aprendemos a calcular a equação para a linha de regressão na Figura 5.4 usando os valores na coluna de estimativa da Tabela 5.2 e como interpretar o intercepto e a inclinação resultantes, vamos revisitar o código que gerou essa tabela:
+
+```{r}
+#| eval: false
+# Ajuste o modelo de regressão:
+
+score_model <- lm(score ~ bty_avg, data = evals_ch5)
+
+# Obtenha a tabela de regressão:
+
+score_model |> 
+  tidy(conf.int = T) |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x, 3))
+  )
+```
+
+Primeiro, "ajustamos" o modelo de regressão linear aos dados usando a função `lm()` e salvamos isso como `score_model`. Quando dizemos "ajustar", queremos dizer "encontrar a melhor linha de ajuste para esses dados". `lm()` significa "*linear model* (modelo linear)" e é usado da seguinte maneira: `lm(y ~ x, data = nome_do_banco_de_dados)`, onde:
+
+-   `y` é a variável de resultado, seguida de um til `~`. No nosso caso, `y` é definido como `score`.
+-   `x` é a variável explicativa. No nosso caso, `x` é definido como `bty_avg`.
+-   A combinação de `y ~ x` é chamada de fórmula do modelo. (Note a ordem de `y` e `x`). No nosso caso, a fórmula do modelo é `score ~ bty_avg`.
+-   `nome_do_banco_de_dados` é o nome do banco de dados que contém as variáveis `y` e `x`. No nosso caso, `nome_do_banco_de_dados` é o banco de dados `evals_ch5`.
+
+Segundo, pegamos o modelo salvo em `score_model` e aplicamos a função `tidy()` do pacote `broom` para obter a tabela de regressão na Tabela 5.2.
+
+Por último, você pode estar se perguntando o que são as cinco colunas restantes na Tabela 5.2: `std_error`, `statistic`, `p_value`, `lower_ci` e `upper_ci`. São o erro padrão, estatística do teste, valor-p, limite inferior do intervalo de confiança de 95% e limite superior do intervalo de confiança de 95%. Eles nos informam sobre a significância estatística e prática dos nossos resultados. Isso é vagamente a "significância" dos nossos resultados de uma perspectiva estatística. Vamos deixar de lado essas ideias por enquanto e revisitá-las no Capítulo 10 sobre inferência (estatística) para regressão. Faremos isso depois de ter a chance de cobrir erros padrão no Capítulo 7, intervalos de confiança no Capítulo 8 e testes de hipótese e valores-p no Capítulo 9.
+
+::: callout-note
+## Verificação do aprendizado
+
+(VA5.2) Ajuste uma nova regressão linear simples usando `lm(score ~ age, data = evals_ch5)`, onde `age` (idade) é a nova variável explicativa `$x$`. Obtenha informações sobre a linha de "melhor ajuste" da tabela de regressão aplicando a função `tidy()`. Como os resultados da regressão se alinham com os resultados de sua análise exploratória de dados anterior?
+:::
+
+### Valores observados/ajustados e resíduos
+
+
