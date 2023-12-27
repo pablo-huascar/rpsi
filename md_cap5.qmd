@@ -1,8 +1,436 @@
-# Capítulo 5 Regressão Básica {#sec-regressao_basica .unnumbered}
+---
+bibliography: references.bib
+csl: apa.csl
+editor_options: 
+  chunk_output_type: console
+number-sections: true
+number-offset: 5
+tbl-cap-location: top
+fig-width: 6
+fig-asp: 0.618
+code-link: true
+code-tools: true
+code-line-numbers: false
+---
 
-
+# Capítulo 5: Regressão Básica {#sec-regressao_basica .unnumbered}
 
 ```{r}
+#| label: setup
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(gt)
+library(moderndive)
+library(skimr)
+library(gapminder)
+library(mvtnorm)
+library(cowplot)
+library(ggthemes)
+set.seed(76)
 
+theme_set(theme_cowplot())
 ```
 
+Agora que estamos equipados com habilidades de visualização de dados do Capítulo 2, habilidades de manipulação de dados do Capítulo 3 e uma compreensão de como importar dados e do conceito de um formato de dados "organizado" do Capítulo 4, vamos agora prosseguir com a modelagem de dados. A premissa fundamental da modelagem de dados é tornar explícita a relação entre:
+
+-   *uma variável de resultado* $y$, também chamada de *variável dependente* ou variável de resposta, e
+
+-   uma *variável explicativa/preditora* $x$, também chamada de *variável independente* ou covariável.
+
+Outra maneira de expressar isso é usando terminologia matemática: modelaremos a variável de resultado $y$ "como uma função" da variável explicativa/preditora $x$. Quando dizemos "função" aqui, não estamos nos referindo a funções em R, como a função `ggplot()`, mas sim como uma função matemática. Mas, por que temos dois rótulos diferentes, explicativo e preditor, para a variável $x$? Isso ocorre porque, embora os dois termos sejam frequentemente usados de forma intercambiável, falando de maneira geral, a modelagem de dados serve a um de dois propósitos:
+
+1.  **Modelagem para explicação**: quando você deseja descrever e quantificar explicitamente a relação entre a variável de resultado $y$ e um conjunto de variáveis explicativas $x$, determinar a significância de quaisquer relações, ter medidas que resumam essas relações e, possivelmente, identificar quaisquer relações causais entre as variáveis.
+
+2.  **Modelagem para previsão**: quando você deseja prever uma variável de resultado $y$ com base nas informações contidas em um conjunto de variáveis preditoras $x$. Diferentemente da modelagem para explicação, no entanto, você não se preocupa tanto em entender como todas as variáveis se relacionam e interagem entre si, mas sim apenas se pode fazer boas previsões sobre $y$ usando as informações de $x$.
+
+Por exemplo, digamos que você está interessado em uma variável de resultado $y$ que indica se pacientes desenvolvem câncer de pulmão e informações $x$ sobre seus fatores de risco, como hábitos de fumar, idade e status socioeconômico. Se estivermos modelando para explicação, estaríamos interessados em descrever e quantificar os efeitos dos diferentes fatores de risco. Um motivo poderia ser que você deseja desenvolver uma intervenção para reduzir a incidência de câncer de pulmão em uma população, como utilizar publicidade para direcionar fumantes de uma faixa etária específica para programas de controle do tabagismo. Se estivermos modelando para previsão, no entanto, não nos importaríamos tanto em entender como todos os fatores de risco individuais contribuem para o câncer de pulmão, mas sim apenas se podemos fazer boas previsões de quais pessoas contrairão câncer de pulmão.
+
+Neste livro, focaremos na modelagem para explicação e, portanto, nos referiremos a $x$ como variáveis explicativas. Se você estiver interessado em aprender sobre modelagem para previsão, sugerimos que você confira livros e cursos na área de aprendizado de máquina (*machine learning*), como [*An Introduction to Statistical Learning with Applications in R (ISLR)*](https://www.statlearning.com/){target="_blank"} [@islr2017]. Além disso, embora existam muitas técnicas para modelagem, como modelos baseados em árvores e redes neurais, neste livro focaremos em uma técnica específica: regressão linear. A regressão linear é uma das abordagens mais comumente usadas e fáceis de entender para modelagem.
+
+A regressão linear envolve uma variável de resultado numérica $y$ e variáveis explicativas $x$ que são numéricas ou categóricas. Além disso, a relação entre $y$ e $x$ é assumida como linear, ou em outras palavras, uma linha. No entanto, veremos que o que constitui uma "linha" variará dependendo da natureza de suas variáveis explicativas x.
+
+No Capítulo 5 sobre regressão básica, consideraremos apenas modelos com uma única variável explicativa $x$. Na @sec-5.1, a variável explicativa será numérica. Esse cenário é conhecido como regressão linear simples. Na Seção 5.2, a variável explicativa será categórica.
+
+No Capítulo 6 sobre regressão múltipla, estenderemos as ideias por trás da regressão básica e consideraremos modelos com duas variáveis explicativas $x_1$ e $x_2$ . Na Seção 6.1, teremos duas variáveis explicativas numéricas. Na Seção 6.2, teremos uma variável explicativa numérica e outra categórica. Em particular, consideraremos dois desses modelos: modelos de interação e de inclinações paralelas.
+
+No Capítulo 10 sobre inferência para regressão, revisitaremos nossos modelos de regressão e analisaremos os resultados usando as ferramentas de inferência estatística que você desenvolverá nos Capítulos 7, 8 e 9 sobre amostragem, bootstrap e intervalos de confiança, e teste de hipóteses e p-valores, respectivamente.
+
+Vamos agora começar com a regressão básica, que se refere a modelos de regressão linear com uma única variável explicativa $x$. Também discutiremos conceitos estatísticos importantes, como o coeficiente de correlação, que "correlação não é necessariamente causalidade" e o que significa para uma linha ser "melhor ajustada".
+
+### Pacotes utilizados {.unnumbered}
+
+Vamos agora carregar todos os pacotes necessários para este capítulo (isso pressupõe que você já os tenha instalado). Neste capítulo, apresentamos alguns pacotes novos:
+
+1.  O pacote "guarda-chuva" `tidyverse` [@tidyverse]. Lembre-se de nossa discussão na Seção 4.4 de que carregar o pacote `tidyverse`, executando `library(tidyverse)`, carrega os seguintes pacotes comumente usados em ciência de dados todos de uma vez:
+
+-   `ggplot2` para visualização de dados
+-   `dplyr` para manipulação de dados
+-   `tidyr` para converter dados para o formato "organizado"
+-   `readr` para importar dados de planilhas para o R
+-   Assim como os pacotes mais avançados `purrr`, `tibble`, `stringr` e `forcats`
+
+2.  O pacote `broom` [@broom] que transforma as saídas de funções básicas do R em *tibbles*\
+3.  O pacote `moderndive`, que contém bancos de dados e funções amigáveis ao tidyverse para o aprendizado introdutório sobre regressão linear.
+4.  O pacote skimr [@skimr], que fornece uma função de fácil utilização para calcular rapidamente uma ampla gama de estatísticas resumidas comumente usadas.
+5.  E o pacote `gapminder` [@gapminder], pois ele tem bancos de dados que também serão utilizados.
+
+Se necessário, leia a Seção 1.3 para informações sobre como instalar e carregar pacotes no R.
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: false
+library(tidyverse)
+library(broom)
+library(moderndive)
+library(skimr)
+library(gapminder)
+```
+
+## Uma variável explicativa numérica {#sec-5.1}
+
+Por que alguns professores e instrutores em universidades e faculdades recebem avaliações altas dos alunos sobre a qualidade do ensino, enquanto outros recebem notas mais baixas? Existem diferenças nas avaliações sobre o ensino entre instrutores de diferentes grupos demográficos? Poderia haver um impacto devido a preconceitos dos alunos? Essas são todas questões de interesse para administradores de universidades e faculdades, pois as avaliações sobre a qualidade do ensino estão entre os muitos critérios considerados para determinar quais instrutores e professores são promovidos.
+
+Pesquisadores da Universidade do Texas em Austin, Texas (UT Austin), tentaram responder à seguinte questão de pesquisa: quais fatores explicam as diferenças nas pontuações de avaliações sobre o ensino dos instrutores? Para isso, eles coletaram informações de instrutores e cursos em 463 cursos. Uma descrição completa do estudo pode ser encontrada em [openintro.org](https://www.openintro.org/){target="_blank"}.
+
+Nesta seção, manteremos as coisas simples por enquanto e tentaremos explicar as diferenças nas pontuações de ensino dos instrutores como uma função de uma variável numérica: a pontuação de "beleza" do instrutor (descreveremos como essa pontuação foi determinada em breve). Instrutores com pontuações de "beleza" mais altas também têm avaliações sobre o ensino mais altas? Em sentido oposto, instrutores com pontuações de "beleza" mais altas tendam a ter avaliações sobre o ensino mais baixas? Não há relação entre a pontuação de "beleza" e as avaliações sobre o ensino? Responderemos a essas perguntas modelando a relação entre as pontuações de ensino e as pontuações de "beleza" usando regressão linear simples, onde temos:
+
+1.  Uma variável de resultado numérica $y$ (a pontuação de ensino do instrutor) e
+2.  Uma única variável explicativa numérica $x$ (a pontuação de "beleza" do instrutor).
+
+### Análise de dados exploratória
+
+Os dados dos 463 cursos na UT Austin podem ser encontrados no banco de dados `evals` incluído no pacote `moderndive`. No entanto, para simplificar, vamos utilizar a função `select()` para lidar apenas com o subconjunto de variáveis que consideraremos neste capítulo e salvar essas variáveis em um novo banco de dados chamado `evals_ch5`. Também vamos utilizar a função `clean_names()` para melhorar os nomes das variáveis e facilitar a digitação:
+
+```{r}
+evals_ch5 <- evals |> 
+  select(ID, score, bty_avg, age) |> 
+  clean_names()
+```
+
+Um passo crucial antes de realizar qualquer tipo de análise ou modelagem é realizar uma análise de dados exploratória (ADE, para abreviar). A ADE oferece uma noção das distribuições das variáveis individuais em seus dados, se existem potenciais relações entre variáveis, se há outliers e/ou valores ausentes, e (o mais importante) como construir seu modelo. Aqui estão três passos comuns em uma ADE:
+
+-   Mais crucialmente, observar os valores dos dados brutos.
+-   Calcular estatísticas descritivas, como médias, medianas e intervalos interquartílicos.
+-   Visualizar os dados.
+
+Vamos realizar o primeiro passo comum em uma ADE: olhar os valores brutos dos dados. Porque este passo parece tão trivial, infelizmente muitos analistas o ignoram. No entanto, ter uma noção inicial sobre a aparência dos seus dados pode, muitas vezes, prevenir problemas maiores mais adiante.
+
+Você pode fazer isso usando o visualizador de planilhas do RStudio ou utilizando a função `glimpse()`, como introduzido na Subseção 1.4.3 sobre exploração de bancos de dados:
+
+```{r}
+evals_ch5 |> 
+  glimpse()
+```
+
+Observe que `Rows: 463` indica que existem 463 linhas/observações em evals_ch5, onde cada linha corresponde a um curso observado na UT Austin. É importante notar que a unidade de observação é um curso individual e não um instrutor individual. Lembre-se da Subseção 1.4.3: a unidade de observação é o "tipo de coisa" que está sendo medida pelas nossas variáveis. Uma vez que os instrutores ensinam mais de um curso em um ano acadêmico, o mesmo instrutor aparecerá mais de uma vez nos dados. Portanto, há menos de 463 instrutores únicos representados em evals_ch5. Revisitaremos essa ideia na Seção 10.3, quando falarmos sobre a "suposição de independência" para inferência na regressão.
+
+Uma descrição completa de todas as variáveis incluídas em `evals` pode ser encontrada em [openintro.org](https://www.openintro.org/){target="_blank"} ou lendo o arquivo de ajuda associado (execute `?evals` no console). No entanto, vamos descrever completamente apenas as 4 variáveis que selecionamos em `evals_ch5`:
+
+-   `id`: Uma variável de identificação usada para distinguir entre os cursos de 1 a 463 no conjunto de dados.
+-   `score`: Uma variável numérica da média das notas de ensino do instrutor do curso, onde a média é calculada a partir das notas de avaliação de todos os alunos nesse curso. Notas de ensino 1 são as mais baixas e 5 são as mais altas. Esta é a variável de resultado $y$ que vamos analisar.
+-   `bty_avg`: Uma variável numérica da média da pontuação de "beleza" do instrutor do curso, onde a média é calculada a partir de um painel separado de seis estudantes. Pontuações de "beleza" 1 são as mais baixas e 10 são as mais altas. Esta é a variável explicativa $x$ que analisaremos.
+-   `age`: Uma variável numérica da idade do instrutor do curso. Esta será outra variável explicativa $x$ que usaremos na "Verificação do aprendizado" no final desta subseção.
+
+Uma maneira alternativa de olhar os valores brutos dos dados é escolhendo uma amostra aleatória das linhas em `evals_ch5` utilizando a função `slice_sample()` do pacote `dplyr`. Aqui definimos o argumento `n` como 5, indicando que queremos uma amostra aleatória de 5 linhas. Exibimos os resultados na Tabela 5.1. Note que, devido à natureza aleatória da amostragem, é provável que você acabe com um subconjunto diferente de 5 linhas.Para garantir evitar essa variação, podemos utilizar a função `set.seed()`, que é usada para definir a semente para a geração de números aleatórios, garantindo a reprodutibilidade dos resultados.
+
+```{r}
+#| eval: false
+set.seed(76)
+
+evals_ch5 |> 
+  slice_sample(n = 5)
+```
+
+```{r}
+#| echo: false
+#| tbl-cap: Tabela 5.1\:\ Uma amostra aleatória de 5 dos 463 cursos da UT Austin
+#| 
+evals_ch5 |> 
+  slice_sample(n = 5) |>  
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("auto", "left", "center", "right"),
+    columns = everything()
+  ) |> 
+  fmt_number(
+    decimals = 1,
+    columns = c(score,bty_avg)
+  )
+```
+
+Agora que observamos os valores brutos no nosso banco de dados `evals_ch5` e obtivemos uma noção preliminar sobre eles, vamos passar para o próximo passo comum em uma ADE: calcular estatísticas descritivas. Vamos começar calculando a média e a mediana da nossa variável de resultado numérica `score` e da nossa variável explicativa numérica "beleza", denominada `bty_avg`. Faremos isso usando a função `summarize()` do `dplyr` junto com as funções `mean()` e `median()` que vimos na Seção 3.3.
+
+```{r}
+evals_ch5 |> 
+  summarise(
+    across(where(is.double),list(
+      M = mean,
+      MD = median)
+    )
+  )
+```
+
+Podemos deixar essa visualização um pouco melhor usando a função `pivot_longer()`.
+
+```{r}
+evals_ch5 %>% 
+  summarise(
+    across(where(is.double), list(
+      "M" = mean,
+      "MD" = median)
+    )
+  ) %>% 
+  pivot_longer(
+    cols = everything(),
+    names_to = c("Variável", ".value"),
+    names_sep = "_(?=[^_]*$)"
+  )
+```
+
+E se também quisermos outras estatísticas descritivas, como o desvio padrão (uma medida de dispersão), os valores mínimos e máximos e vários percentis?
+
+Digitar todas essas funções de estatísticas descritivas na função `summarise()` seria longo e tedioso. Em vez disso, vamos usar a conveniente função `skim()` do pacote `skimr`. Esta função recebe um banco de dados, o "analisa" e retorna estatísticas descritivas comumente usadas. Vamos pegar nosso banco de dados `evals_ch5`, selecionar apenas as variáveis de resultado e explicativas `score` e `bty_avg`, e encaminhá-las para a função `skim()`[^1]:
+
+[^1]: Para fins de formatação neste livro, o histograma que geralmente é impresso com \`skim()\` foi removido. Isso pode ser feito usando \`focus()\`, que atua como a função \`select()\`, mas para selecionar colunas dos resultados analisados. Para maiores informações, consulte a página de referência do pacote [aqui](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html).
+
+```{r render = knitr::normal_print}
+evals_ch5 |> 
+  select(score,bty_avg) |> 
+  skim() |> 
+  focus(!numeric.hist)
+```
+
+Para as variáveis numéricas `score` (nota de ensino) e `bty_avg` (nota de beleza), ela retorna:
+
+-   n_missing: o número de valores ausentes
+-   complete_rate: o percentual de valores não ausentes ou completos
+-   mean: a média
+-   sd: o desvio padrão
+-   p0: o percentil 0, o valor no qual 0% das observações são menores do que ele (o valor mínimo)
+-   p25: o percentil 25, o valor no qual 25% das observações são menores do que ele (o 1º quartil)
+-   p50: o percentil 50, o valor no qual 50% das observações são menores do que ele (o 2º quartil e mais comumente chamado de mediana)p75: o percentil 75: o valor no qual 75% das observações são menores do que ele (o 3º quartil)
+-   p100: o percentil 100. o valor no qual 100% das observações são menores do que ele (o valor máximo)
+
+Olhando para essa saída, podemos ver como os valores de ambas as variáveis se distribuem. Por exemplo, a média da nota de ensino foi 4.17 de 5, enquanto a média da pontuação de "beleza" foi 4.42 de 10. Além disso, a faixa que engloba o meio dos valores das notas de ensino, ou seja, excluindo os 25% mais baixos e os 25% mais altos, variava de 3.80 a 4.6. Esses valores correspondem ao primeiro quartil (25% mais baixos) e ao terceiro quartil (75% mais altos), respectivamente. Para as pontuações de 'beleza', os valores que se encontram na metade central da distribuição, isto é, excluindo os 25% mais baixos e os 25% mais altos, variavam de 3.17 a 5.5 de 10. Estes valores representam, respectivamente, o primeiro quartil (25% inferior) e o terceiro quartil (25% superior) das pontuações.
+
+A função `skim()` retorna apenas o que são conhecidas como estatísticas descritivas univariadas: funções que pegam uma única variável e retornam algum resumo numérico dessa variável. No entanto, também existem estatísticas descritivas bivariadas: funções que levam em conta duas variáveis e retornam algum resumo dessas duas variáveis. Em particular, quando as duas variáveis são numéricas, podemos calcular o coeficiente de correlação. De forma geral, os coeficientes são expressões quantitativas de um fenômeno específico. Um coeficiente de correlação é uma expressão quantitativa da força da relação linear entre duas variáveis numéricas. Seu valor varia entre -1 e 1, onde:
+
+-   -1 indica uma relação negativa perfeita: à medida que uma variável aumenta, o valor da outra variável tende a diminuir, seguindo uma linha reta.
+-   0 indica nenhuma relação: os valores de ambas as variáveis aumentam ou diminuem independentemente um do outro.
+-   +1 indica uma relação positiva perfeita: à medida que o valor de uma variável sobe, o valor da outra variável tende a subir também de maneira linear.
+
+A Figura 5.1 apresenta exemplos de 9 diferentes valores de coeficientes de correlação para variáveis numéricas hipotéticas $x$ e $y$. Por exemplo, observe no gráfico superior direito que, para um coeficiente de correlação de -0.75, existe uma relação linear negativa entre $x$ e $y$, mas ela não é tão forte quanto a relação linear negativa entre $x$ e $y$ quando o coeficiente de correlação é -0.9 ou -1.
+
+```{r}
+#| echo: false
+correlation <- c(-0.9999, -0.9, -0.75, -0.3, 0, 0.3, 0.75, 0.9, 0.9999)
+n_sim <- 100
+values <- NULL
+for (i in seq_along(correlation)) {
+  rho <- correlation[i]
+  sigma <- matrix(c(5, rho * sqrt(50), rho * sqrt(50), 10), 2, 2)
+  sim <- rmvnorm(
+    n = n_sim,
+    mean = c(20, 40),
+    sigma = sigma
+  ) %>%
+    as.data.frame() %>%
+    as_tibble() %>%
+    mutate(correlation = round(rho, 2))
+  
+  values <- bind_rows(values, sim)
+}
+
+values <- values |> 
+  clean_names()
+```
+
+```{r}
+#| echo: false
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-cap-location: bottom
+#| fig-cap: "Figura 5.1: Nove coeficientes de correlação diferentes"
+#| fig-alt: A imagem exibe uma matriz de nove gráficos de dispersão, dispostos em três linhas e três colunas, demonstrando a relação entre duas variáveis, X e Y, com níveis variados de correlação de Pearson. Cada gráfico é marcado com um coeficiente de correlação que varia de -1 a 1, onde o gráfico no canto superior esquerdo mostra uma correlação negativa perfeita (-1) com pontos alinhados em uma linha decrescente, e o gráfico no canto inferior direito mostra uma correlação positiva perfeita (1) com pontos alinhados em uma linha crescente. Os gráficos intermediários exibem padrões de pontos com variações de correlação positiva e negativa, desde dispersões aleatórias sem tendência aparente (0) até tendências mais definidas, ilustrando visualmente como a correlação varia desde perfeitamente negativa até perfeitamente positiva.
+
+values |> 
+  ggplot(aes(v1, v2)) +
+  geom_point() +
+  facet_wrap(~ correlation, ncol = 3) +
+  labs(x = "x", y = "y") +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
+O coeficiente de correlação pode ser calculado usando a função cor() com a função summarize().
+
+```{r}
+evals_ch5  |>  
+  summarize("correlação" = cor(score, bty_avg))
+```
+
+```{r}
+#| echo: false
+cor_ch5 <- evals_ch5 %>%
+  summarize(correlation = cor(score, bty_avg)) %>%
+  round(3) %>%
+  pull()
+```
+
+No nosso caso, o coeficiente de correlação de `r cor_ch5` indica que a relação entre a nota de avaliação do ensino e a média de "beleza" é positiva e fraca. Existe uma certa subjetividade na interpretação dos coeficientes de correlação, especialmente aqueles que não estão próximos dos valores extremos de -1, 0 e 1. Para desenvolver sua intuição sobre coeficientes de correlação, jogue o jogo de video game estilo anos 1980 , "Adivinhe a Correlação", mencionado na subseção 5.4.1.
+
+Vamos agora realizar o último dos passos em uma ADE: criar visualizações dos dados. Como as variáveis `score` e `bty_avg` são numéricas, um gráfico de dispersão é apropriado para visualizar a relação entre elas. Vamos fazer isso usando geom_point() e exibir o resultado na Figura 5.2. Além disso, vamos destacar os seis pontos no canto superior direito da visualização em uma caixa.
+
+```{r}
+#| label: numxplot1
+#| fig-cap: "Figura 5.2: Pontuações de avaliação do instrutor na UT Austin"
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-cap-location: bottom
+#| fig-alt: A imagem apresenta um gráfico de dispersão intitulado "Gráfico de dispersão sobre as pontuações de ensino e beleza". No eixo horizontal, temos a "Pontuação de beleza" que varia aproximadamente de 1 a 8. No eixo vertical, encontram-se as "Pontuações de ensino", que variam de cerca de 2 a 5. Uma grande quantidade de pontos cinza está distribuída pelo gráfico. Há uma concentração de pontos ao longo do eixo de beleza entre 5 e 8, com pontuações de ensino entre 3 e 4. No canto superior direito, dentro de um retângulo vermelho, há um agrupamento de pontos indicando menos casos em que altas pontuações de beleza coincidem com altas pontuações de ensino.
+margin_x <- 0.15
+margin_y <- 0.075
+box <- tibble(
+  x = c(7.83, 8.17, 8.17, 7.83, 7.83) + c(-1, 1, 1, -1, -1) * margin_x,
+  y = c(4.6, 4.6, 5, 5, 4.6) + c(-1, -1, 1, 1, -1) * margin_y
+)
+
+evals_ch5 |> 
+  ggplot(aes(bty_avg,score)) +
+  geom_point(alpha = 0.15) + 
+  labs(
+    x = "Pontuação de beleza", 
+    y = "Pontuação de ensino",
+    title = "Gráfico de dispersão sobre a relação entre \nas pontuações de ensino e beleza"
+  ) + 
+  geom_path(data = box, aes(x = x, y = y), 
+            col = "red", linewidth = 1)
+```
+
+Observe que a maioria das pontuações de "beleza" fica entre 2 e 8, enquanto a maioria das notas de ensino fica entre 3 e 5. Além disso, embora as opiniões possam variar, acreditamos que a relação entre a nota de ensino e a pontuação de "beleza" é fraca e positiva. Isso é consistente com nosso coeficiente de correlação calculado anteriormente de 0.187.
+
+Além disso, parece haver seis pontos no canto superior direito deste gráfico destacados na caixa. No entanto, isso não é realmente o caso, pois este gráfico sofre de sobreposição. Lembre-se da Subseção 2.3.2 que a sobreposição ocorre quando vários pontos estão empilhados diretamente uns sobre os outros, tornando difícil distingui-los. Então, embora possa parecer que há apenas seis pontos na caixa, na verdade há mais. Esse fato só fica aparente ao usar `geom_jitter()` no lugar de `geom_point()`. Exibimos o gráfico resultante na Figura 5.3 junto com a mesma pequena caixa da Figura 5.2.
+
+```{r}
+#| label: numxplot2
+#| fig-cap: "Figura 5.3: Pontuações de avaliação do instrutor na UT Austin"
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-cap-location: bottom
+#| fig-alt: A imagem é de um gráfico de dispersão cinza intitulado "Gráfico de dispersão sobre as relações entre as pontuações de ensino e beleza (com jitter)". No eixo horizontal, denominado "Pontuação de beleza", os valores vão de aproximadamente 1 a 8. No eixo vertical, rotulado como "Pontuação de ensino", as pontuações variam de aproximadamente 2 a 5. Os pontos de dispersão, em tons de cinza, estão espalhados por todo o gráfico. A técnica de jitter foi aplicada para evitar sobreposição de pontos, o que permite uma melhor visualização da densidade e distribuição dos dados. No canto superior direito, dentro de um retângulo vermelho, há um conjunto de pontos que parece ser mais disperso que o restante, indicando algumas observações onde altas pontuações de beleza coincidem com as pontuações de ensino mais altas, embora essa tendência não seja forte no conjunto de dados como um todo.
+
+evals_ch5 |> 
+  ggplot(aes(bty_avg,score)) +
+  geom_jitter(alpha = 0.15) + 
+  labs(
+    x = "Pontuação de beleza", 
+    y = "Pontuação de ensino",
+    title = "Gráfico de dispersão sobre as relações entre \nas pontuações de ensino e beleza (com jitter)"
+  ) +
+  geom_path(data = box, aes(x = x, y = y), col = "red", linewidth = 1)
+```
+
+Agora está claro que há 12 pontos na área destacada na caixa e não seis, como originalmente sugerido na Figura 5.2. Lembre-se da Subseção 2.3.2, sobre sobreposição, que o jittering adiciona um pequeno "empurrão" aleatório a cada um dos pontos para desfazer essas sobreposições. Além disso, lembre-se de que o jittering é estritamente uma ferramenta de visualização; ele não altera os valores originais no banco de dados `evals_ch5`. No entanto, para simplificar daqui para frente, apresentaremos apenas gráficos de dispersão regulares em vez de suas versões com jittering.
+
+Vamos aprimorar o gráfico de dispersão sem jitter da Figura 5.2 adicionando uma linha de "melhor ajuste": de todas as possíveis linhas que podemos desenhar neste gráfico, é a linha que melhor se ajusta à nuvem de pontos. Fazemos isso adicionando uma nova camada `geom_smooth(method = "lm", se = FALSE)` ao código `ggplot()` que criou o gráfico de dispersão na Figura 5.2. O argumento `method = "lm"` define a linha como um "modelo linear". O argumento `se = FALSE` suprime as barras de visualização dos intervalos de confiança do erro padrão (Definiremos o conceito de erro padrão mais tarde na Subseção 7.3.2.).
+
+```{r}
+#| label: numxplot3
+#| warning: false
+#| fig-cap: "Figura 5.4: Linha de regressão"
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-cap-location: bottom
+#| fig-alt: A imagem mostra um gráfico de dispersão em preto e branco com o título "Gráfico de dispersão sobre as relações entre as pontuações de ensino e beleza". Pontos pretos representam dados individuais em um plano de fundo branco, dispostos ao longo de um espaço que representa as duas variáveis medidas. O eixo horizontal, marcado como "Pontuação de beleza", estende-se de 2 a 8, enquanto o eixo vertical, marcado como "Pontuação de ensino", varia de 3 a 5. Os pontos estão espalhados de forma a sugerir uma leve tendência positiva à medida que a pontuação de beleza aumenta, o que é reforçado por uma linha reta preta que atravessa os dados, indicando a direção geral da relação entre as variáveis. Não há uma correlação perfeita, como evidenciado pela dispersão dos pontos em torno da linha.
+evals_ch5 |> 
+  ggplot(aes(bty_avg,score, alpha = 0.1)) +
+  geom_point() + 
+  labs(
+    x = "Pontuação de beleza", 
+    y = "Pontuação de ensino",
+    title = "Gráfico de dispersão sobre as relações entre \nas pontuações de ensino e beleza",
+  ) + 
+  geom_smooth(method = "lm", se = FALSE,
+              color = "black") +
+  theme(
+    legend.position = "none"
+  )
+```
+
+A linha no resultado da Figura 5.4 é chamada de "linha de regressão". A linha de regressão é um resumo visual da relação entre duas variáveis numéricas, no nosso caso a variável de resultado `score` e a variável explicativa `bty_avg`. A inclinação positiva da linha azul é consistente com nosso coeficiente de correlação observado anteriormente de 0.187, sugerindo que existe uma relação positiva entre essas duas variáveis: à medida que os instrutores têm pontuações de "beleza" mais altas, eles também recebem avaliações de ensino mais altas. Veremos mais tarde, no entanto, que enquanto o coeficiente de correlação e a inclinação de uma linha de regressão sempre têm o mesmo sinal (positivo ou negativo), eles tipicamente não têm o mesmo valor.
+
+Além disso, uma linha de regressão é "melhor ajustada" no sentido de que minimiza alguns critérios matemáticos. Apresentamos esses critérios matemáticos na Subseção 5.3.2, mas sugerimos que você leia esta subseção apenas depois de ler primeiro o resto desta seção sobre regressão com uma variável explicativa numérica.
+
+::: callout-note
+## Verificação do aprendizado
+
+(VA5.1) Realize uma nova análise exploratória de dados com a mesma variável de resultado $y$ sendo `score`, mas com `age` como a nova variável explicativa $x$. Lembre-se, isso envolve três coisas:
+
+1.  Olhar os valores brutos dos dados.
+2.  Calcular estatísticas descritivas.
+3.  Criar visualizações de dados.
+
+Com base nesta exploração, o que você pode dizer sobre a relação entre idade e pontuações de ensino?
+:::
+
+### Regressão linear simples
+
+Você pode se lembrar da álgebra do ensino médio que a equação de uma linha é $y = a + b \cdot x$ (note que o símbolo $\cdot$ é equivalente ao símbolo matemático "multiplicar por" $\times$. Usaremos o símbolo $\cdot$ no restante deste livro, pois é mais sucinto). Ela é definida por dois coeficientes $a$ e $b$. O coeficiente de interceptação $a$ é o valor de $y$ quando $x = 0$. O coeficiente de inclinação $b$ para $x$ é o aumento em $y$ para cada aumento de um ponto em $x$. Isso também é chamado de "taxa de variação". É possível visualizar essa relação na Figura 5.5, onde $a$ é igual a 2 e $b$ é igual a 3 ($y = 2 + 3 \cdot x$)
+
+```{r}
+x <- c(0,1,2,3,4)
+
+y <- 2 + 3*x
+
+reg_line <- tibble(x,y)
+
+reg_line
+```
+
+```{r}
+#| label: numxplot5
+#| warning: false
+#| fig-cap: "Figura 5.5: Exemplo de Linha que mostra relação entre x e y"
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-cap-location: bottom
+#| fig-alt: A imagem exibe um gráfico de linhas com um fundo branco, mostrando uma função linear ascendente. O eixo horizontal (X) se estende de 0 a 4 e o eixo vertical (Y) de 0 a 14, com linhas de grade pontilhadas para facilitar a leitura dos valores. Uma linha reta azul conecta quatro pontos de dados, marcados por pontos vermelhos, indicando uma relação proporcional direta entre X e Y. A linha começa no ponto (0,2) e passa por pontos equidistantes no eixo X, terminando no ponto (4,14). Este gráfico sugere que, à medida que X aumenta, Y aumenta em uma taxa constante.
+reg_line |> 
+  ggplot(aes(x,y)) +
+  geom_smooth(
+    method = "lm", se = F,
+    color = "blue"
+    ) +
+  geom_point(
+    color = "red",size = 2
+    ) +
+  geom_segment(aes(xend = x, yend = 0), 
+               linetype = "dashed", 
+               color = "black") +
+  geom_segment(aes(xend = 0, yend = y), 
+               linetype = "dashed", 
+               color = "black") + 
+  scale_y_continuous(breaks = c(2, 5, 8, 11, 14)) +
+  scale_color_colorblind()
+```
+
+No entanto, ao definir uma linha de regressão, como na Figura 5.4, usamos uma notação ligeiramente diferente: a equação da linha de regressão é $\hat{y} = b_0 + b_1 \cdot x$. O coeficiente de interceptação é $b_0$, então $b_0$ é o valor de $\hat{y}$ quando $x = 0$. O coeficiente de inclinação para $x$ é $b_1$, ou seja, o aumento em $\hat{y}$ para cada aumento de um em $x$. Por que colocamos um "chapéu" (acento circunflexo) em cima do $y$? É uma forma de notação comumente usada em regressão para indicar que temos um "valor ajustado", ou o valor de $y$ na linha de regressão para um dado valor de $x$. Discutiremos isso mais na próxima Subseção 5.1.3.
+
+Sabemos que a linha de regressão na Figura 5.4 tem uma inclinação positiva $b_1$ correspondente à nossa variável explicativa $x$ `bty_avg`. Por quê? Porque à medida que os instrutores tendem a ter pontuações `bty_avg` mais altas, eles também tendem a ter pontuações de avaliação de ensino mais altas. No entanto, qual é o valor numérico da inclinação $b_1$? E quanto ao intercepto $b_0$? Não vamos calcular esses dois valores à mão, mas sim usar um computador!
+
+Podemos obter os valores do intercepto $b_0$ e a inclinação para bty_avg $b_1$ exibindo uma tabela de regressão linear. Isso é feito em duas etapas:
+
+1.  Primeiro, "ajustamos" o modelo de regressão linear usando a função `lm()` e o salvamos em `score_model`.
+2.  Obtemos a tabela de regressão aplicando a função tidy() do pacote `broom` em `score_model`.

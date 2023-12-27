@@ -811,4 +811,3 @@ tabela_de_regressao_cat
 #| code-fold: true
 dif
 ```
-

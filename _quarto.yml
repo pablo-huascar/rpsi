@@ -54,8 +54,9 @@ format:
   html:
     code-link: true
     code-line-numbers: false
-    theme: cosmo
-    css: styles.css
+    theme: 
+      - cosmo
+      - styles.scss
     toc: true
     code-copy: true
 

@@ -4,6 +4,6 @@ title: "Regressão Linear"
 
 ## Slides, videos, exercícios e material bibliográfico
 
-![](images/slide.png){width="18"} [Slides](modulo_regressao.qmd){target="_blank"}
+![](images/slide.png){width="18"} [Slides: regressão linear simples](modulo_regressao.qmd){target="_blank"}
 
 ![](images/e-book.png){width="18"} [Material bibliográfico](md_apresentacao.qmd){target="_blank"}
