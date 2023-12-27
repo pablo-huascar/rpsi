@@ -13,6 +13,12 @@ code-tools: true
 code-line-numbers: false
 ---
 
+```{r}
+#| echo: false
+# Corrigir as referências cruzadas de tabelas, figuras e seções
+# Tornar dinâmicas informações sobre análises que estão dentro do texto.
+```
+
 # Capítulo 5: Regressão Básica {#sec-regressao_basica .unnumbered}
 
 ```{r}
@@ -136,7 +142,7 @@ Uma descrição completa de todas as variáveis incluídas em `evals` pode ser e
 -   `bty_avg`: Uma variável numérica da média da pontuação de "beleza" do instrutor do curso, onde a média é calculada a partir de um painel separado de seis estudantes. Pontuações de "beleza" 1 são as mais baixas e 10 são as mais altas. Esta é a variável explicativa $x$ que analisaremos.
 -   `age`: Uma variável numérica da idade do instrutor do curso. Esta será outra variável explicativa $x$ que usaremos na "Verificação do aprendizado" no final desta subseção.
 
-Uma maneira alternativa de olhar os valores brutos dos dados é escolhendo uma amostra aleatória das linhas em `evals_ch5` utilizando a função `slice_sample()` do pacote `dplyr`. Aqui definimos o argumento `n` como 5, indicando que queremos uma amostra aleatória de 5 linhas. Exibimos os resultados na Tabela 5.1. Note que, devido à natureza aleatória da amostragem, é provável que você acabe com um subconjunto diferente de 5 linhas.Para garantir evitar essa variação, podemos utilizar a função `set.seed()`, que é usada para definir a semente para a geração de números aleatórios, garantindo a reprodutibilidade dos resultados.
+Uma maneira alternativa de olhar os valores brutos dos dados é escolhendo uma amostra aleatória das linhas em `evals_ch5` utilizando a função `slice_sample()` do pacote `dplyr`. Aqui definimos o argumento `n` como 5, indicando que queremos uma amostra aleatória de 5 linhas. Exibimos os resultados na @tbl-amostra. Note que, devido à natureza aleatória da amostragem, é provável que você acabe com um subconjunto diferente de 5 linhas.Para garantir evitar essa variação, podemos utilizar a função `set.seed()`, que é usada para definir a semente para a geração de números aleatórios, garantindo a reprodutibilidade dos resultados.
 
 ```{r}
 #| eval: false
@@ -148,8 +154,8 @@ evals_ch5 |>
 
 ```{r}
 #| echo: false
-#| tbl-cap: Tabela 5.1\:\ Uma amostra aleatória de 5 dos 463 cursos da UT Austin
-#| 
+#| label: tbl-amostra
+#| tbl-cap: Uma amostra aleatória de 5 dos 463 cursos da UT Austin
 evals_ch5 |> 
   slice_sample(n = 5) |>  
   gt() |> 
@@ -158,7 +164,7 @@ evals_ch5 |>
     heading.align ="center"
   ) |> 
   cols_align(
-    align = c("auto", "left", "center", "right"),
+    align = c("center"),
     columns = everything()
   ) |> 
   fmt_number(
@@ -402,7 +408,7 @@ reg_line
 ```{r}
 #| label: numxplot5
 #| warning: false
-#| fig-cap: "Figura 5.5: Exemplo de Linha que mostra relação entre x e y"
+#| fig-cap: "Figura 5.5: Exemplo de linha que mostra relação entre x e y"
 #| out-width: 70%
 #| fig-dpi: 600
 #| fig-cap-location: bottom
@@ -412,10 +418,10 @@ reg_line |>
   geom_smooth(
     method = "lm", se = F,
     color = "blue"
-    ) +
+  ) +
   geom_point(
     color = "red",size = 2
-    ) +
+  ) +
   geom_segment(aes(xend = x, yend = 0), 
                linetype = "dashed", 
                color = "black") +
@@ -433,4 +439,50 @@ Sabemos que a linha de regressão na Figura 5.4 tem uma inclinação positiva $b
 Podemos obter os valores do intercepto $b_0$ e a inclinação para bty_avg $b_1$ exibindo uma tabela de regressão linear. Isso é feito em duas etapas:
 
 1.  Primeiro, "ajustamos" o modelo de regressão linear usando a função `lm()` e o salvamos em `score_model`.
-2.  Obtemos a tabela de regressão aplicando a função tidy() do pacote `broom` em `score_model`.
+2.  Obtemos a tabela de regressão aplicando a função tidy() do pacote [`broom`](https://broom.tidymodels.org/) em `score_model`.
+
+```{r}
+# Ajuste o modelo de regressão
+
+score_model <- lm(score ~ bty_avg, data = evals_ch5)
+
+score_model |> 
+  tidy(conf.int = T) |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x, 3))
+  )
+    
+```
+
+Podemos melhorar essa visualização utilizando uma tabela:
+
+```{r}
+#| label: tbl-regressao
+#| tbl-cap: Resultados da regressão linear
+#| tbl-cap-location: top
+score_model |> 
+  tidy(conf.int = T) |> 
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) |> 
+ fmt_number(
+    decimals = 3,
+    )
+```
+
+Vamos primeiro focar em interpretar a saída da tabela de regressão na @tbl-regressao. Na coluna de estimativa da Tabela 2 estão o intercepto $b_0 = 3.88$ e a inclinação $b_1 = 0.067$ para bty_avg. Assim, a equação da linha de regressão na Figura 5.4 é a seguinte:
+
+$$
+\begin{align*}
+\widehat{y} &= b_0 + b_1 \cdot x \\
+\widehat{\text{score}} &= b_0 + b_{\text{bty\_avg}} \cdot \text{bty\_avg} \\
+&= 3.88 + 0.067 \cdot \text{bty\_avg}\\
+\end{align*}
+$$ O intercepto $b_0 = 3.88$ é a nota média de ensino $\hat{y} = \widehat{score}$ para aqueles cursos onde o instrutor tinha uma pontuação de "beleza" bty_avg de 0. Ou, em termos gráficos, é onde a linha intersecta o eixo $y$ quando $x = 0$. No entanto, observe que, embora o intercepto da linha de regressão tenha uma interpretação matemática, ele não tem uma interpretação prática aqui, já que observar um bty_avg de 0 é impossível; ele é a média das pontuações de "beleza" de seis avaliadores, variando de 1 a 10. Além disso, olhando para o gráfico de dispersão com a linha de regressão na Figura 5.4, nenhum instrutor tinha uma pontuação de "beleza" próxima de 0.
