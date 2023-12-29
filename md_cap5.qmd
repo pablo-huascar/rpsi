@@ -122,7 +122,7 @@ Nesta seção, manteremos as coisas simples por enquanto e tentaremos explicar a
 1.  Uma variável de resultado numérica $y$ (a pontuação de ensino do instrutor) e
 2.  Uma única variável explicativa numérica $x$ (a pontuação de "beleza" do instrutor).
 
-### Análise de dados exploratória
+### Análise de dados exploratória {#sec-5.1.1}
 
 Os dados dos 463 cursos na UT Austin podem ser encontrados no banco de dados `evals` incluído no pacote `moderndive`. No entanto, para simplificar, vamos utilizar a função `select()` para lidar apenas com o subconjunto de variáveis que consideraremos neste capítulo e salvar essas variáveis em um novo banco de dados chamado `evals_ch5`. Também vamos utilizar a função `clean_names()` para melhorar os nomes das variáveis e facilitar a digitação:
 
@@ -411,7 +411,7 @@ Realize uma nova análise exploratória de dados com a mesma variável de result
 Com base nesta exploração, o que você pode dizer sobre a relação entre idade e pontuações de ensino?
 :::
 
-### Regressão linear simples
+### Regressão linear simples {#sec-5.1.2}
 
 Você pode se lembrar da álgebra do ensino médio que a equação de uma linha é $y = a + b \cdot x$ (note que o símbolo $\cdot$ é equivalente ao símbolo matemático "multiplicar por" $\times$. Usaremos o símbolo $\cdot$ no restante deste livro, pois é mais sucinto). Ela é definida por dois coeficientes $a$ e $b$. O coeficiente de interceptação $a$ é o valor de $y$ quando $x = 0$. O coeficiente de inclinação $b$ para $x$ é o aumento em $y$ para cada aumento de um ponto em $x$. Isso também é chamado de "taxa de variação". É possível visualizar essa relação na @fig-55, onde $a$ é igual a 2 e $b$ é igual a 3 ($y = 2 + 3 \cdot x$)
 
@@ -550,7 +550,7 @@ Por último, você pode estar se perguntando o que são as cinco colunas restant
 Ajuste uma nova regressão linear simples usando `lm(score ~ age, data = evals_ch5)`, onde `age` (idade) é a nova variável explicativa `$x$`. Obtenha informações sobre a linha de "melhor ajuste" da tabela de regressão aplicando a função `tidy()`. Como os resultados da regressão se alinham com os resultados de sua análise exploratória de dados anterior?
 :::
 
-### Valores observados/ajustados e resíduos
+### Valores observados/ajustados e resíduos {#sec-5.1.3}
 
 Acabamos de ver como obter o valor do intercepto e da inclinação de uma linha de regressão a partir da coluna de estimativa de uma tabela de regressão gerada pela função `tidy()`. Agora, digamos que queremos informações sobre observações individuais. Por exemplo, vamos nos concentrar no 21º dos 463 cursos no banco de dados `evals_ch5` na @tbl-53:
 
@@ -718,7 +718,7 @@ Usaremos esses dados para regressão básica novamente, mas agora usando uma var
 
 Quando a variável explicativa $x$ é categórica, o conceito de uma linha de regressão "melhor ajustada" é um pouco diferente do que vimos anteriormente na Seção 5.1, onde a variável explicativa $x$ era numérica. Estudaremos essas diferenças em breve na Subseção 5.2.2, mas primeiro realizamos uma análise de dados exploratória.
 
-### Análise de dados exploratória
+### Análise de dados exploratória {#sec-5.2.1}
 
 Os dados dos 142 países estão disponíveis no banco de dados gapminder, incluído no pacote gapminder. No entanto, para simplificar, vamos usar a função filter() para selecionar apenas aquelas observações/linhas correspondentes ao ano de 2007. Adicionalmente, vamos utilizar a função select() para escolher apenas o subconjunto de variáveis que consideraremos neste capítulo. Salvaremos esses dados em um novo banco de dados chamado gapminder2007:
 
@@ -934,7 +934,7 @@ gapminder2007 |>
   group_by(continent) |> 
   summarise(
     Média = mean(life_exp),
-    ) |> 
+  ) |> 
   mutate(
     "Diferença em relação à África" = Média - lifeExp_by_continent[[1,3]]
   ) |> 
@@ -972,6 +972,149 @@ gapminder2007 |>
 Realize uma nova análise exploratória de dados com a mesma variável explicativa $x$ sendo `continent`, mas com `gdppercap` como a nova variável de resultado $y$. O que você pode dizer sobre as diferenças no PIB per capita entre continentes com base nesta exploração?
 :::
 
+### Regressão Linear {#sec-5.2.2}
 
+Na Subseção @sec-5.1.2, introduzimos a regressão linear simples, que envolve a modelagem da relação entre uma variável de resultado numérica $y$ e uma variável explicativa numérica $x$. No nosso exemplo de expectativa de vida, agora temos, em vez disso, uma variável explicativa categórica `continent`. Nosso modelo não fornecerá uma linha de regressão de "melhor ajuste" como na Figura 5.4, mas sim desvios relativos a uma linha de base para comparação.
 
+Assim como fizemos na Subseção @sec-5.1.2 ao estudar a relação entre as notas de ensino e as pontuações de "beleza", vamos exibir a tabela de regressão para este modelo. Lembre-se de que isso é feito em duas etapas:
 
+1.  Primeiro, "ajustamos" o modelo de regressão linear usando a função `lm(y ~ x, data)` e salvamos no objeto `lifeExp_model`.
+2.  Obtemos a tabela de regressão aplicando a função `tidy()` do pacote `broom` ao `lifeExp_model`.
+
+```{r}
+lifeExp_model <- lm(life_exp ~ continent, data = gapminder2007)
+```
+
+```{r}
+lifeExp_model |> 
+  tidy(conf.int = T) |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x, 1))
+  )
+```
+
+```{r}
+#| label: tbl-58
+#| tbl-cap: Tabela da regressão linear
+lifeExp_model |> 
+  tidy(conf.int = T) |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x, 1))
+  ) |> 
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) |> 
+  fmt_number(
+    decimals = 1,
+  )
+```
+
+Vamos nos concentrar novamente nos valores nas colunas termo e estimativa da Tabela @tbl-58. Por que há agora 5 linhas? Vamos analisá-las uma a uma:
+
+-   intercept corresponde à expectativa de vida média dos países da África, que é de 54,8 anos.
+-   continentAmericas corresponde aos países das Américas e o valor +18,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países das Américas é 54,8 + 18,8 = 73,6.
+-   continentAsia corresponde aos países da Ásia e o valor +15,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Ásia é 54,8 + 15,9 = 70,7.
+-   continentEurope corresponde aos países da Europa e o valor +22,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Europa é 54,8 + 22,8 = 77,6.
+-   continentOceania corresponde aos países da Oceania e o valor +25,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Oceania é 54,8 + 25,9 = 80,7.
+
+Para resumir, os cinco valores na coluna estimativa na @tbl-58 correspondem a linha de base para comparação da África (o intercepto) e também quatro desvios desse linha de base para os quatro continentes restantes: as Américas, Ásia, Europa e Oceania.
+
+Você pode estar se perguntando por que a África foi escolhida como o grupo de linha de base para comparação. Isso acontece simplesmente porque ela vem primeiro em ordem alfabética dos cinco continentes; por padrão, o R organiza fatores/variáveis categóricas em ordem alfanumérica. Você pode mudar esse grupo de baseline para ser outro continente se manipular os “níveis” do fator da variável continente usando o pacote [forcats](https://forcats.tidyverse.org/). Veja o Capítulo 16 de [R for Data Science](https://r4ds.hadley.nz/) [@wickham2023rdata] para exemplos.
+
+Agora, vamos escrever a equação para os nossos valores ajustados $\hat{y} = \widehat{life exp}$.
+
+$$
+\begin{align*}
+\hat{y} = \widehat{\text{life exp}} &= b_0 + b_{\text{Amer}} \cdot 1_{\text{Amer}}(x) + b_{\text{Asia}} \cdot 1_{\text{Asia}}(x) + \\ 
+&\quad + b_{\text{Euro}} \cdot 1_{\text{Euro}}(x) + b_{\text{Ocean}} \cdot 1_{\text{Ocean}}(x)\\ 
+&= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + \\
+&\quad + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x)
+\end{align*}
+$$
+
+Ufa! Isso parece assustador! Mas não se preocupe, pois uma vez que você entenda o que todos os elementos significam, as coisas se simplificam bastante. Primeiro, $1_{A}(x)$ é o que é conhecido em matemática como uma "função indicadora". Ela retorna apenas um dos dois possíveis valores, 0 e 1, onde
+
+$$
+\begin{equation*}
+\mathbb1_{\text{A}}(x) = \left\{
+\begin{aligned}
+&1 && \text{se } x \text{ está em } A \\
+&0 && \text{se } x \text{ não está em } A 
+\end{aligned}
+\right.
+\end{equation*}
+$$
+
+No contexto de modelagem estatística, isso também é conhecido como uma variável dummy. No nosso caso, considere a primeira variável indicadora $1_{Amer}(x)$. Esta função indicadora retorna 1 se um país está nas Américas, 0 caso contrário:
+
+$$
+\begin{equation*}
+\mathbb1_{\text{Amer}}(x) = \left\{
+\begin{aligned}
+&1 && \text{se o país } x \text{ está nas Américas} \\
+&0 && \text{caso contrário}
+\end{aligned}
+\right.
+\end{equation*}
+$$
+
+Segundo, $b_0$ corresponde ao intercepto como antes; neste caso, é a expectativa de vida média de todos os países da África. Terceiro, os $b_{Amer}$, $b_{Asia}$, $b_{Euro}$ e $b_{Ocean}$ representam os 4 desvios relativos à linha de base para comparação na saída da regressão na @tbl-58: `continentAméricas`, `continentÁsia`, `continentEuropa` e `continentOceania`.
+
+Vamos juntar tudo isso e calcular o valor ajustado $\hat{y} = \widehat{life exp}$ para um país na África. Como o país está na África, todas as quatro funções indicadoras $1_{Amer}(x)$, $1_{Asia}(x)$, $1_{Euro}(x)$ e $1_{Ocean}(x)$ serão iguais a 0, e, portanto:
+
+1_{\text{Amer}}(x)
+
+$$
+\begin{align*}
+\widehat{\text{life exp}} &= b_0 + b_{\text{Amer}} \cdot \mathbb1_{\text{Amer}}(x) + b_{\text{Asia}} \cdot \mathbb1_{\text{Asia}}(x) + \\ 
+&\quad + b_{\text{Euro}} \cdot \mathbb1_{\text{Euro}}(x) + b_{\text{Ocean}} \cdot \mathbb1_{\text{Ocean}}(x) \\ 
+&= 54.8 + 18.8 \cdot \mathbb1_{\text{Amer}}(x) + 15.9 \cdot \mathbb1_{\text{Asia}}(x) + \\ 
+&\quad + 22.8 \cdot \mathbb1_{\text{Euro}}(x) + 25.9 \cdot \mathbb1_{\text{Ocean}}(x) \\ 
+&= 54.8 + 18.8 \cdot 0 + 15.9 \cdot 0 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
+&= 54.8
+\end{align*}
+$$
+Em outras palavras, tudo o que resta é o intercepto b_0, correspondente à expectativa de vida média dos países africanos de 54,8 anos. A seguir, digamos que estamos considerando um país das Américas. Neste caso, apenas a função indicadora 1_{Amer}(x) para as Américas será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
+
+$$
+\begin{align*}
+\widehat{\text{life exp}} &= 54.8 + 18.8 \cdot \mathbb1_{\text{Amer}}(x) + 15.9 \cdot \mathbb1_{\text{Asia}}(x) + 22.8 \cdot \mathbb1_{\text{Euro}}(x) \\
+&\quad + 25.9 \cdot \mathbb1_{\text{Ocean}}(x) \\
+&= 54.8 + 18.8 \cdot 1 + 15.9 \cdot 0 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
+&= 54.8 + 18.8 \\
+&= 73.6
+\end{align*}
+$$
+
+Isso é a expectativa de vida média para os países das Américas de 73,6 anos na @tbl-57. Note que o desvio da linha de base para comparação é $+18,8$ anos.
+
+Vamos fazer mais um. Digamos que estamos considerando um país da Ásia. Neste caso, apenas a função indicadora $1_{Asia}(x)$ para a Ásia será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
+
+$$
+\begin{align*}
+\widehat{\text{life exp}} &= 54.8 + 18.8 \cdot \mathbb1_{\text{Amer}}(x) + 15.9 \cdot \mathbb1_{\text{Asia}}(x) + 22.8 \cdot \mathbb1_{\text{Euro}}(x) \\
+&\quad + 25.9 \cdot \mathbb1_{\text{Ocean}}(x) \\
+&= 54.8 + 18.8 \cdot 0 + 15.9 \cdot 1 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
+&= 54.8 + 15.9 \\
+&= 70.7
+\end{align*}
+$$
+
+Isso é a expectativa de vida média para os países asiáticos de 70,7 anos na @tbl-57. O desvio da linha de base para comparação aqui é +15,9 anos.
+
+Vamos generalizar essa ideia um pouco. Se ajustarmos um modelo de regressão linear usando uma variável explicativa categórica $x$ que possui $k$ possíveis categorias, a tabela de regressão retornará um intercepto e $k - 1$ devios. No nosso caso, como há $k = 5$ continentes, o modelo de regressão retorna um intercepto correspondente ao grupo grupo da linha de base para comparação, a África, e $k - 1 = 4$ desvios correspondentes às Américas, Ásia, Europa e Oceania.
+
+Compreender a saída de uma tabela de regressão quando se está usando uma variável explicativa categórica é um tópico com o qual os novatos em neste tipo de análise frequentemente têm dificuldades. O único remédio real para essas dificuldades é a prática constante. No entanto, uma vez que você se familiarize com a criação de modelos de regressão usando variáveis explicativas categóricas, você será capaz de incorporar muitas novas variáveis aos seus modelos, dada a grande quantidade de dados do mundo que são categóricos. Se você ainda se sentir com dificuldades neste ponto, no entanto, sugerimos que compare atentamente as @tbl-57 e @tbl-58 e observe como você pode calcular todos os valores de uma tabela usando os valores da outra.
+
+::: callout-note
+## Verificação do aprendizado 5.5
+Ajuste uma nova regressão linear usando `lm(gdppercap ~ continent, data = gapminder2007)`, onde `gdppercap` é a nova variável de resultado $y$. Obtenha informações sobre a linha de "melhor ajuste" a partir da tabela de regressão aplicando a função `tidy()`. Como os resultados da regressão se alinham com os resultados da sua análise exploratória de dados anterior?
+:::
