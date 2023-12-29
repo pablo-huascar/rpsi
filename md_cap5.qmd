@@ -56,13 +56,11 @@ evals_ch5 <- evals |>
 Agora que estamos equipados com habilidades de visualização de dados do Capítulo 2, habilidades de manipulação de dados do Capítulo 3 e uma compreensão de como importar dados e do conceito de um formato de dados "organizado" do Capítulo 4, vamos agora prosseguir com a modelagem de dados. A premissa fundamental da modelagem de dados é tornar explícita a relação entre:
 
 -   *uma variável de resultado* $y$, também chamada de *variável dependente* ou variável de resposta, e
-
 -   uma *variável explicativa/preditora* $x$, também chamada de *variável independente* ou covariável.
 
 Outra maneira de expressar isso é usando terminologia matemática: modelaremos a variável de resultado $y$ "como uma função" da variável explicativa/preditora $x$. Quando dizemos "função" aqui, não estamos nos referindo a funções em R, como a função `ggplot()`, mas sim como uma função matemática. Mas, por que temos dois rótulos diferentes, explicativo e preditor, para a variável $x$? Isso ocorre porque, embora os dois termos sejam frequentemente usados de forma intercambiável, falando de maneira geral, a modelagem de dados serve a um de dois propósitos:
 
 1.  **Modelagem para explicação**: quando você deseja descrever e quantificar explicitamente a relação entre a variável de resultado $y$ e um conjunto de variáveis explicativas $x$, determinar a significância de quaisquer relações, ter medidas que resumam essas relações e, possivelmente, identificar quaisquer relações causais entre as variáveis.
-
 2.  **Modelagem para previsão**: quando você deseja prever uma variável de resultado $y$ com base nas informações contidas em um conjunto de variáveis preditoras $x$. Diferentemente da modelagem para explicação, no entanto, você não se preocupa tanto em entender como todas as variáveis se relacionam e interagem entre si, mas sim apenas se pode fazer boas previsões sobre $y$ usando as informações de $x$.
 
 Por exemplo, digamos que você está interessado em uma variável de resultado $y$ que indica se pacientes desenvolvem câncer de pulmão e informações $x$ sobre seus fatores de risco, como hábitos de fumar, idade e status socioeconômico. Se estivermos modelando para explicação, estaríamos interessados em descrever e quantificar os efeitos dos diferentes fatores de risco. Um motivo poderia ser que você deseja desenvolver uma intervenção para reduzir a incidência de câncer de pulmão em uma população, como utilizar publicidade para direcionar fumantes de uma faixa etária específica para programas de controle do tabagismo. Se estivermos modelando para previsão, no entanto, não nos importaríamos tanto em entender como todos os fatores de risco individuais contribuem para o câncer de pulmão, mas sim apenas se podemos fazer boas previsões de quais pessoas contrairão câncer de pulmão.
@@ -96,7 +94,7 @@ Vamos agora carregar todos os pacotes necessários para este capítulo (isso pre
 4.  O pacote skimr [@skimr], que fornece uma função de fácil utilização para calcular rapidamente uma ampla gama de estatísticas resumidas comumente usadas.
 5.  O pacote `gapminder` [@gapminder], pois ele tem bancos de dados que também serão utilizados.
 6.  O pacote `gt` [@gt] que é utilizado para criar tabelas.
-7.  O pacote `janitor`, que tem várias aplicações, mas, por hora, vamos utilizá-lo para deixar os nomes das variáveis mais adequados. 
+7.  O pacote `janitor`, que tem várias aplicações, mas, por hora, vamos utilizá-lo para deixar os nomes das variáveis mais adequados.
 
 Se necessário, leia a Seção 1.3 para informações sobre como instalar e carregar pacotes no R.
 
@@ -708,15 +706,15 @@ Gere um banco de dados dos resíduos do modelo no qual você usou `age` (idade) 
 
 É uma verdade infeliz que a expectativa de vida não é a mesma em todos os países do mundo. Agências de desenvolvimento internacional estão interessadas em estudar essas diferenças na expectativa de vida com a esperança de identificar onde os governos devem alocar recursos para abordar esse problema. Nesta seção, exploraremos as diferenças na expectativa de vida de duas maneiras:
 
-1. Diferenças entre continentes: Existem diferenças significativas na expectativa de vida média entre os cinco continentes habitados do mundo: África, Américas, Ásia, Europa e Oceania?
-2. Diferenças dentro dos continentes: Como a expectativa de vida varia dentro dos cinco continentes do mundo? Por exemplo, a dispersão da expectativa de vida entre os países da África é maior do que a dispersão da expectativa de vida entre os países da Ásia?
+1.  Diferenças entre continentes: Existem diferenças significativas na expectativa de vida média entre os cinco continentes habitados do mundo: África, Américas, Ásia, Europa e Oceania?
+2.  Diferenças dentro dos continentes: Como a expectativa de vida varia dentro dos cinco continentes do mundo? Por exemplo, a dispersão da expectativa de vida entre os países da África é maior do que a dispersão da expectativa de vida entre os países da Ásia?
 
 Para responder a essas perguntas, usaremos o banco de dados `gapminder` incluído no pacote `gapminder`. Este conjunto de dados possui estatísticas de desenvolvimento internacional, como expectativa de vida, PIB per capita e população para 142 países em intervalos de 5 anos entre 1952 e 2007. Lembre-se de que visualizamos alguns desses dados na Figura 2.1 na Subseção 2.1.2 sobre a gramática dos gráficos.
 
 Usaremos esses dados para regressão básica novamente, mas agora usando uma variável explicativa $x$ que é categórica, ao contrário do modelo de variável explicativa numérica que usamos na @sec-5.1 anterior.
 
-- Uma variável de resultado numérica $y$ (a expectativa de vida de um país) e
-- Uma única variável explicativa categórica $x$ (o continente ao qual o país pertence).
+-   Uma variável de resultado numérica $y$ (a expectativa de vida de um país) e
+-   Uma única variável explicativa categórica $x$ (o continente ao qual o país pertence).
 
 Quando a variável explicativa $x$ é categórica, o conceito de uma linha de regressão "melhor ajustada" é um pouco diferente do que vimos anteriormente na Seção 5.1, onde a variável explicativa $x$ era numérica. Estudaremos essas diferenças em breve na Subseção 5.2.2, mas primeiro realizamos uma análise de dados exploratória.
 
@@ -744,10 +742,10 @@ Observe que "Linhas: 142" indica que existem 142 linhas/observações em `gapmin
 
 Uma descrição completa de todas as variáveis incluídas em `gapminder` pode ser encontrada lendo o arquivo de ajuda associado (execute `?gapminder` no console). No entanto, vamos descrever completamente apenas as 4 variáveis que selecionamos em `gapminder2007`:
 
-- `country`: Uma variável de identificação do tipo caractere/texto usada para distinguir os 142 países no banco de dados.
-- `lifeexp`: Uma variável numérica da expectativa de vida ao nascer desse país. Esta é a variável de resultado $y$ de interesse.
-- `continent`: Uma variável categórica com cinco níveis. Aqui, "níveis" correspondem às possíveis categorias: África, Ásia, Américas, Europa e Oceania. Esta é a variável explicativa $x$ de interesse.
-- `gdppercap`: Uma variável numérica do PIB per capita desse país em dólares americanos ajustados pela inflação que usaremos como outra variável de resultado $y$ na verificação do aprendizado no final desta subseção.
+-   `country`: Uma variável de identificação do tipo caractere/texto usada para distinguir os 142 países no banco de dados.
+-   `lifeexp`: Uma variável numérica da expectativa de vida ao nascer desse país. Esta é a variável de resultado $y$ de interesse.
+-   `continent`: Uma variável categórica com cinco níveis. Aqui, "níveis" correspondem às possíveis categorias: África, Ásia, Américas, Europa e Oceania. Esta é a variável explicativa $x$ de interesse.
+-   `gdppercap`: Uma variável numérica do PIB per capita desse país em dólares americanos ajustados pela inflação que usaremos como outra variável de resultado $y$ na verificação do aprendizado no final desta subseção.
 
 Vamos olhar uma amostra aleatória de cinco dos 142 países na @tbl-55.
 
@@ -796,7 +794,7 @@ gapminder2007 |>
 
 O resultado da função `skim()` agora relata resumos para variáveis categóricas (Tipo de variável: *factor*) separadamente das variáveis numéricas (Tipo de variável: *numeric*). Para a variável categórica `continent`, ele relata:
 
--   `n_missing` e `complete_rate`:  são o número de valores ausentes e o percentual de valores completos, respectivamente.
+-   `n_missing` e `complete_rate`: são o número de valores ausentes e o percentual de valores completos, respectivamente.
 -   `n_unique`: O número de níveis únicos desta variável, correspondendo a África, Ásia, Américas, Europa e Oceania. Isso se refere a quantos países estão nos dados para cada continente.
 -   `top_counts`: Neste caso, as quatro maiores contagens: África tem 52 países, Ásia tem 33, Europa tem 30 e Américas tem 25. A Oceania, com 2 países, não foi exibida.
 -   `ordered`: Isso nos informa se a variável categórica é “ordinal”: se existe uma hierarquia codificada (como baixo, médio, alto). Neste caso, `continent` não é ordenado.
@@ -835,7 +833,7 @@ Lembre-se, no entanto, que queremos comparar as expectativas de vida tanto entre
 #| fig-cap-location: bottom
 #| out-width: 70%
 #| fig-dpi: 600
-#| fig-alt: A imagem mostra um histograma complexo com o título "Histograma da distribuição da expectativa de vida mundial". Este gráfico é dividido em cinco subgráficos que representam diferentes regiões do mundo: África, Américas, Ásia, Europa e Oceania. Cada subgráfico tem o eixo horizontal, rotulado "Expectativa de vida", que varia de aproximadamente 40 a 90 anos, enquanto o eixo vertical, rotulado "Número de países", varia dependendo da região. O subgráfico da África mostra a maioria dos países com expectativas de vida entre 50 e 70 anos. Nas Américas, os países estão mais distribuídos, com um número significativo de países tendo uma expectativa de vida entre 70 e 80 anos. A Ásia tem uma distribuição similar às Américas, com a maioria dos países tendo expectativas de vida entre 60 e 80 anos. A Europa mostra uma concentração muito alta de países com expectativas de vida entre 70 e 90 anos. Oceania tem uma distribuição com menos países, mas a maioria com expectativas de vida na faixa de 70 a 80 anos. Os histogramas sugerem que, enquanto a Europa e a Oceania têm as expectativas de vida mais altas, a África tem as mais baixas, com as Américas e a Ásia apresentando uma distribuição mais ampla de expectativas de vida.
+#| fig-alt: "A imagem mostra um histograma complexo com o título Histograma da distribuição da expectativa de vida mundial. Este gráfico é dividido em cinco subgráficos que representam diferentes regiões do mundo: África, Américas, Ásia, Europa e Oceania. Cada subgráfico tem o eixo horizontal, rotulado Expectativa de vida, que varia de aproximadamente 40 a 90 anos, enquanto o eixo vertical, rotulado Número de países, varia dependendo da região. O subgráfico da África mostra a maioria dos países com expectativas de vida entre 50 e 70 anos. Nas Américas, os países estão mais distribuídos, com um número significativo de países tendo uma expectativa de vida entre 70 e 80 anos. A Ásia tem uma distribuição similar às Américas, com a maioria dos países tendo expectativas de vida entre 60 e 80 anos. A Europa mostra uma concentração muito alta de países com expectativas de vida entre 70 e 90 anos. Oceania tem uma distribuição com menos países, mas a maioria com expectativas de vida na faixa de 70 a 80 anos. Os histogramas sugerem que, enquanto a Europa e a Oceania têm as expectativas de vida mais altas, a África tem as mais baixas, com as Américas e a Ásia apresentando uma distribuição mais ampla de expectativas de vida."
 
 gapminder2007 |> 
   ggplot(aes(life_exp)) +
@@ -844,7 +842,7 @@ gapminder2007 |>
   labs(
     x = "Expectativa de vida",
     y = "Número de países",
-    title = "Histograma da distribuição da expectativa de vida mundial"
+    title = "Histograma da distribuição da \nexpectativa de vida mundial"
   ) + 
   facet_wrap(~ continent, nrow = 2)
 ```
@@ -881,7 +879,8 @@ Vamos calcular a mediana e a média da expectativa de vida para cada continente 
 lifeExp_by_continent <- gapminder2007 %>%
   summarize(
     Mediana = median(life_exp), 
-    Média = mean(life_exp), .by = continent
+    Média = mean(life_exp), 
+    .by = continent
   ) |> 
   arrange(Mediana)
 ```
@@ -898,11 +897,81 @@ lifeExp_by_continent |>
   ) |> 
   cols_align(
     align = c("center"),
-    columns = everything()
+    columns = c(Mediana, Média)
+  ) |> 
+  cols_align(
+    align = c("left"),
+    columns = continent
   ) |> 
   fmt_number(
     decimals = 1,
     columns = c(Mediana, Média)
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(align = "center")
+    ),
+    locations = cells_column_labels(
+      columns = continent
+    )
   )
 ```
+
+Observe a ordem da segunda coluna da mediana da expectativa de vida : África tem a mais baixa, as Américas e a Ásia vêm a seguir com medianas semelhantes, depois a Europa e, por fim, a Oceania. Esta ordenação corresponde à ordenação das linhas pretas sólidas dentro das caixas no nosso boxplot lado a lado na @fig-59.
+
+Vamos agora voltar nossa atenção para os valores na terceira coluna de média. Usando a média da expectativa de vida da África de 54.8 como uma linha de base para comparação, vamos começar a fazer comparações com as médias de expectativa de vida dos outros quatro continentes e colocar esses valores na Tabela 5.7, que revisaremos mais adiante nesta seção.
+
+1.  Para as Américas, é 73.6 - 54.8 = 18.8 anos mais alta.
+2.  Para a Ásia, é 70.7 - 54.8 = 15.9 anos mais alta.
+3.  Para a Europa, é 77.6 - 54.8 = 22.8 anos mais alta.
+4.  Para a Oceania, é 80.7 - 54.8 = 25.9 anos mais alta.
+
+```{r}
+#| label: tbl-57
+#| tbl-cap: Expectativa média de vida por continente e diferenças relativas em relação à média da África
+
+gapminder2007 |> 
+  group_by(continent) |> 
+  summarise(
+    Média = mean(life_exp),
+    ) |> 
+  mutate(
+    "Diferença em relação à África" = Média - lifeExp_by_continent[[1,3]]
+  ) |> 
+  arrange(Média) |> 
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("center"),
+    columns = c(Média, "Diferença em relação à África")
+  ) |> 
+  cols_align(
+    align = c("left"),
+    columns = continent
+  ) |> 
+  fmt_number(
+    decimals = 1,
+    columns = c(Média, "Diferença em relação à África")
+  ) |> 
+  tab_style(
+    style = list(
+      cell_text(align = "center")
+    ),
+    locations = cells_column_labels(
+      columns = continent
+    )
+  )
+```
+
+::: callout-note
+## Verificação do aprendizado 5.4
+
+Realize uma nova análise exploratória de dados com a mesma variável explicativa $x$ sendo `continent`, mas com `gdppercap` como a nova variável de resultado $y$. O que você pode dizer sobre as diferenças no PIB per capita entre continentes com base nesta exploração?
+:::
+
+
+
 
