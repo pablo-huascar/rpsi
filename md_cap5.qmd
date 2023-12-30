@@ -46,10 +46,15 @@ theme_set(theme_cowplot())
 ```
 
 ```{r}
-#| label: dfs
+#| label: dados
 #| echo: false
 evals_ch5 <- evals |> 
   select(ID, score, bty_avg, age) |> 
+  clean_names()
+
+gapminder2007 <- gapminder |> 
+  filter(year == 2007) |> 
+  select(country, lifeExp, continent, gdpPercap) |> 
   clean_names()
 ```
 
@@ -502,8 +507,8 @@ Vamos primeiro focar em interpretar a saída da tabela de regressão na @tbl-52.
 $$
 \begin{align*}
 \widehat{y} &= b_0 + b_1 \cdot x \\
-\widehat{\text{score}} &= b_0 + b_{\text{bty\_avg}} \cdot \text{bty\_avg} \\
-&= 3.88 + 0.067 \cdot \text{bty\_avg}\\
+\widehat{\text{score}} &= b_0 + b_{\text{bty_avg}} \cdot \text{bty_avg} \\
+&= 3.88 + 0.067 \cdot \text{bty_avg}\\
 \end{align*}
 $$
 
@@ -917,7 +922,7 @@ lifeExp_by_continent |>
   )
 ```
 
-Observe a ordem da segunda coluna da mediana da expectativa de vida : África tem a mais baixa, as Américas e a Ásia vêm a seguir com medianas semelhantes, depois a Europa e, por fim, a Oceania. Esta ordenação corresponde à ordenação das linhas pretas sólidas dentro das caixas no nosso boxplot lado a lado na @fig-59.
+Observe a ordem da segunda coluna da mediana da expectativa de vida: África tem a mais baixa, as Américas e a Ásia vêm a seguir com medianas semelhantes, depois a Europa e, por fim, a Oceania. Esta ordenação corresponde à ordenação das linhas pretas sólidas dentro das caixas no nosso boxplot lado a lado na @fig-59.
 
 Vamos agora voltar nossa atenção para os valores na terceira coluna de média. Usando a média da expectativa de vida da África de 54.8 como uma linha de base para comparação, vamos começar a fazer comparações com as médias de expectativa de vida dos outros quatro continentes e colocar esses valores na Tabela 5.7, que revisaremos mais adiante nesta seção.
 
@@ -1020,31 +1025,32 @@ lifeExp_model |>
 Vamos nos concentrar novamente nos valores nas colunas termo e estimativa da Tabela @tbl-58. Por que há agora 5 linhas? Vamos analisá-las uma a uma:
 
 -   intercept corresponde à expectativa de vida média dos países da África, que é de 54,8 anos.
--   continentAmericas corresponde aos países das Américas e o valor +18,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países das Américas é 54,8 + 18,8 = 73,6.
--   continentAsia corresponde aos países da Ásia e o valor +15,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Ásia é 54,8 + 15,9 = 70,7.
--   continentEurope corresponde aos países da Europa e o valor +22,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Europa é 54,8 + 22,8 = 77,6.
--   continentOceania corresponde aos países da Oceania e o valor +25,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Oceania é 54,8 + 25,9 = 80,7.
+-   continentAmericas corresponde aos países das Américas e o valor +18,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países das Américas é $54,8 + 18,8 = 73,6$.
+-   continentAsia corresponde aos países da Ásia e o valor +15,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Ásia é $54,8 + 15,9 = 70,7$.
+-   continentEurope corresponde aos países da Europa e o valor +22,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Europa é $54,8 + 22,8 = 77,6$.
+-   continentOceania corresponde aos países da Oceania e o valor +25,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Oceania é $54,8 + 25,9 = 80,7$.
 
-Para resumir, os cinco valores na coluna estimativa na @tbl-58 correspondem a linha de base para comparação da África (o intercepto) e também quatro desvios desse linha de base para os quatro continentes restantes: as Américas, Ásia, Europa e Oceania.
+Para resumir, os cinco valores na coluna estimativa na @tbl-58 correspondem a linha de base para comparação com a média a África (o intercepto) e também desvios desse linha de base para os quatro continentes restantes: as Américas, Ásia, Europa e Oceania.
 
-Você pode estar se perguntando por que a África foi escolhida como o grupo de linha de base para comparação. Isso acontece simplesmente porque ela vem primeiro em ordem alfabética dos cinco continentes; por padrão, o R organiza fatores/variáveis categóricas em ordem alfanumérica. Você pode mudar esse grupo de baseline para ser outro continente se manipular os “níveis” do fator da variável continente usando o pacote [forcats](https://forcats.tidyverse.org/). Veja o Capítulo 16 de [R for Data Science](https://r4ds.hadley.nz/) [@wickham2023rdata] para exemplos.
+Você pode estar se perguntando por que a África foi escolhida como o grupo de linha de base para comparação. Isso acontece simplesmente porque ela vem primeiro em ordem alfabética dos cinco continentes. Por padrão, o R organiza fatores/variáveis categóricas em ordem alfanumérica. Você pode mudar esse grupo da linha de base para ser outro continente se manipular os “níveis” do fator da variável continente usando o pacote [forcats](https://forcats.tidyverse.org/). Veja o Capítulo 16 de [R for Data Science](https://r4ds.hadley.nz/) [@wickham2023rdata] para exemplos.
 
-Agora, vamos escrever a equação para os nossos valores ajustados $\hat{y} = \widehat{life exp}$.
+Agora, vamos escrever a equação para os nossos valores ajustados $\hat{y} = \widehat{life\_\exp}$.
 
 $$
-\begin{align*}
-\hat{y} = \widehat{\text{life exp}} &= b_0 + b_{\text{Amer}} \cdot 1_{\text{Amer}}(x) + b_{\text{Asia}} \cdot 1_{\text{Asia}}(x) + \\ 
-&\quad + b_{\text{Euro}} \cdot 1_{\text{Euro}}(x) + b_{\text{Ocean}} \cdot 1_{\text{Ocean}}(x)\\ 
-&= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + \\
-&\quad + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x)
-\end{align*}
+\begin{aligned}
+\widehat{y} = \widehat{\text{life_exp}} &= b_0 + b_{\text{Amer}}\cdot\mathbf{1}_{\text{Amer}}(x) + b_{\text{Asia}}\cdot\mathbf{1}_{\text{Asia}}(x) + \\
+& \qquad b_{\text{Euro}}\cdot\mathbf{1}_{\text{Euro}}(x) + b_{\text{Ocean}}\cdot\mathbf{1}_{\text{Ocean}}(x)\\
+&= 54.8 + 18.8\cdot\mathbf{1}_{\text{Amer}}(x) + 15.9\cdot\mathbf{1}_{\text{Asia}}(x) + \\
+& \qquad 22.8\cdot\mathbf{1}_{\text{Euro}}(x) + 25.9
+\cdot\mathbf{1}_{\text{Ocean}}(x)
+\end{aligned}
 $$
 
 Ufa! Isso parece assustador! Mas não se preocupe, pois uma vez que você entenda o que todos os elementos significam, as coisas se simplificam bastante. Primeiro, $1_{A}(x)$ é o que é conhecido em matemática como uma "função indicadora". Ela retorna apenas um dos dois possíveis valores, 0 e 1, onde
 
 $$
 \begin{equation*}
-\mathbb1_{\text{A}}(x) = \left\{
+\mathbf1_{\text{A}}(x) = \left\{
 \begin{aligned}
 &1 && \text{se } x \text{ está em } A \\
 &0 && \text{se } x \text{ não está em } A 
@@ -1053,61 +1059,58 @@ $$
 \end{equation*}
 $$
 
-No contexto de modelagem estatística, isso também é conhecido como uma variável dummy. No nosso caso, considere a primeira variável indicadora $1_{Amer}(x)$. Esta função indicadora retorna 1 se um país está nas Américas, 0 caso contrário:
+No contexto de modelagem estatística, isso também é conhecido como uma variável *dummy*. No nosso caso, considere a primeira variável indicadora $1_{Amer}(x)$. Esta função indicadora retorna 1 se um país está nas Américas e, caso contrário, 0:
 
 $$
-\begin{equation*}
-\mathbb1_{\text{Amer}}(x) = \left\{
+\begin{equation}
+\mathbf1_{\text{Amer}}(x) = \left\{
 \begin{aligned}
 &1 && \text{se o país } x \text{ está nas Américas} \\
 &0 && \text{caso contrário}
 \end{aligned}
 \right.
-\end{equation*}
+\end{equation}
 $$
 
-Segundo, $b_0$ corresponde ao intercepto como antes; neste caso, é a expectativa de vida média de todos os países da África. Terceiro, os $b_{Amer}$, $b_{Asia}$, $b_{Euro}$ e $b_{Ocean}$ representam os 4 desvios relativos à linha de base para comparação na saída da regressão na @tbl-58: `continentAméricas`, `continentÁsia`, `continentEuropa` e `continentOceania`.
+Segundo, $b_0$ corresponde ao intercepto como antes. Neste caso, é a expectativa de vida média de todos os países da África. Terceiro, os $b_{Amer}$, $b_{Asia}$, $b_{Euro}$ e $b_{Ocean}$ representam os 4 desvios relativos à linha de base para comparação na saída da regressão na @tbl-58: `continentAméricas`, `continentÁsia`, `continentEuropa` e `continentOceania`.
 
-Vamos juntar tudo isso e calcular o valor ajustado $\hat{y} = \widehat{life exp}$ para um país na África. Como o país está na África, todas as quatro funções indicadoras $1_{Amer}(x)$, $1_{Asia}(x)$, $1_{Euro}(x)$ e $1_{Ocean}(x)$ serão iguais a 0, e, portanto:
-
-1_{\text{Amer}}(x)
+Vamos juntar tudo isso e calcular o valor ajustado $\hat{y} = \widehat{life\_\exp}$ para um país na África. Como o país está na África, todas as quatro funções indicadoras $1_{Amer}(x)$, $1_{Asia}(x)$, $1_{Euro}(x)$ e $1_{Ocean}(x)$ serão iguais a 0, e, portanto:
 
 $$
-\begin{align*}
-\widehat{\text{life exp}} &= b_0 + b_{\text{Amer}} \cdot \mathbb1_{\text{Amer}}(x) + b_{\text{Asia}} \cdot \mathbb1_{\text{Asia}}(x) + \\ 
-&\quad + b_{\text{Euro}} \cdot \mathbb1_{\text{Euro}}(x) + b_{\text{Ocean}} \cdot \mathbb1_{\text{Ocean}}(x) \\ 
-&= 54.8 + 18.8 \cdot \mathbb1_{\text{Amer}}(x) + 15.9 \cdot \mathbb1_{\text{Asia}}(x) + \\ 
-&\quad + 22.8 \cdot \mathbb1_{\text{Euro}}(x) + 25.9 \cdot \mathbb1_{\text{Ocean}}(x) \\ 
+\begin{align}
+\widehat{\text{life_exp}} &= b_0 + b_{\text{Amer}} \cdot 1_{\text{Amer}}(x) + b_{\text{Asia}} \cdot 1_{\text{Asia}}(x) + \\
+&\quad + b_{\text{Euro}} \cdot 1_{\text{Euro}}(x) + b_{\text{Ocean}} \cdot 1_{\text{Ocean}}(x) \\
+&= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + \\
+&\quad + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x) \\
 &= 54.8 + 18.8 \cdot 0 + 15.9 \cdot 0 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
 &= 54.8
-\end{align*}
+\end{align}
 $$
-Em outras palavras, tudo o que resta é o intercepto b_0, correspondente à expectativa de vida média dos países africanos de 54,8 anos. A seguir, digamos que estamos considerando um país das Américas. Neste caso, apenas a função indicadora 1_{Amer}(x) para as Américas será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
+
+Em outras palavras, tudo o que resta é o intercepto b_0, correspondente à expectativa de vida média dos países africanos de 54,8 anos. A seguir, digamos que estamos considerando um país das Américas. Neste caso, apenas a função indicadora $1\_{Amer}(x)$ para as Américas será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
 
 $$
-\begin{align*}
-\widehat{\text{life exp}} &= 54.8 + 18.8 \cdot \mathbb1_{\text{Amer}}(x) + 15.9 \cdot \mathbb1_{\text{Asia}}(x) + 22.8 \cdot \mathbb1_{\text{Euro}}(x) \\
-&\quad + 25.9 \cdot \mathbb1_{\text{Ocean}}(x) \\
+\begin{align}
+\widehat{\text{life_exp}} &= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x) \\
 &= 54.8 + 18.8 \cdot 1 + 15.9 \cdot 0 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
 &= 54.8 + 18.8 \\
 &= 73.6
-\end{align*}
+\end{align}
 $$
+
 
 Isso é a expectativa de vida média para os países das Américas de 73,6 anos na @tbl-57. Note que o desvio da linha de base para comparação é $+18,8$ anos.
 
 Vamos fazer mais um. Digamos que estamos considerando um país da Ásia. Neste caso, apenas a função indicadora $1_{Asia}(x)$ para a Ásia será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
 
 $$
-\begin{align*}
-\widehat{\text{life exp}} &= 54.8 + 18.8 \cdot \mathbb1_{\text{Amer}}(x) + 15.9 \cdot \mathbb1_{\text{Asia}}(x) + 22.8 \cdot \mathbb1_{\text{Euro}}(x) \\
-&\quad + 25.9 \cdot \mathbb1_{\text{Ocean}}(x) \\
+\begin{align}
+\widehat{\text{life_exp}} &= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x) \\
 &= 54.8 + 18.8 \cdot 0 + 15.9 \cdot 1 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
 &= 54.8 + 15.9 \\
 &= 70.7
-\end{align*}
+\end{align}
 $$
-
 Isso é a expectativa de vida média para os países asiáticos de 70,7 anos na @tbl-57. O desvio da linha de base para comparação aqui é +15,9 anos.
 
 Vamos generalizar essa ideia um pouco. Se ajustarmos um modelo de regressão linear usando uma variável explicativa categórica $x$ que possui $k$ possíveis categorias, a tabela de regressão retornará um intercepto e $k - 1$ devios. No nosso caso, como há $k = 5$ continentes, o modelo de regressão retorna um intercepto correspondente ao grupo grupo da linha de base para comparação, a África, e $k - 1 = 4$ desvios correspondentes às Américas, Ásia, Europa e Oceania.
@@ -1116,5 +1119,6 @@ Compreender a saída de uma tabela de regressão quando se está usando uma vari
 
 ::: callout-note
 ## Verificação do aprendizado 5.5
+
 Ajuste uma nova regressão linear usando `lm(gdppercap ~ continent, data = gapminder2007)`, onde `gdppercap` é a nova variável de resultado $y$. Obtenha informações sobre a linha de "melhor ajuste" a partir da tabela de regressão aplicando a função `tidy()`. Como os resultados da regressão se alinham com os resultados da sua análise exploratória de dados anterior?
 :::
