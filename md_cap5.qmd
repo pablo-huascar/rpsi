@@ -1220,7 +1220,7 @@ Repita esse processo, mas identifique os cinco países com os cinco maiores (mai
 
 ### Correlação não é necessariamente causalidade {#sec-5.3.1}
 
-Ao longo deste capítulo, fomos cautelosos ao interpretar os coeficientes de inclinação da regressão. Sempre discutimos o efeito "associado" de uma variável explicativa $x$ em uma variável de resultado $y$. Por exemplo, nossa afirmação da @sec-5.1.2 de que "para cada aumento de 1 unidade em `bty_avg`, há um aumento associado de, em média, 0.067 unidades de `score`". Incluímos o termo "associado" para sermos extremamente cuidadosos em não sugerir que estamos fazendo uma declaração causal. Então, enquanto a pontuação de "beleza" `bty_avg` está positivamente correlacionada com a pontuação de ensino, não podemos necessariamente fazer declarações sobre o efeito causal direto das pontuações de "beleza" na pontuação de ensino sem mais informações sobre como este estudo foi conduzido. Aqui está outro exemplo: um médico não tão bom passa pelos prontuários e descobre que pacientes que dormiram calçados com seus sapatos tendiam a acordar mais com dores de cabeça. Então, esse médico declara: "Dormir com sapatos causa dores de cabeça!"
+Ao longo deste capítulo, fomos cautelosos ao interpretar os coeficientes de inclinação da regressão. Sempre discutimos o efeito "associado" de uma variável explicativa $x$ em uma variável de resultado $y$. Por exemplo, nossa afirmação da @sec-5.1.2 de que "para cada aumento de 1 unidade em `bty_avg`, há um aumento associado de, em média, 0.067 unidades de `score`". Incluímos o termo "associado" para sermos extremamente cuidadosos em não sugerir que estamos fazendo uma declaração causal. Então, enquanto a pontuação de "beleza" `bty_avg` está positivamente correlacionada com a pontuação de ensino, não podemos necessariamente fazer declarações sobre o efeito causal direto das pontuações de "beleza" na pontuação de ensino sem mais informações sobre como este estudo foi conduzido. Aqui está outro exemplo: um médico não tão bom passa pelos prontuários e descobre que pacientes que dormiram calçados com seus sapatos tendiam a acordar mais com dores de cabeça. Então, esse médico declara: "Dormir com sapatos causa dores de cabeça!".
 
 ![Dormir de sapatos causa dores de cabeça?](images/dor_de_cabeca_sapatos.png){#fig-510 fig-alt="\"A ilustração é dividida em duas cenas que compartilham um estilo artístico semelhante ao de uma história em quadrinhos. No lado esquerdo, um homem de ascendência asiática está dormindo profundamente em sua cama. Ele está vestindo um traje de escritório completo, incluindo um terno marrom, camisa branca e gravata preta. Seus pés estão calçados com sapatos formais pretos, e ele está deitado de costas com as mãos sobre o estômago, em uma postura relaxada. A cama tem lençóis azuis e está localizada em um quarto confortável e bem decorado, com um visual tradicional. No lado direito, o mesmo homem está sentado na beira da cama, agora acordado. Ele tem uma expressão de dor e desconforto enquanto segura a testa com a mão direita, indicando uma dor de cabeça. Ele ainda está vestido com sua roupa de trabalho, mas seus sapatos foram removidos e estão ao lado da cama, sugerindo que ele acaba de acordar." width="389"}
 
@@ -1229,7 +1229,7 @@ No entanto, há uma boa chance de que, se alguém está dormindo com os sapatos,
 -   `Y` é uma variável de *resposta*: "acordar com dor de cabeça".
 -   `X` é uma variável de *tratamento* cujo efeito causal estamos interessados: "dormir de sapatos".
 
-![Gráfico de causalidade](images/causalidade.png){#fig-511 fig-align="center" width="411"}
+![Gráfico de causalidade](images/causalidade.png){fig-alt="A imagem mostra um diagrama de causalidade com três variáveis representadas em círculos e conectadas por setas, indicando as possíveis relações causais entre elas. O círculo superior, rotulado \"Z = Álcool\", representa a variável confundidora que influencia as outras duas variáveis. O círculo à esquerda, \"X = Dormir de sapatos\", é a variável de tratamento cujo efeito causal estamos interessados em explorar. O círculo à direita, \"Y = Acordar com dor de cabeça\", é a variável de resposta que queremos entender. O diagrama mostra setas indo de \"Z = Álcool\" para ambas as variáveis \"X\" e \"Y\", sugerindo que o consumo de álcool pode ser a causa tanto de dormir de sapatos quanto de acordar com dor de cabeça. Há também uma seta direta de \"X\" para \"Y\", indicando uma relação potencial direta entre dormir de sapatos e acordar com dor de cabeça. Este diagrama ilustra a ideia de que, embora possa haver uma associação observada entre \"X\" e \"Y\", a presença da variável confundidora \"Z\" sugere que a relação entre dormir de sapatos e acordar com dor de cabeça pode não ser causal, mas sim influenciada pelo consumo de álcool." fig-align="center" width="411" #fig-511}
 
 ```{r}
 #| echo: false
@@ -1315,7 +1315,7 @@ Estabelecer causalidade é um problema complicado e frequentemente exige experim
 
 Ao ler notícias, tenha cuidado para não cair na armadilha de pensar que correlação necessariamente implica causalidade. Confira o site [Spurious Correlations](http://www.tylervigen.com/spurious-correlations) para alguns exemplos bastante cômicos de variáveis que estão correlacionadas, mas definitivamente não estão relacionadas causalmente.
 
-### Linha de melhor ajuste{#sec-5.3.2}
+### Linha de melhor ajuste {#sec-5.3.2}
 
 Linhas de regressão também são conhecidas como linhas de "melhor ajuste". Mas o que queremos dizer com "melhor"? Vamos descompactar os critérios usados na regressão para determinar o "melhor". Lembre-se da @fig-56, onde, para um instrutor com uma pontuação de "beleza" de $x = 7.333$, marcamos o valor observado $y$ com um círculo, o valor ajustado $\hat{y}$ com um quadrado, e o resíduo $y - \hat{y}$ com uma seta. Reexibimos a @fig-56 no gráfico superior esquerdo da @fig-512, além de mais três instrutores de curso escolhidos arbitrariamente.
 
@@ -1490,7 +1490,6 @@ p4 <- best_fit_plot +
   
 ```
 
-  
 ```{r}
 #| echo: false
 #| label: fig-512
@@ -1511,11 +1510,11 @@ gridExtra::grid.arrange(plot_group, left = "Pontuação de ensino", bottom = "Po
 
 Os outros três gráficos referem-se a:
 
-1.    Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 2.333$ e pontuação de ensino $y = 2.7$. O resíduo neste caso é $2.7 - 4.036 = -1.336$, que marcamos com uma nova seta azul no gráfico superior direito.
+1.  Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 2.333$ e pontuação de ensino $y = 2.7$. O resíduo neste caso é $2.7 - 4.036 = -1.336$, que marcamos com uma nova seta azul no gráfico superior direito.
 
-2.    Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 3.667$ e pontuação de ensino $y = 4.4$. O resíduo neste caso é $4.4 - 4.125 = 0.2753$, que marcamos com uma nova seta azul no gráfico inferior esquerdo.
+2.  Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 3.667$ e pontuação de ensino $y = 4.4$. O resíduo neste caso é $4.4 - 4.125 = 0.2753$, que marcamos com uma nova seta azul no gráfico inferior esquerdo.
 
-3.    Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 6$ e pontuação de ensino $y = 3.8$. O resíduo neste caso é $3.8 - 4.28 = -0.4802$, que marcamos com uma nova seta azul no gráfico inferior direito.
+3.  Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 6$ e pontuação de ensino $y = 3.8$. O resíduo neste caso é $3.8 - 4.28 = -0.4802$, que marcamos com uma nova seta azul no gráfico inferior direito.
 
 Agora digamos que repetimos esse processo de calcular resíduos para todos os 463 instrutores de cursos, depois elevamos todos os resíduos ao quadrado e, em seguida, os somamos. Chamamos o valor obtido de soma dos quadrados dos resíduos, que é uma medida da falta de ajuste de um modelo. Valores maiores da soma dos quadrados dos resíduos indicam uma maior falta de ajuste. Isso corresponde a um modelo com pior ajuste.
 
@@ -1553,6 +1552,7 @@ Qualquer outra linha reta desenhada na figura resultaria em uma soma dos resídu
 
 ::: callout-note
 ## Verificação do aprendizado 5.8
+
 Observe na @fig-513 que existem 3 pontos marcados com bolas pretas e:
 
 -   A linha de regressão sólida azul de "melhor" ajuste
@@ -1584,9 +1584,9 @@ ggplot(example, aes(x = x, y = y)) +
   geom_point(size = 4) +
   scale_color_colorblind()
 ```
-:::
 
 Calcule a soma dos quadrados dos resíduos manualmente para cada linha e mostre que, dessas três linhas, a linha de regressão em azul tem o menor valor.
+:::
 
 ## Conclusão {#sec-5.4}
 
@@ -1594,7 +1594,8 @@ Calcule a soma dos quadrados dos resíduos manualmente para cada linha e mostre 
 
 Como sugerimos na @sec-5.1.1, interpretar coeficientes que não estão próximos aos valores extremos de -1, 0 e 1 pode ser um pouco subjetivo. Para ajudar a desenvolver seu senso de coeficientes de correlação, sugerimos que você jogue o jogo chamado "Guess the Correlation" (Adivinhe a Correlação), disponível em http://guessthecorrelation.com/.
 
+[![Prévia do jogo “Adivinhe a Correlação”.](images/guess_the_correlation.png){#fig-512 fig-alt="A imagem é captura de tela do jogo \"Guess the Correlation\", um jogo de estilo dos anos 80 que tem como objetivo ajudar os jogadores a desenvolver um senso de coeficientes de correlação. No jogo, você deve adivinhar a força da correlação (quão próxima de -1, 0 ou 1) entre dois conjuntos de dados, representada por pontos num gráfico de dispersão. Na tela, há um gráfico de dispersão com pontos dispostos entre os eixos X e Y, que variam de 0,0 a 1,0. No topo da tela, há ícones de coração e um contador de moedas	. No canto superior direito, as opções \"HIGH SCORE\" e \"MAIN MENU\" permitem ao jogador ver a pontuação mais alta alcançada e retornar ao menu principal do jogo, respectivamente. À direita, há uma interface para o jogador inserir o palpite sobre a correlação, com um campo de entrada seguido pelo botão \"GUESS\". Abaixo disso, há estatísticas de jogo, como \"STREAKS\", que acompanha a quantidade de acertos consecutivos, e \"MEAN ERROR\", que mede a média dos erros de palpite do jogador." fig-align="center"}](http://guessthecorrelation.com/)
+
 ### O que virá a seguir? {#sec-5.4.2}
 
 Neste capítulo, você estudou a regressão básica, onde ajustou modelos que tinham apenas uma variável explicativa. No Capítulo 6, estudaremos a regressão múltipla, onde nossos modelos de regressão poderão agora ter mais de uma variável explicativa! Em particular, consideraremos dois cenários: modelos de regressão com uma variável explicativa numérica e uma categórica e modelos de regressão com duas variáveis explicativas numéricas. Isso permitirá que você construa modelos mais sofisticados e poderosos, com a expectativa de explicar melhor sua variável de resultado `$y$`.
-
