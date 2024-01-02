@@ -19,7 +19,7 @@ code-line-numbers: false
 #| echo: false
 #| label: lembretes
 
-# Corrigir as referências cruzadas de seções
+# Corrigir as referências cruzadas de seções, figuras e tabelas
 # Tornar dinâmicas informações sobre análises que estão dentro do texto.
 # Colocar links par todos os pacotes
 # Colocar um nota para explicar names_sep = "_(?=[^_]*$)"  quando foi utilizada a função pivot_longer()
@@ -40,6 +40,11 @@ library(gapminder)
 library(mvtnorm)
 library(cowplot)
 library(ggthemes)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+library(patchwork)
+extrafont::loadfonts()
 set.seed(76)
 
 theme_set(theme_cowplot())
@@ -94,9 +99,9 @@ Vamos agora carregar todos os pacotes necessários para este capítulo (isso pre
 -   `readr` para importar dados de planilhas para o R
 -   Assim como os pacotes mais avançados `purrr`, `tibble`, `stringr` e `forcats`
 
-2.  O pacote `broom` [@broom] que transforma as saídas de funções básicas do R em *tibbles*\
+2.  O pacote `broom` [@broom] que transforma as saídas de funções básicas do R em *tibbles*
 3.  O pacote `moderndive`, que contém bancos de dados e funções amigáveis ao tidyverse para o aprendizado introdutório sobre regressão linear.
-4.  O pacote skimr [@skimr], que fornece uma função de fácil utilização para calcular rapidamente uma ampla gama de estatísticas resumidas comumente usadas.
+4.  O pacote skimr [@skimr], que fornece uma função de fácil utilização para calcular rapidamente uma ampla gama de estatísticas descritivas comumente usadas.
 5.  O pacote `gapminder` [@gapminder], pois ele tem bancos de dados que também serão utilizados.
 6.  O pacote `gt` [@gt] que é utilizado para criar tabelas.
 7.  O pacote `janitor`, que tem várias aplicações, mas, por hora, vamos utilizá-lo para deixar os nomes das variáveis mais adequados.
@@ -139,7 +144,7 @@ evals_ch5 <- evals |>
 
 Um passo crucial antes de realizar qualquer tipo de análise ou modelagem é realizar uma análise de dados exploratória (ADE, para abreviar). A ADE oferece uma noção das distribuições das variáveis individuais em seus dados, se existem potenciais relações entre variáveis, se há outliers e/ou valores ausentes, e (o mais importante) como construir seu modelo. Aqui estão três passos comuns em uma ADE:
 
--   Mais crucialmente, observar os valores dos dados brutos.
+-   Mais importante, observar os valores dos dados brutos.
 -   Calcular estatísticas descritivas, como médias, medianas e intervalos interquartílicos.
 -   Visualizar os dados.
 
@@ -161,7 +166,7 @@ Uma descrição completa de todas as variáveis incluídas em `evals` pode ser e
 -   `bty_avg`: Uma variável numérica da média da pontuação de "beleza" do instrutor do curso, onde a média é calculada a partir de um painel separado de seis estudantes. Pontuações de "beleza" 1 são as mais baixas e 10 são as mais altas. Esta é a variável explicativa $x$ que analisaremos.
 -   `age`: Uma variável numérica da idade do instrutor do curso. Esta será outra variável explicativa $x$ que usaremos na "Verificação do aprendizado" no final desta subseção.
 
-Uma maneira alternativa de olhar os valores brutos dos dados é escolhendo uma amostra aleatória das linhas em `evals_ch5` utilizando a função `slice_sample()` do pacote `dplyr`. Aqui definimos o argumento `n` como 5, indicando que queremos uma amostra aleatória de 5 linhas. Exibimos os resultados na @tbl-51 Note que, devido à natureza aleatória da amostragem, é provável que você acabe com um subconjunto diferente de 5 linhas.Para garantir evitar essa variação, podemos utilizar a função `set.seed()`, que serve para definir a semente para a geração de números aleatórios, garantindo a reprodutibilidade dos resultados.
+Uma maneira alternativa de olhar os valores brutos dos dados é escolhendo uma amostra aleatória das linhas em `evals_ch5` utilizando a função `slice_sample()` do pacote `dplyr`. Aqui definimos o argumento `n` como 5, indicando que queremos uma amostra aleatória de 5 linhas. Exibimos os resultados na @tbl-51. Note que, devido à natureza aleatória da amostragem, é provável que você acabe com um subconjunto diferente de 5 linhas.Para evitar essa variação, podemos utilizar a função `set.seed()`, que serve para definir a semente para a geração de números aleatórios, garantindo a reprodutibilidade dos resultados.
 
 ```{r}
 set.seed(76)
@@ -170,7 +175,7 @@ evals_ch5 |>
   slice_sample(n = 5)
 ```
 
-Podemos colocar esses dados em uma tabela para melhorar a visualização:
+Vamos utilizar o pacote `gt` para criar a @tbl-51:
 
 ```{r}
 #| label: tbl-51
@@ -203,23 +208,6 @@ evals_ch5 |>
       M = mean,
       MD = median)
     )
-  )
-```
-
-Podemos deixar essa visualização um pouco melhor usando a função `pivot_longer()`.
-
-```{r}
-evals_ch5 %>% 
-  summarise(
-    across(where(is.double), list(
-      "M" = mean,
-      "MD" = median)
-    )
-  ) %>% 
-  pivot_longer(
-    cols = everything(),
-    names_to = c("Variável", ".value"),
-    names_sep = "_(?=[^_]*$)"
   )
 ```
 
@@ -319,7 +307,7 @@ cor_ch5 <- evals_ch5 %>%
   pull()
 ```
 
-No nosso caso, o coeficiente de correlação de `r cor_ch5` indica que a relação entre a nota de avaliação do ensino e a média de "beleza" é positiva e fraca. Existe uma certa subjetividade na interpretação dos coeficientes de correlação, especialmente aqueles que não estão próximos dos valores extremos de -1, 0 e 1. Para desenvolver sua intuição sobre coeficientes de correlação, jogue o jogo de video game estilo anos 1980 "Adivinhe a Correlação", mencionado na subseção 5.4.1.
+No nosso caso, o coeficiente de correlação de `r cor_ch5` indica que a relação entre a nota de avaliação do ensino e a média de "beleza" é positiva e fraca. Existe uma certa subjetividade na interpretação dos coeficientes de correlação, especialmente aqueles que não estão próximos dos valores extremos de -1, 0 e 1. Para desenvolver sua intuição sobre coeficientes de correlação, jogue o jogo de video game estilo anos 1980 "Adivinhe a Correlação", mencionado na subseção @sec-5.4.1.
 
 Vamos agora realizar o último dos passos em uma ADE: criar visualizações dos dados. Como as variáveis `score` e `bty_avg` são numéricas, um gráfico de dispersão é apropriado para visualizar a relação entre elas. Vamos fazer isso usando geom_point() e exibir o resultado na @fig-52. Além disso, vamos destacar os seis pontos no canto superior direito da visualização em uma caixa.
 
@@ -340,14 +328,14 @@ box <- tibble(
 
 evals_ch5 |> 
   ggplot(aes(bty_avg,score)) +
-  geom_point(alpha = 0.15) + 
+  geom_point(alpha = 0.15) +
+  geom_path(data = box, aes(x = x, y = y), 
+            col = "red", linewidth = 1) +
   labs(
     x = "Pontuação de beleza", 
     y = "Pontuação de ensino",
     title = "Gráfico de dispersão sobre a relação entre \nas pontuações de ensino e beleza"
-  ) + 
-  geom_path(data = box, aes(x = x, y = y), 
-            col = "red", linewidth = 1)
+  )
 ```
 
 Observe que a maioria das pontuações de "beleza" fica entre 2 e 8, enquanto a maioria das notas de ensino fica entre 3 e 5. Além disso, embora as opiniões possam variar, acreditamos que a relação entre a nota de ensino e a pontuação de "beleza" é fraca e positiva. Isso é consistente com nosso coeficiente de correlação calculado anteriormente de 0.187.
@@ -385,16 +373,17 @@ Vamos aprimorar o gráfico de dispersão sem jitter da @fig-52 adicionando uma l
 #| fig-dpi: 600
 #| fig-cap-location: bottom
 #| fig-alt: A imagem mostra um gráfico de dispersão em preto e branco com o título "Gráfico de dispersão sobre as relações entre as pontuações de ensino e beleza". Pontos pretos representam dados individuais em um plano de fundo branco, dispostos ao longo de um espaço que representa as duas variáveis medidas. O eixo horizontal, marcado como "Pontuação de beleza", estende-se de 2 a 8, enquanto o eixo vertical, marcado como "Pontuação de ensino", varia de 3 a 5. Os pontos estão espalhados de forma a sugerir uma leve tendência positiva à medida que a pontuação de beleza aumenta, o que é reforçado por uma linha reta preta que atravessa os dados, indicando a direção geral da relação entre as variáveis. Não há uma correlação perfeita, como evidenciado pela dispersão dos pontos em torno da linha.
+
 evals_ch5 |> 
   ggplot(aes(bty_avg,score, alpha = 0.1)) +
   geom_point() + 
+  geom_smooth(method = "lm", se = FALSE,
+              color = "black") +
   labs(
     x = "Pontuação de beleza", 
     y = "Pontuação de ensino",
     title = "Gráfico de dispersão sobre as relações entre \nas pontuações de ensino e beleza",
-  ) + 
-  geom_smooth(method = "lm", se = FALSE,
-              color = "black") +
+  ) +
   theme(
     legend.position = "none"
   )
@@ -480,6 +469,14 @@ score_model |>
 
 ```
 
+```{r}
+#| echo: false
+# Este código é usado para fins de saída de texto em linha dinâmico e não estático
+evals_line <- score_model %>%
+  tidy() %>%
+  pull(estimate)
+```
+
 Podemos melhorar essa visualização utilizando uma tabela:
 
 ```{r}
@@ -505,11 +502,11 @@ score_model |>
 Vamos primeiro focar em interpretar a saída da tabela de regressão na @tbl-52. Na coluna de estimativa da @tbl-52 estão o intercepto $b_0 = 3.88$ e a inclinação $b_1 = 0.067$ para bty_avg. Assim, a equação da linha de regressão na @fig-54 é a seguinte:
 
 $$
-\begin{align*}
-\widehat{y} &= b_0 + b_1 \cdot x \\
-\widehat{\text{score}} &= b_0 + b_{\text{bty_avg}} \cdot \text{bty_avg} \\
-&= 3.88 + 0.067 \cdot \text{bty_avg}\\
-\end{align*}
+\begin{aligned}
+\widehat{y} &= b_0 + b_1 \cdot x\\
+\widehat{\text{score}} &= b_0 + b_{\text{bty}\_\text{avg}} \cdot\text{bty}\_\text{avg}\\
+&= `r evals_line[1] %>% round(2)` + `r  round(evals_line[2],3)`\cdot\text{bty}\_\text{avg}
+\end{aligned}
 $$
 
 O intercepto $b_0 = 3.88$ é a nota média de ensino $\hat{y} = \widehat{score}$ para aqueles cursos onde o instrutor tinha uma pontuação de "beleza" bty_avg de 0. Ou, em termos gráficos, é onde a linha intercepta o eixo $y$ quando $x = 0$. No entanto, observe que, embora o intercepto da linha de regressão tenha uma interpretação matemática, ele não tem uma interpretação prática aqui, já que observar um bty_avg de 0 é impossível; ele é a média das pontuações de "beleza" de seis avaliadores, variando de 1 a 10. Além disso, olhando para o gráfico de dispersão com a linha de regressão na @fig-54, nenhum instrutor tinha uma pontuação de "beleza" próxima de 0.
@@ -518,7 +515,7 @@ O mais importante é a inclinação $b_1 = b_{bty\_avg}$ para `bty_avg` de 0.067
 
 > Para cada aumento de 1 unidade em `bty_avg`, há um aumento associado de, em média, 0.067 unidades em `score.`
 
-Afirmamos apenas que existe um aumento *associado* e não necessariamente um aumento *causal*. Por exemplo, talvez pontuações de "beleza" mais altas não causem diretamente pontuações de ensino mais altas. Em vez disso, o seguinte pode ser verdadeiro: indivíduos de origens mais ricas tendem a ter formações educacionais mais fortes e, portanto, têm pontuações de ensino mais altas, enquanto ao mesmo tempo esses indivíduos ricos também tendem a ter pontuações de "beleza" mais altas. Em outras palavras, apenas porque duas variáveis estão fortemente associadas, isso não significa necessariamente que uma cause a outra. Isso é resumido na frase frequentemente citada, "correlação não é necessariamente causalidade". Discutimos essa ideia mais adiante na Subseção 5.3.1.
+Afirmamos apenas que existe um aumento *associado* e não necessariamente um aumento *causal*. Por exemplo, talvez pontuações de "beleza" mais altas não causem diretamente pontuações de ensino mais altas. Em vez disso, o seguinte pode ser verdadeiro: indivíduos de origens mais ricas tendem a ter formações educacionais mais fortes e, portanto, têm pontuações de ensino mais altas, enquanto ao mesmo tempo esses indivíduos ricos também tendem a ter pontuações de "beleza" mais altas. Em outras palavras, apenas porque duas variáveis estão fortemente associadas, isso não significa necessariamente que uma cause a outra. Isso é resumido na frase frequentemente citada, "correlação não é necessariamente causalidade". Discutimos essa ideia mais adiante na Subseção @sec-5.3.1
 
 Além disso, dizemos que esse aumento associado é, em média, de 0.067 unidades na pontuação de ensino, porque você pode ter dois instrutores cujas pontuações `bty_avg` diferem por 1 unidade, mas a diferença em suas pontuações de ensino não será necessariamente exatamente 0.067. O que a inclinação de 0.067 está dizendo é que, em todos os cursos possíveis, a diferença média na pontuação de ensino entre dois instrutores cujas pontuações de "beleza" diferem por um é de 0.067.
 
@@ -685,7 +682,7 @@ score_model |>
   )
 ```
 
-Vamos inspecionar as colunas individuais e relacioná-las com os elementos da Figura 5.6:
+Vamos inspecionar as colunas individuais e relacioná-las com os elementos da @fig-56:
 
 -   A coluna `score` representa a variável de resultado observada $y$. Esta é a posição y dos 463 pontos pretos.
 -   A coluna `bty_avg` representa os valores da variável explicativa $x$. Esta é a posição x dos 463 pontos pretos.
@@ -788,7 +785,7 @@ gapminder2007 |>
   )
 ```
 
-Observe que a amostragem aleatória provavelmente produzirá um subconjunto diferente de 5 linhas para você do que o mostrado. Para evitar isso, usamos novamente a função `set.seed()` Agora que olhamos os valores brutos no nosso banco de dados gapminder2007 e obtivemos uma noção dos dados, passemos para o cálculo de estatísticas descritivas. Vamos mais uma vez aplicar a função skim() do pacote skimr. Lembre-se da nossa ADE anterior que esta função recebe um banco de dados, o "analisa" e retorna estatísticas descritivas comumente usadas. Vamos pegar nosso banco de dados gapminder2007, selecionar apenas as variáveis de resultado e explicativas lifeexp e continent, e encaminhá-las para a função skim():
+Observe que a amostragem aleatória provavelmente produzirá um subconjunto diferente de 5 linhas para você do que o mostrado. Para evitar isso, usamos novamente a função `set.seed()` Agora que olhamos os valores brutos no nosso banco de dados `gapminder2007` e obtivemos uma noção dos dados, passemos para o cálculo de estatísticas descritivas. Vamos mais uma vez aplicar a função skim() do pacote skimr. Lembre-se da nossa ADE anterior que esta função recebe um banco de dados, o "analisa" e retorna estatísticas descritivas comumente usadas. Vamos pegar nosso banco de dados gapminder2007, selecionar apenas as variáveis de resultado e explicativas lifeexp e continent, e encaminhá-las para a função skim():
 
 ```{r render = knitr::normal_print}
 gapminder2007 |> 
@@ -806,7 +803,7 @@ O resultado da função `skim()` agora relata resumos para variáveis categóric
 
 Voltando nossa atenção para as estatísticas descritivas da variável numérica `lifeexp`, observamos que a mediana global da expectativa de vida em 2007 era 71.9. Assim, metade dos países do mundo (71 países) tinha uma expectativa de vida inferior a 71.9. No entanto, a expectativa de vida média de 67.0 é mais baixa. Por que a expectativa de vida média é menor que a mediana?
 
-Podemos responder a esta pergunta realizando o último dos três passos comuns em uma ADE: criando visualizações de dados. Vamos visualizar a distribuição da nossa variável de resultado $y = lifeexp$ na @fig-57.
+Podemos responder a esta pergunta realizando o último dos três passos comuns em uma ADE: criando visualizações de dados. Vamos visualizar a distribuição da nossa variável de resultado $y = life\_\exp$ na @fig-57.
 
 ```{r}
 #| label: fig-57
@@ -823,7 +820,7 @@ gapminder2007 |>
   labs(
     x = "Expectativa de vida",
     y = "Número de países",
-    title = "Histograma da distribuição da expectativa de vida mundial"
+    title = "Histograma da distribuição \nda expectativa de vida mundial"
   )
 ```
 
@@ -864,6 +861,7 @@ Lembre-se de que um método alternativo para visualizar a distribuição de uma 
 #| out-width: 70%
 #| fig-dpi: 600
 #| fig-alt: A imagem mostra um boxplot comparativo intitulado "Expectativa de vida por continente", o qual detalha a distribuição da expectativa de vida em África, Ásia, Américas, Europa e Oceania. O continente africano exibe a menor mediana de expectativa de vida entre os continentes, com 52.9 anos. A Ásia apresenta uma mediana de expectativa de vida de 72.4 anos, indicando uma melhoria significativa em comparação com a África. Nas Américas, a mediana é de 72.9 anos, mostrando uma expectativa de vida similar à asiática. A Europa se destaca com a mediana mais alta após a Oceania, com 78.6 anos. Por fim, a Oceania lidera com a maior mediana de expectativa de vida, marcando 80.7 anos.
+
 gapminder2007 |> 
   ggplot(aes(fct_reorder(continent, life_exp),
              life_exp)) +
@@ -924,7 +922,7 @@ lifeExp_by_continent |>
 
 Observe a ordem da segunda coluna da mediana da expectativa de vida: África tem a mais baixa, as Américas e a Ásia vêm a seguir com medianas semelhantes, depois a Europa e, por fim, a Oceania. Esta ordenação corresponde à ordenação das linhas pretas sólidas dentro das caixas no nosso boxplot lado a lado na @fig-59.
 
-Vamos agora voltar nossa atenção para os valores na terceira coluna de média. Usando a média da expectativa de vida da África de 54.8 como uma linha de base para comparação, vamos começar a fazer comparações com as médias de expectativa de vida dos outros quatro continentes e colocar esses valores na Tabela 5.7, que revisaremos mais adiante nesta seção.
+Vamos agora voltar nossa atenção para os valores na terceira coluna de média. Usando a média da expectativa de vida da África de 54.8 como uma linha de base para comparação, vamos começar a fazer comparações com as médias de expectativa de vida dos outros quatro continentes e colocar esses valores na @tbl-57, que revisaremos mais adiante nesta seção.
 
 1.  Para as Américas, é 73.6 - 54.8 = 18.8 anos mais alta.
 2.  Para a Ásia, é 70.7 - 54.8 = 15.9 anos mais alta.
@@ -979,7 +977,7 @@ Realize uma nova análise exploratória de dados com a mesma variável explicati
 
 ### Regressão Linear {#sec-5.2.2}
 
-Na Subseção @sec-5.1.2, introduzimos a regressão linear simples, que envolve a modelagem da relação entre uma variável de resultado numérica $y$ e uma variável explicativa numérica $x$. No nosso exemplo de expectativa de vida, agora temos, em vez disso, uma variável explicativa categórica `continent`. Nosso modelo não fornecerá uma linha de regressão de "melhor ajuste" como na Figura 5.4, mas sim desvios relativos a uma linha de base para comparação.
+Na Subseção @sec-5.1.2, introduzimos a regressão linear simples, que envolve a modelagem da relação entre uma variável de resultado numérica $y$ e uma variável explicativa numérica $x$. No nosso exemplo de expectativa de vida, agora temos, em vez disso, uma variável explicativa categórica `continent`. Nosso modelo não fornecerá uma linha de regressão de "melhor ajuste" como na @fig-54, mas sim desvios relativos a uma linha de base para comparação.
 
 Assim como fizemos na Subseção @sec-5.1.2 ao estudar a relação entre as notas de ensino e as pontuações de "beleza", vamos exibir a tabela de regressão para este modelo. Lembre-se de que isso é feito em duas etapas:
 
@@ -988,6 +986,34 @@ Assim como fizemos na Subseção @sec-5.1.2 ao estudar a relação entre as nota
 
 ```{r}
 lifeExp_model <- lm(life_exp ~ continent, data = gapminder2007)
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+# Este código é usado para fins de saída de texto em linha dinâmico e não estático
+
+lifeExp_coeffs <- lifeExp_model$coefficients |> 
+  tidy()
+
+intercept <- lifeExp_coeffs[[1,2]] |> round(1)
+
+offset_americas <- lifeExp_coeffs[[2,2]] |> round(1)
+
+mean_americas <- intercept + offset_americas
+
+offset_asia <- lifeExp_coeffs[[3,2]] |> round(1)
+
+mean_asia <- intercept + offset_asia
+
+offset_europe <- lifeExp_coeffs[[4,2]] |> round(1)
+
+mean_europe <- intercept + offset_europe
+
+offset_oceania <- lifeExp_coeffs[[5,2]] |> round(1)
+
+mean_oceania <- intercept + offset_oceania
 ```
 
 ```{r}
@@ -1024,11 +1050,11 @@ lifeExp_model |>
 
 Vamos nos concentrar novamente nos valores nas colunas termo e estimativa da Tabela @tbl-58. Por que há agora 5 linhas? Vamos analisá-las uma a uma:
 
--   intercept corresponde à expectativa de vida média dos países da África, que é de 54,8 anos.
--   continentAmericas corresponde aos países das Américas e o valor +18,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países das Américas é $54,8 + 18,8 = 73,6$.
--   continentAsia corresponde aos países da Ásia e o valor +15,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Ásia é $54,8 + 15,9 = 70,7$.
--   continentEurope corresponde aos países da Europa e o valor +22,8 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Europa é $54,8 + 22,8 = 77,6$.
--   continentOceania corresponde aos países da Oceania e o valor +25,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Oceania é $54,8 + 25,9 = 80,7$.
+-   `intercept` corresponde à expectativa de vida média dos países da África, que é de $54.8$ anos.
+-   `continentAmericas` corresponde aos países das Américas e o valor $+18.8$ é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países das Américas é $54.8 + 18.8 = 73.6$.
+-   `continentAsia` corresponde aos países da Ásia e o valor +15,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Ásia é $54.8 + 15.9 = 70.7$.
+-   `continentEurope` corresponde aos países da Europa e o valor $+22.8$ é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Europa é $54.8 + 22.8 = 77.6$.
+-   `continentOceania` corresponde aos países da Oceania e o valor +25,9 é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países da Oceania é $54.8 + 25.9 = 80.7$.
 
 Para resumir, os cinco valores na coluna estimativa na @tbl-58 correspondem a linha de base para comparação com a média a África (o intercepto) e também desvios desse linha de base para os quatro continentes restantes: as Américas, Ásia, Europa e Oceania.
 
@@ -1038,11 +1064,10 @@ Agora, vamos escrever a equação para os nossos valores ajustados $\hat{y} = \w
 
 $$
 \begin{aligned}
-\widehat{y} = \widehat{\text{life_exp}} &= b_0 + b_{\text{Amer}}\cdot\mathbf{1}_{\text{Amer}}(x) + b_{\text{Asia}}\cdot\mathbf{1}_{\text{Asia}}(x) + \\
-& \qquad b_{\text{Euro}}\cdot\mathbf{1}_{\text{Euro}}(x) + b_{\text{Ocean}}\cdot\mathbf{1}_{\text{Ocean}}(x)\\
-&= 54.8 + 18.8\cdot\mathbf{1}_{\text{Amer}}(x) + 15.9\cdot\mathbf{1}_{\text{Asia}}(x) + \\
-& \qquad 22.8\cdot\mathbf{1}_{\text{Euro}}(x) + 25.9
-\cdot\mathbf{1}_{\text{Ocean}}(x)
+\widehat{y} = \widehat{\text{life exp}} &= b_0 + b_{\text{Amer}}\cdot\mathnormal{1}_{\text{Amer}}(x) + b_{\text{Asia}}\cdot\mathnormal{1}_{\text{Asia}}(x) + \\
+& \qquad b_{\text{Euro}}\cdot\mathnormal{1}_{\text{Euro}}(x) + b_{\text{Ocean}}\cdot\mathnormal{1}_{\text{Ocean}}(x)\\
+&= `r intercept` + `r offset_americas`\cdot\mathnormal{1}_{\text{Amer}}(x) + `r offset_asia`\cdot\mathnormal{1}_{\text{Asia}}(x) + \\
+& \qquad `r offset_europe`\cdot\mathnormal{1}_{\text{Euro}}(x) + `r offset_oceania`\cdot\mathnormal{1}_{\text{Ocean}}(x)
 \end{aligned}
 $$
 
@@ -1050,7 +1075,7 @@ Ufa! Isso parece assustador! Mas não se preocupe, pois uma vez que você entend
 
 $$
 \begin{equation*}
-\mathbf1_{\text{A}}(x) = \left\{
+\mathnormal1_{\text{A}}(x) = \left\{
 \begin{aligned}
 &1 && \text{se } x \text{ está em } A \\
 &0 && \text{se } x \text{ não está em } A 
@@ -1063,7 +1088,7 @@ No contexto de modelagem estatística, isso também é conhecido como uma variá
 
 $$
 \begin{equation}
-\mathbf1_{\text{Amer}}(x) = \left\{
+\mathnormal1_{\text{Amer}}(x) = \left\{
 \begin{aligned}
 &1 && \text{se o país } x \text{ está nas Américas} \\
 &0 && \text{caso contrário}
@@ -1077,41 +1102,47 @@ Segundo, $b_0$ corresponde ao intercepto como antes. Neste caso, é a expectativ
 Vamos juntar tudo isso e calcular o valor ajustado $\hat{y} = \widehat{life\_\exp}$ para um país na África. Como o país está na África, todas as quatro funções indicadoras $1_{Amer}(x)$, $1_{Asia}(x)$, $1_{Euro}(x)$ e $1_{Ocean}(x)$ serão iguais a 0, e, portanto:
 
 $$
-\begin{align}
-\widehat{\text{life_exp}} &= b_0 + b_{\text{Amer}} \cdot 1_{\text{Amer}}(x) + b_{\text{Asia}} \cdot 1_{\text{Asia}}(x) + \\
-&\quad + b_{\text{Euro}} \cdot 1_{\text{Euro}}(x) + b_{\text{Ocean}} \cdot 1_{\text{Ocean}}(x) \\
-&= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + \\
-&\quad + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x) \\
-&= 54.8 + 18.8 \cdot 0 + 15.9 \cdot 0 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
-&= 54.8
-\end{align}
+\begin{aligned}
+\widehat{\text{life exp}} &= b_0 + b_{\text{Amer}}\cdot\mathnormal{1}_{\text{Amer}}(x) + b_{\text{Asia}}\cdot\mathnormal{1}_{\text{Asia}}(x)
++ \\
+& \qquad b_{\text{Euro}}\cdot\mathnormal{1}_{\text{Euro}}(x) + b_{\text{Ocean}}\cdot\mathnormal{1}_{\text{Ocean}}(x)\\
+&= `r intercept` + `r offset_americas`\cdot\mathnormal{1}_{\text{Amer}}(x) + `r offset_asia`\cdot\mathnormal{1}_{\text{Asia}}(x)
++ \\
+& \qquad `r offset_europe`\cdot\mathnormal{1}_{\text{Euro}}(x) + `r offset_oceania`\cdot\mathnormal{1}_{\text{Ocean}}(x)\\
+&= `r intercept` + `r offset_americas`\cdot 0 + `r offset_asia`\cdot 0 + `r offset_europe`\cdot 0 + `r offset_oceania`\cdot 0\\
+&= `r intercept`
+\end{aligned}
 $$
 
-Em outras palavras, tudo o que resta é o intercepto b_0, correspondente à expectativa de vida média dos países africanos de 54,8 anos. A seguir, digamos que estamos considerando um país das Américas. Neste caso, apenas a função indicadora $1\_{Amer}(x)$ para as Américas será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
+Em outras palavras, tudo o que resta é o intercepto $b_0$, correspondente à expectativa de vida média dos países africanos de $54.8$ anos. A seguir, digamos que estamos considerando um país das Américas. Neste caso, apenas a função indicadora $1_{Amer}(x)$ para as Américas será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
 
 $$
-\begin{align}
-\widehat{\text{life_exp}} &= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x) \\
-&= 54.8 + 18.8 \cdot 1 + 15.9 \cdot 0 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
-&= 54.8 + 18.8 \\
-&= 73.6
-\end{align}
+\begin{aligned}
+\widehat{\text{life exp}} &= `r intercept` + `r offset_americas`\cdot\mathnormal{1}_{\text{Amer}}(x) + `r offset_asia`\cdot\mathnormal{1}_{\text{Asia}}(x)
++ `r offset_europe`\cdot\mathnormal{1}_{\text{Euro}}(x) + \\
+& \qquad `r offset_oceania`\cdot\mathnormal{1}_{\text{Ocean}}(x)\\
+&= `r intercept` + `r offset_americas`\cdot 1 + `r offset_asia`\cdot 0 + `r offset_europe`\cdot 0 + `r offset_oceania`\cdot 0\\
+&= `r intercept` + `r offset_americas` \\
+& = `r mean_americas`
+\end{aligned}
 $$
 
-
-Isso é a expectativa de vida média para os países das Américas de 73,6 anos na @tbl-57. Note que o desvio da linha de base para comparação é $+18,8$ anos.
+Isso é a expectativa de vida média para os países das Américas de $73.6$ anos na @tbl-57. Note que o desvio da linha de base para comparação é $+18.8$ anos.
 
 Vamos fazer mais um. Digamos que estamos considerando um país da Ásia. Neste caso, apenas a função indicadora $1_{Asia}(x)$ para a Ásia será igual a 1, enquanto todas as outras serão iguais a 0, e, portanto:
 
 $$
-\begin{align}
-\widehat{\text{life_exp}} &= 54.8 + 18.8 \cdot 1_{\text{Amer}}(x) + 15.9 \cdot 1_{\text{Asia}}(x) + 22.8 \cdot 1_{\text{Euro}}(x) + 25.9 \cdot 1_{\text{Ocean}}(x) \\
-&= 54.8 + 18.8 \cdot 0 + 15.9 \cdot 1 + 22.8 \cdot 0 + 25.9 \cdot 0 \\
-&= 54.8 + 15.9 \\
-&= 70.7
-\end{align}
+\begin{aligned}
+\widehat{\text{life exp}} &= `r intercept` + `r offset_americas`\cdot\mathnormal{1}_{\text{Amer}}(x) + `r offset_asia`\cdot\mathnormal{1}_{\text{Asia}}(x)
++ `r offset_europe`\cdot\mathnormal{1}_{\text{Euro}}(x) + \\
+& \qquad `r offset_oceania`\cdot\mathnormal{1}_{\text{Ocean}}(x)\\
+&= `r intercept` + `r offset_americas`\cdot 0 + `r offset_asia`\cdot 1 + `r offset_europe`\cdot 0 + `r offset_oceania`\cdot 0\\
+&= `r intercept` + `r offset_asia` \\
+& = `r mean_asia`
+\end{aligned}
 $$
-Isso é a expectativa de vida média para os países asiáticos de 70,7 anos na @tbl-57. O desvio da linha de base para comparação aqui é +15,9 anos.
+
+Isso é a expectativa de vida média para os países asiáticos de $70.7$ anos na @tbl-57. O desvio da linha de base para comparação aqui é $+15.9$ anos.
 
 Vamos generalizar essa ideia um pouco. Se ajustarmos um modelo de regressão linear usando uma variável explicativa categórica $x$ que possui $k$ possíveis categorias, a tabela de regressão retornará um intercepto e $k - 1$ devios. No nosso caso, como há $k = 5$ continentes, o modelo de regressão retorna um intercepto correspondente ao grupo grupo da linha de base para comparação, a África, e $k - 1 = 4$ desvios correspondentes às Américas, Ásia, Europa e Oceania.
 
@@ -1122,3 +1153,448 @@ Compreender a saída de uma tabela de regressão quando se está usando uma vari
 
 Ajuste uma nova regressão linear usando `lm(gdppercap ~ continent, data = gapminder2007)`, onde `gdppercap` é a nova variável de resultado $y$. Obtenha informações sobre a linha de "melhor ajuste" a partir da tabela de regressão aplicando a função `tidy()`. Como os resultados da regressão se alinham com os resultados da sua análise exploratória de dados anterior?
 :::
+
+### Valores ajustados/observados e resíduos {#sec-5.2.3}
+
+Lembre-se da @sec-5.1.3, onde definimos os três conceitos a seguir:
+
+-   Valores observados $y$, ou o valor observado da variável de resultado.
+-   Valores ajustados $\hat{y}$, ou o valor na linha de regressão para um dado valor de $x$.
+-   Resíduos $y - \hat{y}$, ou o erro entre o valor observado e o valor ajustado.
+
+Obtivemos esses valores e outros usando a função `augment()` do pacote `broom`. Desta vez, no entanto, vamos adicionar a variável `country` como uma variável de identificação na saída. Para isso, utilizamos o código a seguir que pode ser dividido em 3 passos:
+
+1.  A função `select(country)` é usada para selecionar apenas a coluna `country` do banco de dados `gapminder2007`.
+2.  A função `augment(lifeExp_model)` cria um banco de dados com as variáveis que foram utilizads no modelo (`life_exp` e `continent`) e adiciona informações sobre cada observação no banco de dados. Neste caso, estamos interessados nos valores ajustados (`.fitted`) e nos resíduos. (`.resid`). `bind_cols(augment(lifeExp_model))` é então usada para adicionar a coluna `country` ao banco de dados gerados com a função `augment()`.
+3.  Por fim, `select(-c(.hat:.std.resid))` é empregado para retirar do banco de dados colunas que não vamos utilizar por hora.
+
+```{r}
+gapminder2007 |> 
+  select(country) |> 
+  bind_cols(augment(lifeExp_model)) |> 
+  select(-c(.hat:.std.resid))
+```
+
+Vamos colocar esses dados em uma tabela:
+
+```{r}
+#| label: tbl-59
+#| tbl-cap: Pontos de regressão (primeiros 10 de 142 países)
+gapminder2007 |> 
+  select(country) |> 
+  bind_cols(augment(lifeExp_model)) |> 
+  select(-c(.hat:.std.resid)) |> 
+  slice(1:10) |> 
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) |> 
+  fmt_number(
+    decimals = 2,
+    columns = c(life_exp:.resid)
+  )
+```
+
+Observe na @tbl-59 que `.fitted` contém os valores ajustados $\hat{y}$. Se você olhar atentamente, há apenas cinco valores possíveis para `.fitted`. Estes correspondem às cinco médias de expectativa de vida para os cinco continentes que exibimos na @tbl-57 e calculamos usando os valores na coluna de estimativa da tabela de regressão na @tbl-58.
+
+A coluna `.resid` é simplesmente $y - \hat{y} =$ `life_exp` $-$ `.fitted`. Esses valores podem ser interpretados como o desvio da expectativa de vida de um país em relação à média de expectativa de vida de seu continente. Por exemplo, olhe para a primeira linha da @tbl-59 correspondente ao Afeganistão. O resíduo de \`$y - \hat{y} = 43.8 - 70.7 = -26.9$ está nos dizendo que a expectativa de vida do Afeganistão é impressionantes 26,9 anos menor do que a média da expectativa de vida de todos os países asiáticos. Isso pode ser parcialmente explicado pelos muitos anos de guerra que o país sofreu.
+
+::: callout-note
+## Verificação do aprendizado 5.6
+
+Usando a funcionalidade de ordenação do visualizador de planilhas do RStudio ou as ferramentas de manipulação de dados que você aprendeu no Capítulo 3, identifique os cinco países com os cinco menores (mais negativos) resíduos. O que esses resíduos negativos dizem sobre a expectativa de vida desses países em relação à expectativa de vida de seus continentes?
+:::
+
+::: callout-note
+## Verificação do aprendizado 5.7
+
+Repita esse processo, mas identifique os cinco países com os cinco maiores (mais positivos) resíduos. O que esses resíduos positivos dizem sobre a expectativa de vida desses países em relação à expectativa de vida de seus continentes?
+:::
+
+## Assuntos relacionados {#sec-5.3}
+
+### Correlação não é necessariamente causalidade {#sec-5.3.1}
+
+Ao longo deste capítulo, fomos cautelosos ao interpretar os coeficientes de inclinação da regressão. Sempre discutimos o efeito "associado" de uma variável explicativa $x$ em uma variável de resultado $y$. Por exemplo, nossa afirmação da @sec-5.1.2 de que "para cada aumento de 1 unidade em `bty_avg`, há um aumento associado de, em média, 0.067 unidades de `score`". Incluímos o termo "associado" para sermos extremamente cuidadosos em não sugerir que estamos fazendo uma declaração causal. Então, enquanto a pontuação de "beleza" `bty_avg` está positivamente correlacionada com a pontuação de ensino, não podemos necessariamente fazer declarações sobre o efeito causal direto das pontuações de "beleza" na pontuação de ensino sem mais informações sobre como este estudo foi conduzido. Aqui está outro exemplo: um médico não tão bom passa pelos prontuários e descobre que pacientes que dormiram calçados com seus sapatos tendiam a acordar mais com dores de cabeça. Então, esse médico declara: "Dormir com sapatos causa dores de cabeça!"
+
+![Dormir de sapatos causa dores de cabeça?](images/dor_de_cabeca_sapatos.png){#fig-510 fig-alt="\"A ilustração é dividida em duas cenas que compartilham um estilo artístico semelhante ao de uma história em quadrinhos. No lado esquerdo, um homem de ascendência asiática está dormindo profundamente em sua cama. Ele está vestindo um traje de escritório completo, incluindo um terno marrom, camisa branca e gravata preta. Seus pés estão calçados com sapatos formais pretos, e ele está deitado de costas com as mãos sobre o estômago, em uma postura relaxada. A cama tem lençóis azuis e está localizada em um quarto confortável e bem decorado, com um visual tradicional. No lado direito, o mesmo homem está sentado na beira da cama, agora acordado. Ele tem uma expressão de dor e desconforto enquanto segura a testa com a mão direita, indicando uma dor de cabeça. Ele ainda está vestido com sua roupa de trabalho, mas seus sapatos foram removidos e estão ao lado da cama, sugerindo que ele acaba de acordar." width="389"}
+
+No entanto, há uma boa chance de que, se alguém está dormindo com os sapatos, é potencialmente porque bebeu demais e está embrigado. Além disso, níveis mais altos de consumo de álcool levam a mais ressacas e, portanto, a mais dores de cabeça. A quantidade de consumo de álcool aqui é o que é conhecido como uma variável confundidora/oculta. Ela "se esconde" nos bastidores, confundindo a relação causal (se houver) de "dormir de sapatos" com "acordar com dor de cabeça". Podemos resumir isso na @fig-511 com um gráfico de causalidade onde:
+
+-   `Y` é uma variável de *resposta*: "acordar com dor de cabeça".
+-   `X` é uma variável de *tratamento* cujo efeito causal estamos interessados: "dormir de sapatos".
+
+![Gráfico de causalidade](images/causalidade.png){#fig-511 fig-align="center" width="411"}
+
+```{r}
+#| echo: false
+#| eval: false
+fig511 <- create_graph() |> 
+  add_node(
+    label = "X = Dormir de \nsapatos",
+    node_aes = node_aes(
+      shape = "circle",
+      color = "black",
+      fillcolor = "white",
+      fontname = 'Source Sans Pro',
+      fontsize = 9,
+      height = 1
+    )
+  ) |> 
+  set_node_position(
+    node = 1,
+    x = 1, y = 1) 
+
+fig511 <- fig511 |>   
+  add_node(
+    label = "Y = Acordar com \ndor de cabeça",
+    node_aes = node_aes(
+      shape = "circle",
+      color = "black",
+      fillcolor = "white",
+      fontname = 'Source Sans Pro',
+      fontsize = 9,
+      height = 1
+    )
+  ) |>
+  set_node_position(
+    node = 2,
+    x = 3, y = 1)
+
+fig511 <- fig511 |> 
+  add_node(
+    label = "Z = Álcool",
+    node_aes = node_aes(
+      shape = "circle",
+      color = "black",
+      fillcolor = "white",
+      fontname = 'Source Sans Pro',
+      fontsize = 9,
+      height = 1
+    )
+  ) |> 
+  set_node_position(
+    node = 3,
+    x = 2, y = 2)
+
+
+fig511 <- fig511 |>   
+  add_edge(from = 1, to = 2,
+           edge_aes = edge_aes(
+             color = "black",
+           )) |>
+  add_edge(from = 3, to = 1,
+           edge_aes = edge_aes(
+             color = "black",
+           )) |> 
+  add_edge(from = 3, to = 2,
+           edge_aes = edge_aes(
+             color = "black",
+           ))
+```
+
+```{r}
+#| echo: false
+#| eval: false
+export_graph(fig511,file_name = "./images/causalidade.png",
+             file_type = "png",height = 1500,width = 1500)
+```
+
+Para estudar a relação entre Y e X, poderíamos usar um modelo de regressão onde a variável de resultado é definida como Y e a variável explicativa é definida como X, como você tem feito ao longo deste capítulo. No entanto, a @fig-511 também inclui uma terceira variável com setas apontando para X e Y:
+
+-   Z é uma variável confundidora que afeta tanto X quanto Y, confundindo assim a relação entre eles. Aqui a variável confundidora é o álcool.
+
+O álcool fará com que as pessoas tenham mais probabilidade de dormir com seus sapatos e também mais probabilidade de acordar com dor de cabeça. Portanto, qualquer modelo de regressão da relação entre X e Y também deve usar Z como uma variável explicativa. Em outras palavras, nosso médico precisa levar em conta quem estava bebendo na noite anterior. No próximo capítulo, começaremos a abordar modelos de regressão múltipla que nos permitem incorporar mais de uma variável em nossos modelos de regressão.
+
+Estabelecer causalidade é um problema complicado e frequentemente exige experimentos cuidadosamente desenhados ou métodos para controlar os efeitos de variáveis confundidoras. Ambas as abordagens tentam, da melhor maneira possível, levar em conta todas as variáveis confundidoras possíveis ou negar seu impacto. Isso permite que os pesquisadores se concentrem apenas na relação de interesse: a relação entre a variável de resultado Y e a variável de tratamento X.
+
+Ao ler notícias, tenha cuidado para não cair na armadilha de pensar que correlação necessariamente implica causalidade. Confira o site [Spurious Correlations](http://www.tylervigen.com/spurious-correlations) para alguns exemplos bastante cômicos de variáveis que estão correlacionadas, mas definitivamente não estão relacionadas causalmente.
+
+### Linha de melhor ajuste{#sec-5.3.2}
+
+Linhas de regressão também são conhecidas como linhas de "melhor ajuste". Mas o que queremos dizer com "melhor"? Vamos descompactar os critérios usados na regressão para determinar o "melhor". Lembre-se da @fig-56, onde, para um instrutor com uma pontuação de "beleza" de $x = 7.333$, marcamos o valor observado $y$ com um círculo, o valor ajustado $\hat{y}$ com um quadrado, e o resíduo $y - \hat{y}$ com uma seta. Reexibimos a @fig-56 no gráfico superior esquerdo da @fig-512, além de mais três instrutores de curso escolhidos arbitrariamente.
+
+```{r}
+#| echo: false
+circulo <- evals_ch5 |> 
+  slice(21) |> 
+  select(score) |> 
+  pull()
+
+quadrado <- score_model |> 
+  augment() |> 
+  slice(21) |> 
+  select(.fitted) |> 
+  round(2) |> 
+  pull()
+
+eixo_x <- evals_ch5 |> 
+  slice(21) |> 
+  select(bty_avg) |> 
+  round(2) |> 
+  pull()
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+best_fit_plot <- evals_ch5 |> 
+  ggplot(aes(bty_avg,score, alpha = 0.1)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE,
+              color = "black") +
+  annotate("point", x = eixo_x, y = circulo, 
+           col = "red", shape = 20, 
+           size = 4) +
+  annotate("point", x = eixo_x, y = quadrado, 
+           col = "red", shape = 15, 
+           size = 3) +
+  annotate("segment", x = eixo_x, xend = eixo_x,
+           y = circulo, yend = quadrado, color = "blue",
+           arrow = arrow(type = "closed", length = unit(0.02, "npc")))+
+  theme(
+    legend.position = "none",
+    axis.title = element_blank()
+  ) +
+  scale_color_colorblind()
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+p1 <- best_fit_plot + 
+  labs(
+    title = "Resíduo do \nprimeiro instrutor"
+    ) +
+  theme(
+    axis.line.x = element_blank(), 
+    axis.ticks.x =  element_blank(),
+    axis.text.x =  element_blank(),
+    plot.title = element_text(size = 12)
+  )
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+target_point <- score_model |>
+  augment() |> 
+  filter(bty_avg == 2.333, evals_ch5$score == 2.7)
+
+x <- target_point$bty_avg
+y <- target_point$score
+y_hat <- target_point$.fitted
+resid <- target_point$.resid
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+best_fit_plot <- best_fit_plot +
+  annotate("point", x = x, y = y, col = "red", size = 2) +
+  annotate("point", x = x, y = y_hat, col = "red", shape = 15, size = 2) +
+  annotate("segment",
+           x = x, xend = x, y = y, yend = y_hat, color = "blue",
+           arrow = arrow(type = "closed", length = unit(0.02, "npc"))
+  )
+
+p2 <- best_fit_plot + 
+  labs(
+    title = "Adicionando o resíduo do \nsegundo instrutor"
+    ) +
+  theme(
+    axis.line = element_blank(), 
+    axis.ticks = element_blank(),
+    axis.text =  element_blank(),
+    plot.title = element_text(size = 12)
+  )
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+target_point <- score_model |>
+  augment() |> 
+  filter(bty_avg == 3.667, evals_ch5$score == 4.4)
+
+x <- target_point$bty_avg
+y <- target_point$score
+y_hat <- target_point$.fitted
+resid <- target_point$.resid
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+best_fit_plot <- best_fit_plot +
+  annotate("point", x = x, y = y, col = "red", size = 2) +
+  annotate("point", x = x, y = y_hat, col = "red", shape = 15, size = 2) +
+  annotate("segment",
+           x = x, xend = x, y = y, yend = y_hat,
+           color = "blue",
+           arrow = arrow(type = "closed", length = unit(0.02, "npc"))
+  )
+p3 <- best_fit_plot + 
+  labs(
+    title = "Adicionando o resíduo do \nterceiro instrutor"
+    ) +
+  theme(
+    plot.title = element_text(size = 12)
+  )
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+target_point <- score_model |>
+  augment() |> 
+  filter(bty_avg == 6, evals_ch5$score == 3.8)
+
+x <- target_point$bty_avg
+y <- target_point$score
+y_hat <- target_point$.fitted
+resid <- target_point$.resid
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+best_fit_plot <- best_fit_plot +
+  annotate("point", x = x, y = y, col = "red", size = 2) +
+  annotate("point", x = x, y = y_hat, col = "red", shape = 15, size = 2) +
+  annotate("segment",
+           x = x, xend = x, y = y, yend = y_hat, color = "blue",
+           arrow = arrow(type = "closed", length = unit(0.02, "npc"))
+  )
+p4 <- best_fit_plot + 
+  labs(title = "Adicionando o resíduo \ndo quarto instrutor") + 
+  theme(
+    axis.line.y = element_blank(), 
+    axis.ticks.y = element_blank(),
+    axis.text.y =  element_blank(),
+    plot.title = element_text(size = 12)
+  )
+  
+```
+
+  
+```{r}
+#| echo: false
+#| label: fig-512
+#| warning: false
+#| fig-cap: "Expectativa de vida em 2007"
+#| fig-cap-location: bottom
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-alt: A imagem contém quatro gráficos de dispersão separados, cada um representando a relação entre "Pontuação de ensino" e "Pontuação de beleza" para diferentes instrutores. Em cada gráfico, uma série de pontos cinza ilustram as pontuações, e uma linha preta indica a tendência geral. Os pontos vermelhos destacados com setas azuis representam os resíduos, que são as diferenças entre os valores observados e os valores previstos pela linha de tendência. No gráfico superior esquerdo, intitulado "Resíduo do primeiro instrutor", há um único ponto vermelho com uma seta azul apontando para ele. O gráfico superior direito, "Adicionando o resíduo do segundo instrutor", mostra dois pontos vermelhos com setas azuis. O gráfico inferior esquerdo, "Adicionando o resíduo do terceiro instrutor", inclui três pontos vermelhos, enquanto o gráfico inferior direito, "Adicionando o resíduo do quarto instrutor", apresenta quatro pontos vermelhos.
+
+
+plot_group <- (p1 + p2)/(p3 + p4)
+
+plot_group <- patchworkGrob(plot_group)
+
+gridExtra::grid.arrange(plot_group, left = "Pontuação de ensino", bottom = "Pontuação de beleza")
+```
+
+Os outros três gráficos referem-se a:
+
+1.    Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 2.333$ e pontuação de ensino $y = 2.7$. O resíduo neste caso é $2.7 - 4.036 = -1.336$, que marcamos com uma nova seta azul no gráfico superior direito.
+
+2.    Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 3.667$ e pontuação de ensino $y = 4.4$. O resíduo neste caso é $4.4 - 4.125 = 0.2753$, que marcamos com uma nova seta azul no gráfico inferior esquerdo.
+
+3.    Um curso cujo instrutor tinha uma pontuação de "beleza" $x = 6$ e pontuação de ensino $y = 3.8$. O resíduo neste caso é $3.8 - 4.28 = -0.4802$, que marcamos com uma nova seta azul no gráfico inferior direito.
+
+Agora digamos que repetimos esse processo de calcular resíduos para todos os 463 instrutores de cursos, depois elevamos todos os resíduos ao quadrado e, em seguida, os somamos. Chamamos o valor obtido de soma dos quadrados dos resíduos, que é uma medida da falta de ajuste de um modelo. Valores maiores da soma dos quadrados dos resíduos indicam uma maior falta de ajuste. Isso corresponde a um modelo com pior ajuste.
+
+Se a linha de regressão se ajustar perfeitamente a todos os pontos, então a soma dos resíduos quadrados é 0. Isso porque se a linha de regressão se ajustar perfeitamente a todos os pontos, então o valor ajustado $\hat{y}$ iguala o valor observado $y$ em todos os casos, e, portanto, o resíduo $y - \hat{y} = 0$ em todos os casos, e a soma de um grande número de 0s ainda é 0.
+
+Além disso, de todas as linhas possíveis que podemos desenhar através da nuvem de 463 pontos, a linha de regressão minimiza esse valor. Em outras palavras, a regressão e seus valores ajustados correspondentes $\hat{y}$ minimizam a soma dos resíduos quadrados:
+
+$$
+\sum_{i=1}^{n}(y_i - \widehat{y}_i)^2
+$$
+
+Vamos usar nossas ferramentas de manipulação de dados do Capítulo 3 para calcular exatamente a soma dos resíduos quadrados:
+
+```{r}
+score_model <- lm(score ~ bty_avg, 
+                  data = evals_ch5)
+
+pontos_da_regressao <- score_model |> 
+  augment()
+
+pontos_da_regressao
+```
+
+```{r}
+pontos_da_regressao |> 
+  mutate(
+    residuos_ao_quadrado = .resid^2
+  ) |> 
+  summarise(
+    soma_dos_residuos_ao_quadrado = sum(residuos_ao_quadrado)
+  )
+```
+
+Qualquer outra linha reta desenhada na figura resultaria em uma soma dos resíduos quadrados maior do que 132. Este é um fato matematicamente garantido que você pode provar usando cálculo e álgebra linear. É por isso que nomes alternativos para a linha de regressão linear são a linha de melhor ajuste e a linha de mínimos quadrados. Por que elevamos os resíduos ao quadrado (ou seja, os comprimentos das setas)? Para que tanto os desvios positivos quanto os negativos do mesmo montante sejam tratados igualmente. Dito isso, embora tomar o valor absoluto dos resíduos também trataria os desvios positivos e negativos do mesmo montante igualmente, o quadrado dos resíduos é usado por razões relacionadas ao cálculo: tomar derivadas e minimizar funções. Para aprender mais, sugerimos que consulte um livro-texto sobre estatística matemática.
+
+::: callout-note
+## Verificação do aprendizado 5.8
+Observe na @fig-513 que existem 3 pontos marcados com bolas pretas e:
+
+-   A linha de regressão sólida azul de "melhor" ajuste
+-   Uma linha pontilhada vermelha escolhida arbitrariamente
+-   Outra linha tracejada verde escolhida arbitrariamente
+
+```{r}
+#| echo: false
+#| label: fig-513
+#| warning: false
+#| fig-cap: "Expectativa de vida em 2007"
+#| fig-cap-location: bottom
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-alt: A imagem contém quatro gráficos de dispersão separados, cada um representando a relação entre "Pontuação de ensino" e "Pontuação de beleza" para diferentes instrutores. Em cada gráfico, uma série de pontos cinza ilustram as pontuações, e uma linha preta indica a tendência geral. Os pontos vermelhos destacados com setas azuis representam os resíduos, que são as diferenças entre os valores observados e os valores previstos pela linha de tendência. No gráfico superior esquerdo, intitulado "Resíduo do primeiro instrutor", há um único ponto vermelho com uma seta azul apontando para ele. O gráfico superior direito, "Adicionando o resíduo do segundo instrutor", mostra dois pontos vermelhos com setas azuis. O gráfico inferior esquerdo, "Adicionando o resíduo do terceiro instrutor", inclui três pontos vermelhos, enquanto o gráfico inferior direito, "Adicionando o resíduo do quarto instrutor", apresenta quatro pontos vermelhos.
+
+example <- tibble(
+  x = c(0, 0.5, 1),
+  y = c(2, 1, 3)
+)
+
+ggplot(example, aes(x = x, y = y)) +
+  geom_smooth(method = "lm", se = FALSE, fullrange = TRUE) +
+  geom_hline(yintercept = 2.5, col = "red", linetype = "dotted", linewidth = 1) +
+  geom_abline(
+    intercept = 2, slope = -1, col = "forestgreen",
+    linetype = "dashed", linewidth = 1
+  ) +
+  geom_point(size = 4) +
+  scale_color_colorblind()
+```
+:::
+
+Calcule a soma dos quadrados dos resíduos manualmente para cada linha e mostre que, dessas três linhas, a linha de regressão em azul tem o menor valor.
+
+## Conclusão {#sec-5.4}
+
+### Fontes adicionais {#sec-5.4.1}
+
+Como sugerimos na @sec-5.1.1, interpretar coeficientes que não estão próximos aos valores extremos de -1, 0 e 1 pode ser um pouco subjetivo. Para ajudar a desenvolver seu senso de coeficientes de correlação, sugerimos que você jogue o jogo chamado "Guess the Correlation" (Adivinhe a Correlação), disponível em http://guessthecorrelation.com/.
+
+### O que virá a seguir? {#sec-5.4.2}
+
+Neste capítulo, você estudou a regressão básica, onde ajustou modelos que tinham apenas uma variável explicativa. No Capítulo 6, estudaremos a regressão múltipla, onde nossos modelos de regressão poderão agora ter mais de uma variável explicativa! Em particular, consideraremos dois cenários: modelos de regressão com uma variável explicativa numérica e uma categórica e modelos de regressão com duas variáveis explicativas numéricas. Isso permitirá que você construa modelos mais sofisticados e poderosos, com a expectativa de explicar melhor sua variável de resultado `$y$`.
+

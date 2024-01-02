@@ -6,4 +6,4 @@ title: "Regressão Linear"
 
 ![](images/slide.png){width="18"} [Slides: regressão linear simples](modulo_regressao.qmd){target="_blank"}
 
-![](images/e-book.png){width="18"} [Material bibliográfico](traducoes_regressao.qmd){target="_blank"}
+![](images/e-book.png){width="18"} [Material bibliográfico: Statistical Inference via Data Science (Capítulo 5)](md_cap5.qmd){target="_blank"}
