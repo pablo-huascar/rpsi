@@ -8,6 +8,7 @@ website:
   page-navigation: true
   title: "Rpsi"
   repo-url: https://github.com/pablo-huascar/rpsi
+  repo-branch: main
   page-footer:
     left: "Esta página foi construída com [Quarto](https://quarto.org/)."
     right: 
@@ -24,9 +25,9 @@ website:
         file: index.qmd
       - text: "Conteúdos"
         file: conteudos.qmd
+      - text: "Materiais"
+        file: materiais.qmd
     right: 
-      - icon: github
-      - href: https://github.com/pablo-huascar/rpsi
       - icon: "{{< fa brands github >}}"
         href: https://github.com/pablo-huascar/rpsi
       - text: "{{< fa brands github size=2x >}}"
@@ -47,7 +48,6 @@ website:
         - graficos.qmd
         - dados_arrumados.qmd
         - regressao.qmd
-        - traducoes.qmd
 
     
     

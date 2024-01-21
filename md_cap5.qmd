@@ -338,7 +338,7 @@ evals_ch5 |>
   )
 ```
 
-Observe que a maioria das pontuações de "beleza" fica entre 2 e 8, enquanto a maioria das notas de ensino fica entre 3 e 5. Além disso, embora as opiniões possam variar, acreditamos que a relação entre a nota de ensino e a pontuação de "beleza" é fraca e positiva. Isso é consistente com nosso coeficiente de correlação calculado anteriormente de 0.187.
+Observe que a maioria das pontuações de "beleza" fica entre 2 e 8, enquanto a maioria das notas de ensino fica entre 3 e 5. Embora as opiniões possam variar, acreditamos que a relação entre a nota de ensino e a pontuação de "beleza" é fraca e positiva. Isso é consistente com nosso coeficiente de correlação calculado anteriormente de 0.187.
 
 Além disso, parece haver seis pontos no canto superior direito deste gráfico destacados na caixa. No entanto, isso não é realmente o caso, pois este gráfico sofre de sobreposição. Lembre-se da Subseção 2.3.2 que a sobreposição ocorre quando vários pontos estão empilhados diretamente uns sobre os outros, tornando difícil distingui-los. Então, embora possa parecer que há apenas seis pontos na caixa, na verdade há mais. Esse fato só fica aparente ao usar `geom_jitter()` no lugar de `geom_point()`. Exibimos o gráfico resultante na @fig-53 junto com a mesma pequena caixa da @fig-52.
 
@@ -391,7 +391,7 @@ evals_ch5 |>
 
 A linha no resultado da @fig-54 é chamada de "linha de regressão". A linha de regressão é um resumo visual da relação entre duas variáveis numéricas, no nosso caso a variável de resultado `score` e a variável explicativa `bty_avg`. A inclinação positiva da linha azul é consistente com nosso coeficiente de correlação observado anteriormente de 0.187, sugerindo que existe uma relação positiva entre essas duas variáveis: à medida que os instrutores têm pontuações de "beleza" mais altas, eles também recebem avaliações de ensino mais altas. Veremos mais tarde, no entanto, que enquanto o coeficiente de correlação e a inclinação de uma linha de regressão sempre têm o mesmo sinal (positivo ou negativo), eles tipicamente não têm o mesmo valor.
 
-Além disso, uma linha de regressão é "melhor ajustada" no sentido de que minimiza alguns critérios matemáticos. Apresentamos esses critérios matemáticos na Subseção 5.3.2, mas sugerimos que você leia esta subseção apenas depois de ler primeiro o resto desta seção sobre regressão com uma variável explicativa numérica.
+Uma linha de regressão é "melhor ajustada" no sentido de que minimiza alguns critérios matemáticos. Apresentamos esses critérios matemáticos na Subseção 5.3.2, mas sugerimos que você leia esta subseção apenas depois de ler primeiro o resto desta seção sobre regressão com uma variável explicativa numérica.
 
 ::: callout-note
 ## Verificação do aprendizado 5.1
@@ -407,7 +407,9 @@ Com base nesta exploração, o que você pode dizer sobre a relação entre idad
 
 ### Regressão linear simples {#sec-5.1.2}
 
-Você pode se lembrar da álgebra do ensino médio que a equação de uma linha é $y = a + b \cdot x$ (note que o símbolo $\cdot$ é equivalente ao símbolo matemático "multiplicar por" $\times$. Usaremos o símbolo $\cdot$ no restante deste livro, pois é mais sucinto). Ela é definida por dois coeficientes $a$ e $b$. O coeficiente de interceptação $a$ é o valor de $y$ quando $x = 0$. O coeficiente de inclinação $b$ para $x$ é o aumento em $y$ para cada aumento de um ponto em $x$. Isso também é chamado de "taxa de variação". É possível visualizar essa relação na @fig-55, onde $a$ é igual a 2 e $b$ é igual a 3 ($y = 2 + 3 \cdot x$)
+Você pode se lembrar da álgebra do ensino médio que a equação de uma linha é $y = a + b \cdot x$.[^2] Ela é definida por dois coeficientes $a$ e $b$. O coeficiente de interceptação $a$ é o valor de $y$ quando $x = 0$. O coeficiente de inclinação $b$ para $x$ é o aumento em $y$ para cada aumento de um ponto em $x$. Isso também é chamado de "taxa de variação". É possível visualizar essa relação na @fig-55, onde $a$ é igual a 2 e $b$ é igual a 3 ($y = 2 + 3 \cdot x$)
+
+[^2]: Note que o símbolo $\cdot$ é equivalente ao símbolo matemático "multiplicar por" $\times$. Usaremos o símbolo $\cdot$ no restante deste livro, pois ele é mais sucinto.
 
 ```{r}
 x <- c(0,1,2,3,4)
@@ -427,6 +429,7 @@ reg_line
 #| fig-dpi: 600
 #| fig-cap-location: bottom
 #| fig-alt: A imagem exibe um gráfico de linhas com um fundo branco, mostrando uma função linear ascendente. O eixo horizontal (X) se estende de 0 a 4 e o eixo vertical (Y) de 0 a 14, com linhas de grade pontilhadas para facilitar a leitura dos valores. Uma linha reta azul conecta quatro pontos de dados, marcados por pontos vermelhos, indicando uma relação proporcional direta entre X e Y. A linha começa no ponto (0,2) e passa por pontos equidistantes no eixo X, terminando no ponto (4,14). Este gráfico sugere que, à medida que X aumenta, Y aumenta em uma taxa constante.
+
 reg_line |> 
   ggplot(aes(x,y)) +
   geom_smooth(
@@ -785,7 +788,7 @@ gapminder2007 |>
   )
 ```
 
-Observe que a amostragem aleatória provavelmente produzirá um subconjunto diferente de 5 linhas para você do que o mostrado. Para evitar isso, usamos novamente a função `set.seed()` Agora que olhamos os valores brutos no nosso banco de dados `gapminder2007` e obtivemos uma noção dos dados, passemos para o cálculo de estatísticas descritivas. Vamos mais uma vez aplicar a função skim() do pacote skimr. Lembre-se da nossa ADE anterior que esta função recebe um banco de dados, o "analisa" e retorna estatísticas descritivas comumente usadas. Vamos pegar nosso banco de dados gapminder2007, selecionar apenas as variáveis de resultado e explicativas lifeexp e continent, e encaminhá-las para a função skim():
+Observe que a amostragem aleatória provavelmente produzirá um subconjunto diferente de 5 linhas para você do que o mostrado. Para evitar isso, usamos novamente a função `set.seed()` Agora que olhamos os valores brutos no nosso banco de dados `gapminder2007` e obtivemos uma noção dos dados, passemos para o cálculo de estatísticas descritivas. Vamos mais uma vez aplicar a função skim() do pacote skimr. Lembre-se da nossa ADE anterior que esta função recebe um banco de dados, o "analisa" e retorna estatísticas descritivas comumente usadas. Vamos pegar nosso banco de dados gapminder2007, selecionar apenas as variáveis de resultado e explicativas, lifeexp e continent, e encaminhá-las para a função skim():
 
 ```{r render = knitr::normal_print}
 gapminder2007 |> 
@@ -799,7 +802,7 @@ O resultado da função `skim()` agora relata resumos para variáveis categóric
 -   `n_missing` e `complete_rate`: são o número de valores ausentes e o percentual de valores completos, respectivamente.
 -   `n_unique`: O número de níveis únicos desta variável, correspondendo a África, Ásia, Américas, Europa e Oceania. Isso se refere a quantos países estão nos dados para cada continente.
 -   `top_counts`: Neste caso, as quatro maiores contagens: África tem 52 países, Ásia tem 33, Europa tem 30 e Américas tem 25. A Oceania, com 2 países, não foi exibida.
--   `ordered`: Isso nos informa se a variável categórica é “ordinal”: se existe uma hierarquia codificada (como baixo, médio, alto). Neste caso, `continent` não é ordenado.
+-   `ordered`: Isso nos informa se a variável categórica é “ordinal”: se existe uma hierarquia codificada (como baixo, médio, alto). Neste caso, `continent` não é ordinal
 
 Voltando nossa atenção para as estatísticas descritivas da variável numérica `lifeexp`, observamos que a mediana global da expectativa de vida em 2007 era 71.9. Assim, metade dos países do mundo (71 países) tinha uma expectativa de vida inferior a 71.9. No entanto, a expectativa de vida média de 67.0 é mais baixa. Por que a expectativa de vida média é menor que a mediana?
 
@@ -1229,7 +1232,7 @@ No entanto, há uma boa chance de que, se alguém está dormindo com os sapatos,
 -   `Y` é uma variável de *resposta*: "acordar com dor de cabeça".
 -   `X` é uma variável de *tratamento* cujo efeito causal estamos interessados: "dormir de sapatos".
 
-![Gráfico de causalidade](images/causalidade.png){fig-alt="A imagem mostra um diagrama de causalidade com três variáveis representadas em círculos e conectadas por setas, indicando as possíveis relações causais entre elas. O círculo superior, rotulado \"Z = Álcool\", representa a variável confundidora que influencia as outras duas variáveis. O círculo à esquerda, \"X = Dormir de sapatos\", é a variável de tratamento cujo efeito causal estamos interessados em explorar. O círculo à direita, \"Y = Acordar com dor de cabeça\", é a variável de resposta que queremos entender. O diagrama mostra setas indo de \"Z = Álcool\" para ambas as variáveis \"X\" e \"Y\", sugerindo que o consumo de álcool pode ser a causa tanto de dormir de sapatos quanto de acordar com dor de cabeça. Há também uma seta direta de \"X\" para \"Y\", indicando uma relação potencial direta entre dormir de sapatos e acordar com dor de cabeça. Este diagrama ilustra a ideia de que, embora possa haver uma associação observada entre \"X\" e \"Y\", a presença da variável confundidora \"Z\" sugere que a relação entre dormir de sapatos e acordar com dor de cabeça pode não ser causal, mas sim influenciada pelo consumo de álcool." fig-align="center" width="411" #fig-511}
+![Gráfico de causalidade](images/causalidade.png){#fig-511 fig-alt="A imagem mostra um diagrama de causalidade com três variáveis representadas em círculos e conectadas por setas, indicando as possíveis relações causais entre elas. O círculo superior, rotulado \"Z = Álcool\", representa a variável confundidora que influencia as outras duas variáveis. O círculo à esquerda, \"X = Dormir de sapatos\", é a variável de tratamento cujo efeito causal estamos interessados em explorar. O círculo à direita, \"Y = Acordar com dor de cabeça\", é a variável de resposta que queremos entender. O diagrama mostra setas indo de \"Z = Álcool\" para ambas as variáveis \"X\" e \"Y\", sugerindo que o consumo de álcool pode ser a causa tanto de dormir de sapatos quanto de acordar com dor de cabeça. Há também uma seta direta de \"X\" para \"Y\", indicando uma relação potencial direta entre dormir de sapatos e acordar com dor de cabeça. Este diagrama ilustra a ideia de que, embora possa haver uma associação observada entre \"X\" e \"Y\", a presença da variável confundidora \"Z\" sugere que a relação entre dormir de sapatos e acordar com dor de cabeça pode não ser causal, mas sim influenciada pelo consumo de álcool." fig-align="center" width="411"}
 
 ```{r}
 #| echo: false
@@ -1592,9 +1595,9 @@ Calcule a soma dos quadrados dos resíduos manualmente para cada linha e mostre 
 
 ### Fontes adicionais {#sec-5.4.1}
 
-Como sugerimos na @sec-5.1.1, interpretar coeficientes que não estão próximos aos valores extremos de -1, 0 e 1 pode ser um pouco subjetivo. Para ajudar a desenvolver seu senso de coeficientes de correlação, sugerimos que você jogue o jogo chamado "Guess the Correlation" (Adivinhe a Correlação), disponível em http://guessthecorrelation.com/.
+Como sugerimos na @sec-5.1.1, interpretar coeficientes que não estão próximos aos valores extremos de -1, 0 e 1 pode ser um pouco subjetivo. Para ajudar a desenvolver seu senso sobre coeficientes de correlação, sugerimos que você jogue o jogo chamado ["Guess the Correlation"](http://guessthecorrelation.com/){target="_blank"} (Adivinhe a Correlação), disponível em http://guessthecorrelation.com/{target="\_blank"}.
 
-[![Prévia do jogo “Adivinhe a Correlação”.](images/guess_the_correlation.png){#fig-512 fig-alt="A imagem é captura de tela do jogo \"Guess the Correlation\", um jogo de estilo dos anos 80 que tem como objetivo ajudar os jogadores a desenvolver um senso de coeficientes de correlação. No jogo, você deve adivinhar a força da correlação (quão próxima de -1, 0 ou 1) entre dois conjuntos de dados, representada por pontos num gráfico de dispersão. Na tela, há um gráfico de dispersão com pontos dispostos entre os eixos X e Y, que variam de 0,0 a 1,0. No topo da tela, há ícones de coração e um contador de moedas	. No canto superior direito, as opções \"HIGH SCORE\" e \"MAIN MENU\" permitem ao jogador ver a pontuação mais alta alcançada e retornar ao menu principal do jogo, respectivamente. À direita, há uma interface para o jogador inserir o palpite sobre a correlação, com um campo de entrada seguido pelo botão \"GUESS\". Abaixo disso, há estatísticas de jogo, como \"STREAKS\", que acompanha a quantidade de acertos consecutivos, e \"MEAN ERROR\", que mede a média dos erros de palpite do jogador." fig-align="center"}](http://guessthecorrelation.com/)
+[![Prévia do jogo “Adivinhe a Correlação”.](images/guess_the_correlation.png){#fig-512 fig-alt="A imagem é captura de tela do jogo \"Guess the Correlation\", um jogo de estilo dos anos 80 que tem como objetivo ajudar os jogadores a desenvolver um senso de coeficientes de correlação. No jogo, você deve adivinhar a força da correlação (quão próxima de -1, 0 ou 1) entre dois conjuntos de dados, representada por pontos num gráfico de dispersão. Na tela, há um gráfico de dispersão com pontos dispostos entre os eixos X e Y, que variam de 0,0 a 1,0. No topo da tela, há ícones de coração e um contador de moedas  . No canto superior direito, as opções \"HIGH SCORE\" e \"MAIN MENU\" permitem ao jogador ver a pontuação mais alta alcançada e retornar ao menu principal do jogo, respectivamente. À direita, há uma interface para o jogador inserir o palpite sobre a correlação, com um campo de entrada seguido pelo botão \"GUESS\". Abaixo disso, há estatísticas de jogo, como \"STREAKS\", que acompanha a quantidade de acertos consecutivos, e \"MEAN ERROR\", que mede a média dos erros de palpite do jogador." fig-align="center" width="489"}](http://guessthecorrelation.com/)
 
 ### O que virá a seguir? {#sec-5.4.2}
 

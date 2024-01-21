@@ -1,0 +1,5 @@
+---
+title: "Materiais"
+---
+
+Tradução do livro [Statistical Inference via Data Science: A ModernDive into R and the Tidyverse!](md_apresentacao.qmd)
