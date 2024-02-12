@@ -1306,3 +1306,33 @@ tabela_final |>
   geom_line()
 ```
 
+## g4 2014-2023
+
+```{r}
+g4_2014_2023 <- tabela_final |> 
+  group_by(campeonato) |> 
+  slice_max(pontos, n = 4) |> 
+  ungroup()
+
+g4_2014_2023 |> 
+  write_csv("./data/g4_2014_2023.csv")
+  
+```
+
+```{r}
+g4_2014_2023 |> 
+  count(time) |> 
+  ggplot(aes(n, fct_reorder(time, n, .fun = mean) )) +
+  geom_col() +
+  labs(
+    y = "Time"
+  )
+```
+
+
+
+
+
+
+
+
