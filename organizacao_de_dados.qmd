@@ -1104,6 +1104,125 @@ brasileiro_2015 <- brasileiro_2015 |>
   )
 ```
 
+## Brasileiro 2014
+
+```{r}
+#| label: dados_2014
+
+brasileiro_2014_json <- fromJSON("./data/brasileirao-2014.json")
+
+data <- brasileiro_2014_json |> 
+  tibble() |> 
+  unnest(brasileiro_2014_json) |> 
+  unnest(date) |> 
+  select(date) 
+
+clubes <- brasileiro_2014_json |> 
+  tibble() |> 
+  unnest(brasileiro_2014_json) |> 
+  unnest(clubs) |> 
+  select(home, away)
+
+gols <- brasileiro_2014_json |> 
+  tibble() |> 
+  unnest(brasileiro_2014_json) |> 
+  unnest(clubs) |> 
+  select(goals) |> 
+  unnest_wider(col = goals) |> 
+  rename(
+    mandante = home,
+    visitante = away
+  )
+
+estadio <- brasileiro_2014_json |> 
+  tibble() |> 
+  unnest(brasileiro_2014_json) |> 
+  select(stadium) 
+
+brasileiro_2014 <- data |>
+  bind_cols(clubes) |> 
+  bind_cols(gols) |> 
+  bind_cols(estadio) 
+
+brasileiro_2014 <- brasileiro_2014  |> 
+  mutate(
+    date = dmy(date),
+    partida = 1:nrow(brasileiro_2014),
+    across(c(mandante, visitante),
+           \(x) parse_number(x)),
+  ) |> 
+  relocate(partida, .before = 1)
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  rowwise() |> 
+  mutate(
+    gols_por_partida = sum(c(mandante, visitante))
+  ) |> 
+  ungroup()
+
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  mutate(
+    pontos_mandante = case_when(mandante > visitante ~ 3,
+                                mandante < visitante ~ 0,
+                                mandante == visitante ~ 1),
+    pontos_visitante = case_when(mandante < visitante ~ 3,
+                                 mandante > visitante ~ 0,
+                                 mandante == visitante ~ 1)
+  ) 
+
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  pivot_longer(
+    cols = c("home", "away"),
+    names_to = "mando_de_campo",
+    values_to = "time"
+  ) |> 
+  relocate(time, .before = 2)
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  pivot_longer(
+    cols = c(mandante, visitante), 
+    names_to = "situacao", 
+    values_to = "gols"
+  )
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  mutate(
+    gols = case_when(mando_de_campo == "home" & situacao  == "visitante" ~ NA,
+                     .default = gols),
+    gols = case_when(mando_de_campo == "away" & situacao == "mandante" ~ NA,
+                     .default = gols)
+  ) |> 
+  drop_na(gols) |> 
+  select(!situacao)
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  mutate(
+    pontos = case_when(mando_de_campo == "home" ~ pontos_mandante,
+                       mando_de_campo == "away" ~ pontos_visitante)
+  ) |> 
+  select(!c(pontos_mandante, pontos_visitante))  
+
+
+brasileiro_2014 <- brasileiro_2014 |> 
+  mutate(
+    mando_de_campo = case_when(mando_de_campo == "home" ~ "Mandante",
+                               .default = "Visitante"),
+    campeonato = "2014"
+  ) |> 
+  select(
+    campeonato,
+    partida, 
+    data = date,
+    time,gols, pontos,
+    gols_por_partida,
+    estadio = stadium,
+    mando_de_campo
+  )
+```
+
+
 ## Brasileiro 2015-2023
 
 ```{r}
@@ -1115,11 +1234,12 @@ brasileirao <- brasileiro_2023 |>
   bind_rows(brasileiro_2018) |> 
   bind_rows(brasileiro_2017) |> 
   bind_rows(brasileiro_2016) |> 
-  bind_rows(brasileiro_2015)
+  bind_rows(brasileiro_2015) |> 
+  bind_rows(brasileiro_2014)
 
 
 brasileirao |> 
-  write_csv("brasileiro_2017_2023")
+  write_csv("./data/brasileiro_2014_2023.csv")
 ```
 
 ## Gols por partida 2017-2023
@@ -1131,7 +1251,7 @@ gols_por_partida <- brasileirao |>
          gols = gols_por_partida) 
 
 gols_por_partida |> 
-  write_csv("./data/gols_por_partida.csv")
+  write_csv("./data/gols_por_partida_2014_2023.csv")
 ```
 
 ```{r}
@@ -1161,7 +1281,7 @@ tabela_final <- brasileirao |>
   arrange(desc(campeonato), desc(pontos))
 
 tabela_final |> 
-  write_csv("./data/tabela_final.csv")
+  write_csv("./data/tabela_final_2014_2023.csv")
 ```
 
 ```{r}
