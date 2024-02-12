@@ -1,0 +1,761 @@
+partida,data,estadio,gols
+1,2023-04-15,Allianz Parque,3
+2,2023-04-15,Estádio Raimundo Sampaio,3
+3,2023-04-15,Estádio Nilton Santos,3
+4,2023-04-15,Nabizão,3
+5,2023-04-15,Ligga Arena,2
+6,2023-04-15,Arena Castelão,2
+7,2023-04-15,Mineirão,3
+8,2023-04-16,Neo Química Arena,3
+9,2023-04-16,Maracanã,3
+10,2023-04-16,Alfredo Jaconi,1
+11,2023-04-22,Maracanã,2
+12,2023-04-22,Morumbi,3
+13,2023-04-22,Arena Pantanal,2
+14,2023-04-22,Estádio Raimundo Sampaio,1
+15,2023-04-23,Estádio Beira-Rio,3
+16,2023-04-23,Estádio Urbano Caldeira,0
+17,2023-04-23,Maracanã,4
+18,2023-04-23,Couto Pereira,3
+19,2023-04-23,Estádio Hailé Pinheiro - Serrinha,4
+20,2023-04-24,Itaipava Arena Fonte Nova,3
+21,2023-04-29,Arena Castelão,6
+22,2023-04-29,Couto Pereira,2
+23,2023-04-29,Allianz Parque,3
+24,2023-04-29,Estádio Urbano Caldeira,5
+25,2023-04-29,Nabizão,3
+26,2023-04-29,Estádio Raimundo Sampaio,3
+27,2023-04-30,Maracanã,5
+28,2023-04-30,Arena Pantanal,3
+29,2023-04-30,Estádio Beira-Rio,1
+30,2023-05-01,Estádio São Januário,1
+31,2023-05-06,Estádio Raimundo Sampaio,3
+32,2023-05-06,Maracanã,2
+33,2023-05-07,Estádio Raimundo Sampaio,3
+34,2023-05-07,Itaipava Arena Fonte Nova,4
+35,2023-05-07,Morumbi,2
+36,2023-05-07,Ligga Arena,3
+37,2023-05-07,Arena do Grêmio,6
+38,2023-05-07,Estádio Nilton Santos,2
+39,2023-05-07,Estádio Hailé Pinheiro - Serrinha,5
+40,2023-05-08,Neo Química Arena,2
+41,2023-05-10,Estádio Beira-Rio,2
+42,2023-05-10,Estádio Urbano Caldeira,3
+43,2023-05-10,Nabizão,4
+44,2023-05-10,Arena Pantanal,4
+45,2023-05-10,Maracanã,2
+46,2023-05-10,Mineirão,2
+47,2023-05-10,Allianz Parque,5
+48,2023-05-11,Couto Pereira,2
+49,2023-05-11,Estádio Nilton Santos,3
+50,2023-05-11,Arena Castelão,0
+51,2023-05-13,Itaipava Arena Fonte Nova,5
+52,2023-05-13,Maracanã,2
+53,2023-05-13,Allianz Parque,2
+54,2023-05-13,Mineirão,2
+55,2023-05-14,Arena do Grêmio,0
+56,2023-05-14,Estádio São Januário,1
+57,2023-05-14,Neo Química Arena,2
+58,2023-05-14,Ligga Arena,5
+59,2023-05-14,Estádio Hailé Pinheiro - Serrinha,3
+60,2023-05-14,Estádio Raimundo Sampaio,4
+61,2023-05-20,Itaipava Arena Fonte Nova,2
+62,2023-05-20,Nabizão,2
+63,2023-05-20,Morumbi,6
+64,2023-05-20,Couto Pereira,3
+65,2023-05-20,Estádio Raimundo Sampaio,3
+66,2023-05-20,Estádio Nilton Santos,1
+67,2023-05-20,Estádio Urbano Caldeira,0
+68,2023-05-21,Maracanã,1
+69,2023-05-21,Arena do Grêmio,4
+70,2023-05-22,Estádio Joaquim Henrique Nogueira-Arena do jacaré,1
+71,2023-05-27,Ligga Arena,3
+72,2023-05-27,Arena Castelão,2
+73,2023-05-27,Maracanã,2
+74,2023-05-27,Arena Pantanal,2
+75,2023-05-27,Morumbi,3
+76,2023-05-28,Neo Química Arena,2
+77,2023-05-28,Estádio Beira-Rio,2
+78,2023-05-28,Mineirão,2
+79,2023-05-28,Nabizão,2
+80,2023-05-28,Estádio Nilton Santos,2
+81,2023-06-03,Arena Castelão,0
+82,2023-06-03,Ligga Arena,1
+83,2023-06-03,Estádio Municipal Parque do Sabiá,1
+84,2023-06-03,Estádio Raimundo Sampaio,2
+85,2023-06-03,Estádio Urbano Caldeira,2
+86,2023-06-04,Maracanã,3
+87,2023-06-04,Arena do Grêmio,3
+88,2023-06-04,Estádio Hailé Pinheiro - Serrinha,1
+89,2023-06-04,Allianz Parque,4
+90,2023-06-05,Maracanã,5
+91,2023-06-10,Couto Pereira,0
+92,2023-06-10,Itaipava Arena Fonte Nova,4
+93,2023-06-10,Neo Química Arena,2
+94,2023-06-10,Mineirão,2
+95,2023-06-10,Estádio Nilton Santos,2
+96,2023-06-11,Mineirão,4
+97,2023-06-11,Morumbi,2
+98,2023-06-11,Estádio Beira-Rio,3
+99,2023-06-11,Maracanã,3
+100,2023-06-11,Estádio Hailé Pinheiro - Serrinha,4
+101,2023-06-21,Mineirão,1
+102,2023-06-21,Morumbi,3
+103,2023-06-21,Estádio Urbano Caldeira,2
+104,2023-06-21,Estádio Municipal General Raulino de Oliveira,2
+105,2023-06-21,Itaipava Arena Fonte Nova,1
+106,2023-06-22,Arena do Grêmio,4
+107,2023-06-22,Couto Pereira,1
+108,2023-06-22,Arena Pantanal,1
+109,2023-06-22,Estádio São Januário,1
+110,2023-06-22,Nabizão,4
+111,2023-06-24,Ligga Arena,1
+112,2023-06-24,Maracanã,3
+113,2023-06-24,Arena Castelão,3
+114,2023-06-24,Estádio Raimundo Sampaio,1
+115,2023-06-25,Allianz Parque,1
+116,2023-06-25,Arena do Grêmio,6
+117,2023-06-25,Estádio Raimundo Sampaio,3
+118,2023-06-25,Estádio Urbano Caldeira,5
+119,2023-06-25,Nabizão,2
+120,2023-06-26,Luso-Brasileiro,1
+121,2023-07-01,Morumbi,1
+122,2023-07-01,Maracanã,2
+123,2023-07-01,Itaipava Arena Fonte Nova,3
+124,2023-07-01,Estádio Beira-Rio,0
+125,2023-07-02,Neo Química Arena,1
+126,2023-07-02,Estádio Nilton Santos,2
+127,2023-07-02,Mineirão,4
+128,2023-07-02,Ligga Arena,4
+129,2023-07-02,Arena Pantanal,3
+130,2023-07-03,Estádio Hailé Pinheiro - Serrinha,3
+131,2023-07-08,Arena Pantanal,2
+132,2023-07-08,Estádio São Januário,1
+133,2023-07-08,Mineirão,1
+134,2023-07-08,Couto Pereira,4
+135,2023-07-08,Allianz Parque,2
+136,2023-07-09,Estádio Urbano Caldeira,7
+137,2023-07-09,Maracanã,2
+138,2023-07-09,Nabizão,0
+139,2023-07-09,Arena Castelão,1
+140,2023-07-09,Arena do Grêmio,2
+141,2023-07-15,Estádio Nilton Santos,2
+142,2023-07-16,Estádio Raimundo Sampaio,0
+143,2023-07-16,Arena Castelão,1
+144,2023-07-16,Maracanã,0
+145,2023-07-16,Morumbi,5
+146,2023-07-16,Ligga Arena,2
+147,2023-07-16,Estádio Beira-Rio,0
+148,2023-07-17,Estádio Hailé Pinheiro - Serrinha,0
+149,2023-09-18,Neo Química Arena,8
+150,2023-09-25,Estádio Raimundo Sampaio,1
+151,2023-07-22,Allianz Parque,4
+152,2023-07-22,Maracanã,2
+153,2023-07-22,Arena Pantanal,3
+154,2023-07-22,Itaipava Arena Fonte Nova,0
+155,2023-07-22,Arena do Grêmio,1
+156,2023-07-23,Nabizão,0
+157,2023-07-23,Estádio Urbano Caldeira,4
+158,2023-07-23,Estádio Raimundo Sampaio,1
+159,2023-07-23,Estádio São Januário,2
+160,2023-07-24,Couto Pereira,2
+161,2023-07-29,Maracanã,1
+162,2023-07-29,Ligga Arena,6
+163,2023-07-29,Estádio Beira-Rio,3
+164,2023-07-29,Neo Química Arena,4
+165,2023-07-29,Arena Castelão,3
+166,2023-07-29,Estádio Raimundo Sampaio,3
+167,2023-07-30,Morumbi,0
+168,2023-07-30,Estádio Raimundo Sampaio,5
+169,2023-07-30,Estádio Nilton Santos,5
+170,2023-07-30,Estádio Hailé Pinheiro - Serrinha,2
+171,2023-08-05,Estádio Urbano Caldeira,2
+172,2023-08-05,Estádio Hailé Pinheiro - Serrinha,1
+173,2023-08-05,Estádio Beira-Rio,4
+174,2023-08-05,Maracanã,3
+175,2023-08-06,Estádio São Januário,1
+176,2023-08-06,Morumbi,2
+177,2023-08-06,Couto Pereira,1
+178,2023-08-06,Itaipava Arena Fonte Nova,4
+179,2023-08-06,Mineirão,0
+180,2023-08-06,Arena Pantanal,3
+181,2023-08-12,Estádio Nilton Santos,4
+182,2023-08-13,Mineirão,1
+183,2023-08-13,Estádio Raimundo Sampaio,1
+184,2023-08-13,Neo Química Arena,4
+185,2023-08-13,Arena do Grêmio,3
+186,2023-08-13,Arena Castelão,4
+187,2023-08-13,Maracanã,2
+188,2023-08-14,Allianz Parque,1
+189,2023-08-14,Nabizão,2
+190,2023-08-15,Ligga Arena,2
+191,2023-08-19,Morumbi,0
+192,2023-08-19,Estádio Beira-Rio,1
+193,2023-08-19,Arena Pantanal,2
+194,2023-08-19,Maracanã,4
+195,2023-08-19,Mineirão,2
+196,2023-08-20,Maracanã,1
+197,2023-08-20,Couto Pereira,5
+198,2023-08-20,Itaipava Arena Fonte Nova,4
+199,2023-08-20,Estádio Urbano Caldeira,3
+200,2023-08-21,Estádio Hailé Pinheiro - Serrinha,2
+201,2023-08-26,Maracanã,0
+202,2023-08-26,Neo Química Arena,2
+203,2023-08-27,Nabizão,2
+204,2023-08-27,Estádio Nilton Santos,3
+205,2023-08-27,Arena MRV,2
+206,2023-08-27,Estádio Raimundo Sampaio,3
+207,2023-08-27,Allianz Parque,1
+208,2023-08-27,Estádio Presidente Vargas,4
+209,2023-08-27,Ligga Arena,4
+210,2023-08-27,Arena do Grêmio,3
+211,2023-09-02,Estádio Hailé Pinheiro - Serrinha,0
+212,2023-09-02,Ligga Arena,2
+213,2023-09-02,Estádio Nilton Santos,3
+214,2023-09-03,Arena do Grêmio,2
+215,2023-09-03,Neo Química Arena,0
+216,2023-09-03,Estádio Municipal General Raulino de Oliveira,1
+217,2023-09-03,Itaipava Arena Fonte Nova,2
+218,2023-09-03,Mineirão,0
+219,2023-09-03,Estádio Raimundo Sampaio,2
+220,2023-09-27,Morumbi,3
+221,2023-09-13,Kléber Andrade,3
+222,2023-09-13,Estádio Beira-Rio,3
+223,2023-09-14,Estádio Urbano Caldeira,3
+224,2023-09-14,Arena Castelão,3
+225,2023-09-14,Couto Pereira,6
+226,2023-09-14,Nabizão,2
+227,2023-09-15,Arena Pantanal,4
+228,2023-09-15,Allianz Parque,1
+229,2023-09-16,Estádio Nilton Santos,6
+230,2023-09-16,Arena MRV,1
+231,2023-09-18,Itaipava Arena Fonte Nova,3
+232,2023-09-19,Estádio Raimundo Sampaio,2
+233,2023-09-20,Estádio Hailé Pinheiro - Serrinha,0
+234,2023-09-20,Maracanã,1
+235,2023-09-20,Morumbi,3
+236,2023-09-21,Estádio São Januário,6
+237,2023-09-21,Ligga Arena,3
+238,2023-09-21,Arena do Grêmio,1
+239,2023-09-22,Neo Química Arena,1
+240,2023-09-23,Arena MRV,1
+241,2023-09-30,Maracanã,1
+242,2023-09-30,Arena Castelão,2
+243,2023-09-30,Morumbi,3
+244,2023-09-30,Arena Pantanal,3
+245,2023-09-30,Estádio Beira-Rio,2
+246,2023-10-01,Mineirão,2
+247,2023-10-01,Couto Pereira,2
+248,2023-10-01,Estádio Urbano Caldeira,5
+249,2023-10-01,Nabizão,3
+250,2023-10-02,Estádio Nilton Santos,2
+251,2023-10-07,Estádio Hailé Pinheiro - Serrinha,10
+252,2023-10-07,Estádio São Januário,0
+253,2023-10-07,Neo Química Arena,2
+254,2023-10-08,Estádio Beira-Rio,5
+255,2023-10-08,Arena Barueri,3
+256,2023-10-08,Maracanã,2
+257,2023-10-08,Ligga Arena,2
+258,2023-10-08,Arena MRV,3
+259,2023-10-08,Arena Castelão,5
+260,2023-10-14,Arena Pantanal,0
+261,2023-10-18,Arena do Grêmio,3
+262,2023-10-18,Couto Pereira,3
+263,2023-10-18,Estádio Raimundo Sampaio,3
+264,2023-10-18,Estádio Hailé Pinheiro - Serrinha,2
+265,2023-10-18,Itaipava Arena Fonte Nova,1
+266,2023-10-18,Estádio São Januário,1
+267,2023-10-19,Allianz Parque,2
+268,2023-10-19,Mineirão,2
+269,2023-10-19,Estádio Urbano Caldeira,4
+270,2023-10-19,Maracanã,6
+271,2023-10-21,Arena Pantanal,2
+272,2023-10-21,Morumbi,3
+273,2023-10-21,Itaipava Arena Fonte Nova,2
+274,2023-10-22,Estádio Nilton Santos,2
+275,2023-10-22,Arena MRV,1
+276,2023-10-22,Maracanã,1
+277,2023-10-22,Estádio Beira-Rio,8
+278,2023-10-22,Nabizão,1
+279,2023-10-22,Couto Pereira,2
+280,2023-10-22,Neo Química Arena,2
+281,2023-10-25,Nabizão,3
+282,2023-10-25,Ligga Arena,5
+283,2023-10-25,Estádio Municipal General Raulino de Oliveira,8
+284,2023-10-25,Mineirão,3
+285,2023-10-25,Allianz Parque,5
+286,2023-10-25,Arena do Grêmio,5
+287,2023-10-25,Arena Pantanal,1
+288,2023-10-26,Estádio São Januário,3
+289,2023-10-26,Estádio Urbano Caldeira,3
+290,2023-11-23,Arena Castelão,4
+291,2023-10-28,Allianz Parque,1
+292,2023-10-28,Estádio Raimundo Sampaio,7
+293,2023-10-28,Arena MRV,2
+294,2023-10-29,Ligga Arena,2
+295,2023-10-29,Estádio Hailé Pinheiro - Serrinha,2
+296,2023-10-29,Estádio Beira-Rio,7
+297,2023-10-29,Neo Química Arena,2
+298,2023-10-29,Estádio Nilton Santos,1
+299,2023-11-18,Arena Castelão,1
+300,2023-11-23,Maracanã,1
+301,2023-10-31,Itaipava Arena Fonte Nova,1
+302,2023-11-01,Estádio Beira-Rio,2
+303,2023-11-01,Neo Química Arena,1
+304,2023-11-01,Couto Pereira,3
+305,2023-11-01,Arena BRB Mané Garrincha,3
+306,2023-11-01,Arena MRV,4
+307,2023-11-01,Estádio Nilton Santos,7
+308,2023-11-02,Arena Pantanal,2
+309,2023-11-02,Estádio Hailé Pinheiro - Serrinha,2
+310,2023-11-02,Morumbi,1
+311,2023-11-04,Arena do Grêmio,1
+312,2023-11-04,Estádio Municipal Parque do Sabiá,2
+313,2023-11-04,Arena Barueri,1
+314,2023-11-05,Mineirão,3
+315,2023-11-05,Nabizão,1
+316,2023-11-05,Arena Castelão,2
+317,2023-11-05,Couto Pereira,1
+318,2023-11-06,Estádio São Januário,1
+319,2023-11-06,Estádio Urbano Caldeira,0
+320,2023-11-22,Maracanã,1
+321,2023-11-08,Estádio Beira-Rio,0
+322,2023-11-08,Estádio Raimundo Sampaio,3
+323,2023-11-08,Ligga Arena,2
+324,2023-11-08,Estádio Urbano Caldeira,1
+325,2023-11-08,Maracanã,3
+326,2023-11-09,Estádio Hailé Pinheiro - Serrinha,1
+327,2023-11-09,Neo Química Arena,2
+328,2023-11-09,Itaipava Arena Fonte Nova,3
+329,2023-11-09,Estádio São Januário,7
+330,2023-11-22,Mineirão,4
+331,2023-11-11,Vila Capanema,1
+332,2023-11-11,Maracanã,2
+333,2023-11-11,Arena Barueri,3
+334,2023-11-12,Nabizão,4
+335,2023-11-12,Arena do Grêmio,1
+336,2023-11-12,Estádio Urbano Caldeira,0
+337,2023-11-12,Estádio São Januário,3
+338,2023-11-12,Arena MRV,3
+339,2023-11-12,Itaipava Arena Fonte Nova,2
+340,2023-11-12,Arena Pantanal,3
+341,2023-11-24,Neo Química Arena,6
+342,2023-11-25,Ligga Arena,0
+343,2023-11-25,Maracanã,3
+344,2023-11-26,Arena MRV,3
+345,2023-11-26,Estádio Nilton Santos,2
+346,2023-11-26,Estádio Municipal Parque do Sabiá,3
+347,2023-11-26,Morumbi,0
+348,2023-11-26,Estádio Beira-Rio,1
+349,2023-11-26,Arena Castelão,4
+350,2023-11-27,Estádio Hailé Pinheiro - Serrinha,1
+351,2023-11-28,Estádio São Januário,6
+352,2023-11-29,Estádio Urbano Caldeira,3
+353,2023-11-29,Maracanã,3
+354,2023-11-29,Itaipava Arena Fonte Nova,1
+355,2023-11-29,Arena Pantanal,2
+356,2023-11-29,Couto Pereira,2
+357,2023-11-29,Allianz Parque,4
+358,2023-11-30,Arena do Grêmio,3
+359,2023-11-30,Mineirão,2
+360,2023-11-30,Nabizão,3
+361,2023-12-02,Neo Química Arena,3
+362,2023-12-02,Mineirão,3
+363,2023-12-03,Maracanã,3
+364,2023-12-03,Allianz Parque,1
+365,2023-12-03,Estádio Nilton Santos,0
+366,2023-12-03,Estádio Raimundo Sampaio,5
+367,2023-12-03,Arena Castelão,1
+368,2023-12-03,Nabizão,1
+369,2023-12-03,Arena do Grêmio,1
+370,2023-12-03,Ligga Arena,3
+371,2023-12-06,Estádio Hailé Pinheiro - Serrinha,1
+372,2023-12-06,Estádio Beira-Rio,4
+373,2023-12-06,Couto Pereira,2
+374,2023-12-06,Maracanã,5
+375,2023-12-06,Mineirão,2
+376,2023-12-06,Itaipava Arena Fonte Nova,5
+377,2023-12-06,Arena Pantanal,3
+378,2023-12-06,Estádio Urbano Caldeira,3
+379,2023-12-06,Morumbi,1
+380,2023-12-06,Estádio São Januário,3
+1,2022-04-09,Maracanã,0
+2,2022-04-09,Estádio Antônio Accioly,2
+3,2022-04-09,Allianz Parque,5
+4,2022-04-10,Couto Pereira,3
+5,2022-04-10,Estádio Nilton Santos,4
+6,2022-04-10,Mineirão,2
+7,2022-04-10,Arena Castelão,1
+8,2022-04-10,Ressacada,1
+9,2022-04-10,Morumbi,4
+10,2022-04-11,Alfredo Jaconi,4
+11,2022-04-16,Estádio da Serrinha,2
+12,2022-04-16,Estádio Raimundo Sampaio,5
+13,2022-04-16,Neo Química Arena,3
+14,2022-04-16,Arena Pantanal,1
+15,2022-04-17,Estádio Urbano Caldeira,3
+16,2022-04-17,Maracanã,4
+17,2022-04-17,Estádio Joaquim Américo Guimarães,1
+18,2022-04-17,Estádio José Pinheiro Borda,3
+19,2022-04-17,Nabizão,4
+20,2022-04-17,Arena Castelão,4
+21,2022-04-20,Maracanã,0
+22,2022-04-30,Arena Castelão,1
+23,2022-04-30,Estádio Raimundo Sampaio,1
+24,2022-04-30,Estádio da Serrinha,4
+25,2022-04-30,Arena Pantanal,2
+26,2022-05-01,Estádio Nilton Santos,2
+27,2022-05-01,Neo Química Arena,1
+28,2022-05-01,Couto Pereira,5
+29,2022-05-01,Estádio José Pinheiro Borda,0
+30,2022-05-02,Morumbi,3
+31,2022-04-23,Nabizão,2
+32,2022-04-23,Estádio Joaquim Américo Guimarães,1
+33,2022-04-23,Arena Barueri,3
+34,2022-04-23,Maracanã,1
+35,2022-04-23,Estádio Raimundo Sampaio,4
+36,2022-04-24,Estádio Urbano Caldeira,3
+37,2022-04-24,Alfredo Jaconi,1
+38,2022-04-24,Estádio Antônio Accioly,2
+39,2022-04-25,Ressacada,5
+40,2022-06-01,Arena Castelão,1
+41,2022-05-07,Estádio Raimundo Sampaio,3
+42,2022-05-07,Estádio Joaquim Américo Guimarães,1
+43,2022-05-08,Estádio Nacional de Brasília,1
+44,2022-05-08,Allianz Parque,2
+45,2022-05-08,Estádio Antônio Accioly,1
+46,2022-05-08,Nabizão,1
+47,2022-05-08,Estádio Urbano Caldeira,5
+48,2022-05-08,Alfredo Jaconi,2
+49,2022-05-08,Arena Castelão,2
+50,2022-05-09,Ressacada,3
+51,2022-05-11,Nabizão,2
+52,2022-05-21,Estádio Antônio Accioly,2
+53,2022-05-21,Maracanã,1
+54,2022-05-21,Arena Barueri,0
+55,2022-05-21,Alfredo Jaconi,3
+56,2022-05-21,Arena Pantanal,2
+57,2022-05-21,Estádio Raimundo Sampaio,2
+58,2022-05-22,Neo Química Arena,2
+59,2022-05-22,Arena Castelão,1
+60,2022-05-22,Estádio Joaquim Américo Guimarães,3
+61,2022-05-14,Allianz Parque,2
+62,2022-05-14,Arena Castelão,4
+63,2022-05-14,Estádio José Pinheiro Borda,4
+64,2022-05-14,Estádio Raimundo Sampaio,2
+65,2022-05-14,Estádio Municipal General Raulino de Oliveira,3
+66,2022-05-15,Morumbi,3
+67,2022-05-15,Couto Pereira,1
+68,2022-05-15,Estádio Nilton Santos,4
+69,2022-05-15,Ressacada,3
+70,2022-05-15,Estádio da Serrinha,1
+71,2022-05-28,Estádio da Serrinha,2
+72,2022-05-28,Morumbi,4
+73,2022-05-28,Arena Castelão,2
+74,2022-05-29,Couto Pereira,1
+75,2022-05-29,Estádio Urbano Caldeira,1
+76,2022-05-29,Arena Pantanal,1
+77,2022-05-29,Neo Química Arena,2
+78,2022-05-29,Maracanã,3
+79,2022-05-29,Mineirão,3
+80,2022-05-30,Estádio José Pinheiro Borda,2
+81,2022-06-04,Estádio Raimundo Sampaio,3
+82,2022-06-04,Estádio Joaquim Américo Guimarães,4
+83,2022-06-04,Arena Castelão,2
+84,2022-06-04,Ressacada,2
+85,2022-06-04,Estádio do Governo do Estado de Goiás (Serra Dourada),1
+86,2022-06-05,Alfredo Jaconi,1
+87,2022-06-05,Maracanã,3
+88,2022-06-05,Allianz Parque,0
+89,2022-06-05,Nabizão,2
+90,2022-06-06,Estádio Nilton Santos,3
+91,2022-06-07,Arena Pantanal,1
+92,2022-06-08,Estádio Raimundo Sampaio,2
+93,2022-06-08,Alfredo Jaconi,4
+94,2022-06-08,Estádio do Governo do Estado de Goiás (Serra Dourada),3
+95,2022-06-08,Nabizão,1
+96,2022-06-08,Maracanã,8
+97,2022-06-08,Estádio Urbano Caldeira,2
+98,2022-06-09,Allianz Parque,4
+99,2022-06-09,Couto Pereira,2
+100,2022-06-09,Arena Castelão,2
+101,2022-06-11,Neo Química Arena,2
+102,2022-06-11,Mineirão,2
+103,2022-06-11,Maracanã,2
+104,2022-06-11,Arena Pantanal,2
+105,2022-06-11,Estádio José Pinheiro Borda,4
+106,2022-06-12,Estádio da Serrinha,2
+107,2022-06-12,Morumbi,1
+108,2022-06-12,Couto Pereira,2
+109,2022-06-12,Arena Castelão,0
+110,2022-06-13,Estádio Nilton Santos,1
+111,2022-06-14,Alfredo Jaconi,3
+112,2022-06-15,Arena Castelão,0
+113,2022-06-15,Nabizão,6
+114,2022-06-15,Estádio da Serrinha,3
+115,2022-06-15,Maracanã,2
+116,2022-06-15,Estádio Joaquim Américo Guimarães,2
+117,2022-06-15,Estádio Raimundo Sampaio,0
+118,2022-06-16,Estádio Nilton Santos,1
+119,2022-06-16,Allianz Parque,6
+120,2022-06-16,Ressacada,5
+121,2022-06-18,Arena Pantanal,0
+122,2022-06-18,Estádio Urbano Caldeira,4
+123,2022-06-19,Mineirão,2
+124,2022-06-19,Couto Pereira,1
+125,2022-06-19,Neo Química Arena,1
+126,2022-06-19,Estádio José Pinheiro Borda,5
+127,2022-06-19,Arena Castelão,1
+128,2022-06-19,Estádio Antônio Accioly,4
+129,2022-06-19,Maracanã,2
+130,2022-06-20,Morumbi,3
+131,2022-06-24,Estádio José Pinheiro Borda,3
+132,2022-06-25,Estádio Joaquim Américo Guimarães,6
+133,2022-06-25,Maracanã,3
+134,2022-06-25,Neo Química Arena,0
+135,2022-06-25,Mineirão,5
+136,2022-06-26,Ressacada,4
+137,2022-06-26,Estádio Nilton Santos,1
+138,2022-06-26,Estádio da Serrinha,1
+139,2022-06-26,Arena Castelão,2
+140,2022-06-26,Morumbi,0
+141,2022-07-02,Alfredo Jaconi,3
+142,2022-07-02,Maracanã,4
+143,2022-07-02,Estádio Urbano Caldeira,3
+144,2022-07-02,Arena Castelão,2
+145,2022-07-02,Allianz Parque,2
+146,2022-07-03,Ressacada,3
+147,2022-07-03,Estádio Antônio Accioly,3
+148,2022-07-03,Estádio Raimundo Sampaio,1
+149,2022-07-03,Couto Pereira,3
+150,2022-07-04,Nabizão,1
+151,2022-07-09,Nabizão,4
+152,2022-07-09,Maracanã,3
+153,2022-07-09,Estádio da Serrinha,3
+154,2022-07-10,Couto Pereira,4
+155,2022-07-10,Neo Química Arena,1
+156,2022-07-10,Estádio Urbano Caldeira,1
+157,2022-07-10,Arena Castelão,0
+158,2022-07-10,Mineirão,0
+159,2022-07-10,Arena Pantanal,2
+160,2022-07-11,Estádio José Pinheiro Borda,1
+161,2022-07-16,Estádio Joaquim Américo Guimarães,0
+162,2022-07-16,Estádio Nacional de Brasília,2
+163,2022-07-16,Ressacada,1
+164,2022-07-16,Arena Castelão,4
+165,2022-07-17,Alfredo Jaconi,0
+166,2022-07-17,Morumbi,4
+167,2022-07-17,Estádio Nilton Santos,1
+168,2022-07-17,Estádio Antônio Accioly,1
+169,2022-07-17,Estádio Raimundo Sampaio,3
+170,2022-07-18,Allianz Parque,1
+171,2022-07-19,Arena Castelão,1
+172,2022-07-20,Nabizão,3
+173,2022-07-20,Estádio da Serrinha,5
+174,2022-07-20,Estádio Joaquim Américo Guimarães,5
+175,2022-07-20,Estádio Nacional de Brasília,4
+176,2022-07-20,Estádio José Pinheiro Borda,6
+177,2022-07-20,Estádio Urbano Caldeira,2
+178,2022-07-20,Neo Química Arena,4
+179,2022-07-21,Arena Pantanal,2
+180,2022-07-21,Estádio Raimundo Sampaio,1
+181,2022-07-23,Morumbi,6
+182,2022-07-23,Estádio Nilton Santos,2
+183,2022-07-24,Ressacada,3
+184,2022-07-24,Estádio Municipal General Raulino de Oliveira,3
+185,2022-07-24,Allianz Parque,3
+186,2022-07-24,Alfredo Jaconi,1
+187,2022-07-24,Mineirão,3
+188,2022-07-24,Estádio Antônio Accioly,1
+189,2022-07-24,Arena Castelão,0
+190,2022-07-25,Couto Pereira,1
+191,2022-07-30,Estádio da Serrinha,1
+192,2022-07-30,Arena Castelão,3
+193,2022-07-30,Neo Química Arena,1
+194,2022-07-30,Maracanã,5
+195,2022-07-31,Estádio Joaquim Américo Guimarães,1
+196,2022-07-31,Estádio José Pinheiro Borda,3
+197,2022-07-31,Arena Pantanal,1
+198,2022-07-31,Estádio Raimundo Sampaio,4
+199,2022-07-31,Nabizão,1
+200,2022-08-01,Estádio Urbano Caldeira,4
+201,2022-08-06,Alfredo Jaconi,1
+202,2022-08-06,Estádio Nilton Santos,2
+203,2022-08-06,Ressacada,2
+204,2022-08-06,Estádio Antônio Accioly,3
+205,2022-08-06,Morumbi,2
+206,2022-08-07,Maracanã,1
+207,2022-08-07,Allianz Parque,3
+208,2022-08-07,Arena Castelão,3
+209,2022-08-07,Mineirão,5
+210,2022-08-08,Couto Pereira,3
+211,2022-08-13,Estádio da Serrinha,2
+212,2022-08-13,Neo Química Arena,1
+213,2022-08-13,Arena Pantanal,1
+214,2022-08-13,Estádio Nilton Santos,0
+215,2022-08-14,Couto Pereira,1
+216,2022-08-14,Arena Castelão,1
+217,2022-08-14,Maracanã,5
+218,2022-08-14,Morumbi,3
+219,2022-08-14,Estádio Raimundo Sampaio,1
+220,2022-08-14,Estádio José Pinheiro Borda,3
+221,2022-08-20,Mineirão,1
+222,2022-08-20,Maracanã,7
+223,2022-08-21,Alfredo Jaconi,4
+224,2022-08-21,Allianz Parque,2
+225,2022-08-21,Estádio Joaquim Américo Guimarães,2
+226,2022-08-21,Estádio Antônio Accioly,2
+227,2022-08-21,Arena Castelão,1
+228,2022-08-21,Nabizão,2
+229,2022-08-21,Estádio Urbano Caldeira,1
+230,2022-08-22,Ressacada,1
+231,2022-08-27,Estádio da Serrinha,3
+232,2022-08-27,Couto Pereira,1
+233,2022-08-27,Maracanã,2
+234,2022-08-27,Arena Castelão,0
+235,2022-08-28,Morumbi,1
+236,2022-08-28,Estádio Raimundo Sampaio,2
+237,2022-08-28,Estádio Nilton Santos,1
+238,2022-08-28,Arena Pantanal,0
+239,2022-08-29,Estádio José Pinheiro Borda,4
+240,2022-08-29,Neo Química Arena,1
+241,2022-09-03,Alfredo Jaconi,2
+242,2022-09-03,Nabizão,4
+243,2022-09-03,Estádio Joaquim Américo Guimarães,1
+244,2022-09-03,Estádio Raimundo Sampaio,2
+245,2022-09-04,Maracanã,2
+246,2022-09-04,Neo Química Arena,4
+247,2022-09-04,Arena Castelão,4
+248,2022-09-04,Estádio Antônio Accioly,2
+249,2022-09-04,Arena Pantanal,2
+250,2022-09-05,Estádio Urbano Caldeira,3
+251,2022-09-07,Mineirão,2
+252,2022-09-10,Estádio José Pinheiro Borda,1
+253,2022-09-10,Arena Castelão,3
+254,2022-09-10,Maracanã,3
+255,2022-09-10,Allianz Parque,3
+256,2022-09-11,Ressacada,2
+257,2022-09-11,Estádio Nilton Santos,0
+258,2022-09-11,Morumbi,2
+259,2022-09-11,Couto Pereira,2
+260,2022-09-11,Estádio da Serrinha,2
+261,2022-09-17,Ressacada,1
+262,2022-09-17,Estádio Nilton Santos,2
+263,2022-09-18,Nabizão,2
+264,2022-09-18,Maracanã,3
+265,2022-09-18,Arena Castelão,2
+266,2022-09-18,Estádio Raimundo Sampaio,1
+267,2022-09-18,Alfredo Jaconi,2
+268,2022-09-18,Allianz Parque,1
+269,2022-09-18,Estádio Joaquim Américo Guimarães,4
+270,2022-09-19,Estádio Antônio Accioly,3
+271,2022-09-25,Morumbi,4
+272,2022-09-27,Estádio Urbano Caldeira,2
+273,2022-09-28,Couto Pereira,1
+274,2022-09-28,Neo Química Arena,3
+275,2022-09-28,Maracanã,4
+276,2022-09-28,Arena Castelão,5
+277,2022-09-28,Arena Pantanal,3
+278,2022-09-28,Estádio José Pinheiro Borda,0
+279,2022-09-28,Mineirão,1
+280,2022-09-28,Estádio da Serrinha,1
+281,2022-10-01,Mineirão,2
+282,2022-10-01,Estádio José Pinheiro Borda,1
+283,2022-10-01,Arena Castelão,3
+284,2022-10-01,Ressacada,3
+285,2022-10-01,Estádio Joaquim Américo Guimarães,2
+286,2022-10-01,Maracanã,5
+287,2022-10-01,Estádio da Serrinha,1
+288,2022-10-01,Neo Química Arena,2
+289,2022-10-03,Estádio Nilton Santos,4
+290,2022-10-20,Morumbi,4
+291,2022-10-04,Alfredo Jaconi,4
+292,2022-10-05,Estádio Antônio Accioly,5
+293,2022-10-05,Arena Castelão,2
+294,2022-10-05,Nabizão,3
+295,2022-10-05,Estádio Joaquim Américo Guimarães,2
+296,2022-10-05,Maracanã,0
+297,2022-10-05,Estádio Urbano Caldeira,3
+298,2022-10-06,Allianz Parque,4
+299,2022-10-06,Estádio Raimundo Sampaio,3
+300,2022-10-06,Ressacada,3
+301,2022-10-08,Arena Pantanal,3
+302,2022-10-08,Neo Química Arena,3
+303,2022-10-09,Estádio José Pinheiro Borda,6
+304,2022-10-09,Morumbi,1
+305,2022-10-09,Arena Castelão,2
+306,2022-10-09,Couto Pereira,3
+307,2022-10-09,Mineirão,0
+308,2022-10-09,Maracanã,2
+309,2022-10-10,Estádio Antônio Accioly,2
+310,2022-10-10,Estádio Urbano Caldeira,5
+311,2022-10-15,Maracanã,1
+312,2022-10-15,Estádio Raimundo Sampaio,3
+313,2022-10-16,Arena Castelão,2
+314,2022-10-16,Allianz Parque,0
+315,2022-10-16,Alfredo Jaconi,2
+316,2022-10-16,Estádio Nilton Santos,1
+317,2022-10-16,Ressacada,3
+318,2022-10-16,Estádio Joaquim Américo Guimarães,1
+319,2022-10-17,Nabizão,2
+320,2022-10-29,Estádio da Serrinha,0
+321,2022-10-22,Nabizão,6
+322,2022-10-22,Estádio Raimundo Sampaio,3
+323,2022-10-22,Estádio Urbano Caldeira,1
+324,2022-10-22,Allianz Parque,3
+325,2022-10-23,Maracanã,4
+326,2022-10-23,Alfredo Jaconi,3
+327,2022-10-23,Couto Pereira,2
+328,2022-10-23,Estádio Antônio Accioly,1
+329,2022-10-23,Arena Pantanal,3
+330,2022-10-24,Arena Castelão,0
+331,2022-10-25,Maracanã,5
+332,2022-10-25,Estádio Joaquim Américo Guimarães,4
+333,2022-10-26,Estádio Nilton Santos,3
+334,2022-10-26,Neo Química Arena,2
+335,2022-10-26,Estádio José Pinheiro Borda,3
+336,2022-10-26,Estádio da Serrinha,4
+337,2022-10-27,Arena Castelão,4
+338,2022-10-27,Morumbi,3
+339,2022-10-27,Mineirão,1
+340,2022-10-27,Arena Pantanal,1
+341,2022-10-31,Arena Castelão,1
+342,2022-11-01,Estádio Nilton Santos,2
+343,2022-11-01,Morumbi,4
+344,2022-11-02,Estádio Joaquim Américo Guimarães,5
+345,2022-11-02,Estádio Raimundo Sampaio,1
+346,2022-11-02,Alfredo Jaconi,1
+347,2022-11-02,Ressacada,3
+348,2022-11-02,Estádio Antônio Accioly,5
+349,2022-11-02,Allianz Parque,4
+350,2022-11-02,Maracanã,3
+351,2022-11-05,Arena Barueri,2
+352,2022-11-05,Maracanã,4
+353,2022-11-05,Nabizão,5
+354,2022-11-05,Estádio da Serrinha,1
+355,2022-11-05,Neo Química Arena,1
+356,2022-11-05,Estádio José Pinheiro Borda,2
+357,2022-11-06,Arena Castelão,2
+358,2022-11-06,Couto Pereira,1
+359,2022-11-06,Arena Pantanal,2
+360,2022-11-07,Mineirão,2
+361,2022-11-08,Morumbi,1
+362,2022-11-09,Couto Pereira,4
+363,2022-11-09,Maracanã,3
+364,2022-11-09,Ressacada,2
+365,2022-11-09,Arena Castelão,6
+366,2022-11-09,Alfredo Jaconi,4
+367,2022-11-09,Allianz Parque,3
+368,2022-11-09,Estádio Antônio Accioly,2
+369,2022-11-10,Estádio Nilton Santos,3
+370,2022-11-10,Mineirão,3
+371,2022-11-12,Maracanã,3
+372,2022-11-13,Estádio Joaquim Américo Guimarães,3
+373,2022-11-13,Arena Castelão,5
+374,2022-11-13,Estádio Raimundo Sampaio,2
+375,2022-11-13,Estádio Urbano Caldeira,2
+376,2022-11-13,Arena Pantanal,3
+377,2022-11-13,Nabizão,1
+378,2022-11-13,Neo Química Arena,1
+379,2022-11-13,Estádio José Pinheiro Borda,3
+380,2022-11-13,Estádio da Serrinha,4
