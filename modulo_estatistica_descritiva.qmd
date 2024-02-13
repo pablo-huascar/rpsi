@@ -25,6 +25,18 @@ editor_options:
 
 ## Quem sou eu
 
+```{r}
+#| label: setup
+#| include: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(cowplot)
+theme_set(theme_cowplot())
+```
+
+
 ::: {style="line-height: 1;"}
 ::: columns
 ::: {.column width="40%"}
@@ -47,14 +59,85 @@ editor_options:
 Meu [currículo lattes](http://lattes.cnpq.br/8266089190930601): acesse [aqui](http://lattes.cnpq.br/8266089190930601)
 :::
 
+## learning statistics with jamovi
+
+::: columns
+::: {.column width="50%"}
+Livro base para este módulo
+:::
+
+::: {.column width="50%"}
+[![](images/lsj_cover.png){fig-alt="Capa do livro learning statistics with jamovi. Uma V se destaca na ilustração" fig-align="right" width="412"}](https://davidfoxcroft.github.io/lsj-book/)
+:::
+:::
+
+## learning statistics with jamovi
+
+-   Neste [link](https://davidfoxcroft.github.io/lsj-book/ "learning statistics with jamovi") você pode acessar o livro:
+
+<https://davidfoxcroft.github.io/lsj-book/>
+
 # Estatística Descritiva
 
+## Pacotes necessários
+
 ```{r}
+#| warning: false
+#| message: false
 library(tidyverse)
 ```
 
+## Bancos de dados
 
 ```{r}
-teste <- read_csv("https://drive.google.com/uc?export=download&id=1HYpv5wXiraoNkcTwZm_6XHhxyXm-E_oQ")
+url_tabela <- "https://raw.githubusercontent.com/pablo-huascar/rpsi/main/data/tabela_final_2014_2023.csv"
+
+tabela_brasileiro <- read_csv(url_tabela)
+
+url_g4 <- "https://raw.githubusercontent.com/pablo-huascar/rpsi/main/data/g4_2014_2023.csv"
+
+g4_brasileiro <- read_csv(url_g4)
 ```
+
+- Dados dos campeonatos brasileiros de 2014 a 2023
+-   `tabela_brasileiro`: pontuação final
+-   `g4_brasileiro`: times que terminaram o campeonato no g4
+
+## Tabela do campeonato brasileiro (2014-2023)
+
+```{r}
+tabela_brasileiro |> 
+  filter(campeonato == "2023") |> 
+  slice_head(n = 10)
+```
+
+## Times do g4 no campeonato brasileiro (2014-2023)
+
+```{r}
+g4_brasileiro |> 
+  slice_head(n = 12)
+```
+
+## Explorando os dados: `tabela_brasileiro`
+
+```{r}
+tabela_brasileiro |> 
+  ggplot(aes(pontos)) +
+  geom_histogram(bins = 19, color="darkgray",
+                 fill="white") +
+  labs(x = "Total de pontos")
+```
+
+## Explorando os dados: `g4_brasileiro`
+
+```{r}
+g4_brasileiro |>
+  count(time) |> 
+  ggplot(aes(n, fct_reorder(time, n, 
+                            .fun = mean))) +
+  geom_col() +
+  labs(y = "Time", x = "G4")
+
+```
+
 

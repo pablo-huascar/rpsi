@@ -61,7 +61,7 @@ Meu [currículo lattes](http://lattes.cnpq.br/8266089190930601): acesse [aqui](h
 
 ::: columns
 ::: {.column width="50%"}
-Livro base para o mini curso
+Livro base para este módulo
 :::
 
 ::: {.column width="50%"}
@@ -747,7 +747,7 @@ glimpse(economics)
 ## Banco para exercícios [`economics`](https://ggplot2.tidyverse.org/reference/economics.html)
 
 | Variável |                                                                                       |
-|----------|---------------------------------------------------------------------------------------|
+|--------------|----------------------------------------------------------|
 | date     | Mês da coleta de dados (`r min(year(economics$date))`- `r max(year(economics$date))`) |
 | pce      | Gastos de consumo pessoal, em bilhões de dólares                                      |
 | pop      | População total, em milhares                                                          |
