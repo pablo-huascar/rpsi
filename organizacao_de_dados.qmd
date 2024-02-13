@@ -1311,7 +1311,8 @@ tabela_final |>
 g4_2014_2023 <- tabela_final |> 
   group_by(campeonato) |> 
   slice_max(pontos, n = 4) |> 
-  ungroup()
+  ungroup() |> 
+  select(campeonato, time)
 
 g4_2014_2023 |> 
   write_csv("./data/g4_2014_2023.csv")
