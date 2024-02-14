@@ -33,9 +33,11 @@ editor_options:
 
 library(tidyverse)
 library(cowplot)
+library(ggthemes)
+library(patchwork)
 theme_set(theme_cowplot())
+tidymodels::tidymodels_prefer()
 ```
-
 
 ::: {style="line-height: 1;"}
 ::: columns
@@ -85,6 +87,8 @@ Livro base para este módulo
 #| warning: false
 #| message: false
 library(tidyverse)
+library(summarytools)
+
 ```
 
 ## Bancos de dados
@@ -99,16 +103,43 @@ url_g4 <- "https://raw.githubusercontent.com/pablo-huascar/rpsi/main/data/g4_201
 g4_brasileiro <- read_csv(url_g4)
 ```
 
-- Dados dos campeonatos brasileiros de 2014 a 2023
--   `tabela_brasileiro`: pontuação final
+-   Dados dos campeonatos brasileiros de 2014 a 2023
+-   `tabela_brasileiro`: pontuação final em ordem decrescente por campeonato
 -   `g4_brasileiro`: times que terminaram o campeonato no g4
 
 ## Tabela do campeonato brasileiro (2014-2023)
+
+-   Dados de 2023
 
 ```{r}
 tabela_brasileiro |> 
   filter(campeonato == "2023") |> 
   slice_head(n = 10)
+```
+
+## Tabela do campeonato brasileiro (2014-2023)
+
+-   Dados de 2016
+
+```{r}
+tabela_brasileiro |> 
+  filter(campeonato == "2016") |> 
+  slice_head(n = 10)
+```
+
+## Tabela do campeonato brasileiro (2014-2023)
+
+```{r}
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+#| echo: false
+
+tabela_brasileiro |> 
+  ggplot(aes(pontos)) +
+  geom_histogram(bins = 19, color="darkgray",
+                 fill="white") +
+  labs(x = "Total de pontos")
 ```
 
 ## Times do g4 no campeonato brasileiro (2014-2023)
@@ -118,26 +149,326 @@ g4_brasileiro |>
   slice_head(n = 12)
 ```
 
-## Explorando os dados: `tabela_brasileiro`
+## Times do g4 no campeonato brasileiro (2014-2023)
 
 ```{r}
-tabela_brasileiro |> 
-  ggplot(aes(pontos)) +
-  geom_histogram(bins = 19, color="darkgray",
-                 fill="white") +
-  labs(x = "Total de pontos")
-```
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600
+#| echo: false
 
-## Explorando os dados: `g4_brasileiro`
-
-```{r}
 g4_brasileiro |>
   count(time) |> 
-  ggplot(aes(n, fct_reorder(time, n, 
-                            .fun = mean))) +
-  geom_col() +
+  ggplot(aes(n, fct_reorder(time, n, .fun = mean))) +
+  geom_col(fill = "white", color = "darkgray") +
   labs(y = "Time", x = "G4")
 
 ```
 
+# Medidas de tendência central
 
+## Média
+
+Pontos dos cinco primeiros times do campeonato brasileiro de 2023
+
+```{r}
+tabela_brasileiro |> 
+  slice_head(n = 5)
+```
+
+## Média
+
+```{r}
+#| echo: false
+
+casos <- tabela_brasileiro$pontos[1:5]
+soma <- sum(casos)
+n <- length(casos)
+media <- soma/n
+soma_exp <- str_c(casos, collapse = " + ")
+teste <- paste0("$\\frac{", soma, "}{", n, "} = \\frac{", soma_exp, "}{", n, "} = ", media, "$")
+```
+
+A média dos pontos dos cinco primeiros times do campeonato brasileiro de 2023 é:
+
+<br>
+
+::: {style="text-align: center "}
+`r teste`
+:::
+
+## Calculando a média no R
+
+-   Caminho mais rápido: funções embrulhadas que fornecem várias estatísticas ao mesmo tempo
+-   [`summarytools`](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
+    -   `descr()`
+
+## `descr()`
+
+```{r}
+tabela_brasileiro |> 
+  select(pontos) |> 
+  descr()
+```
+
+## Calculando a média no R
+
+-   Média (Mean) = `r mean(tabela_brasileiro$pontos)`
+
+## Mediana
+
+-   Valor do meio de um conjunto de observações
+
+-   Pontos dos cinco primeiros times do campeonato brasileiro de 2023:
+
+-   `r tabela_brasileiro$pontos[1:5]`
+
+-   Em ordem ascendente:
+
+-   `r sort(tabela_brasileiro$pontos[1:5])`
+
+-   O valor do meio:
+
+-   `r median(tabela_brasileiro$pontos[1:5])`
+
+## Mediana
+
+-   E se quisermos os pontos dos seis primeiros times do campeonato brasileiro de 2022?
+
+```{r}
+tabela_brasileiro |> 
+  filter(campeonato == "2022") |> 
+  slice_head(n = 6) 
+```
+
+## Mediana
+
+-   Pontos dos seis primeiros times do campeonato brasileiro de 2022:
+
+-   `r tabela_brasileiro[tabela_brasileiro$campeonato == 2022, ]$pontos[1:6]`
+
+-   Em ordem ascendente:
+
+-   `r sort(tabela_brasileiro[tabela_brasileiro$campeonato == 2022, ]$pontos[1:6])`
+
+-   Há dois valores no meio:
+
+-   `r sort(tabela_brasileiro[tabela_brasileiro$campeonato == 2022, ]$pontos[3:4])`
+
+-   Mediana: média dos dois valores do meio
+
+-   `r median(tabela_brasileiro[tabela_brasileiro$campeonato == 2022, ]$pontos[1:6])`
+
+## Média ou mediana? Qual é a diferença?
+
+-   A média é como o “centro de gravidade” do conjunto de dados
+-   A mediana é o “valor do meio” nos dados
+-   Quando usar a média e quando usar a mediana?
+-   Dados nominais: nem uma das duas. Usar a moda!
+-   Dados ordinais: mediana
+-   Dados intervalares ou de razão: ambas são adequadas, dependendo da situação
+
+## Média ou mediana?
+
+-   Dados intervalares ou de razão
+-   Média:
+    -   Usa toda a informação dos dados; mas
+    -   É muito sensível a valores extremos e outliers
+-   Mediana:
+    -   Como se baseia somente na ordem, não é influenciada por valores extremos e outliers; mas
+    -   Somente divide os dados no meio
+
+## Média ou mediana?
+
+```{r}
+#| include: false
+dez <- rep(1:2, each = 10)
+seis <- rep(3,6)
+cinco <- rep(4,5)
+quatro <- rep(5:6, each = 4)
+dois <- rep(7:9, each = 2)
+um <- c(10:12)
+
+exemplo_hist <- tibble(x = c(dez, seis, cinco, quatro, dois, um))
+```
+
+```{r}
+#| include: false
+brks <- exemplo_hist |> distinct(x) |> pull()
+```
+
+```{r}
+#| include: false
+
+p_media_hist <- exemplo_hist |> 
+  ggplot(aes(x)) +
+  geom_histogram(bins = 12, color = "white",
+                 fill = "gray") +
+  geom_point(aes(x = mean(x), y = -0.5), 
+             shape = 2, size = 5) +
+  geom_segment(x = 0.5, y = 1, yend = 1, xend = 12.5, color = "white") +
+  geom_segment(x = 0.5, y = 2, yend = 2, xend = 9.5, color = "white") +
+  geom_segment(x = 0.5, y = 3, yend = 3, xend = 6.5, color = "white") +
+  geom_segment(x = 0.5, y = 4, yend = 4, xend = 6.5, color = "white") +
+  geom_segment(x = 0.5, y = 5, yend = 5, xend = 4.5, color = "white") +
+  geom_segment(x = 0.5, y = 6, yend = 6, xend = 3.5, color = "white") +
+  geom_segment(x = 0.5, y = 7, yend = 7, xend = 2.5, color = "white") +
+  geom_segment(x = 0.5, y = 8, yend = 8, xend = 2.5, color = "white") +
+  geom_segment(x = 0.5, y = 9, yend = 9, xend = 2.5, color = "white") +
+  scale_x_continuous(breaks = brks) +
+  labs(
+    x = NULL, y = NULL
+  ) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.line.x = element_blank()
+  ) +
+  annotate("text", x = (mean(exemplo_hist$x) + 3.2), y = -0.6, 
+           label = "Ponto de equilíbrio", size = 3) +
+  annotate("text", x = 8, y = 7.5, label = "A média é o centro de \nmassa dos dados", size = 4)
+
+
+```
+
+```{r}
+#| include: false
+mediana <- median(exemplo_hist$x)
+
+exemplo_hist_agrupado <- exemplo_hist  |> 
+  mutate(bin = cut(x, breaks = 12)) |> 
+  group_by(bin) |> 
+  summarise(count = n(),
+            bin_value = mean(as.numeric(bin)))  |> 
+  mutate(cor = ifelse(bin_value > as.numeric(cut(mediana, breaks = 6)), "gray", "black"))
+```
+
+```{r}
+#| include: false
+p_mediana_hist <- exemplo_hist_agrupado |> 
+  ggplot(aes(x = bin_value, y = count, fill = cor)) +
+  geom_col(color = "white") +
+  scale_fill_manual(values = c("gray", "black")) +
+  geom_segment(x = 0.5, y = 1, yend = 1, xend = 12.5, color = "white") +
+  geom_segment(x = 0.5, y = 2, yend = 2, xend = 9.5, color = "white") +
+  geom_segment(x = 0.5, y = 3, yend = 3, xend = 6.5, color = "white") +
+  geom_segment(x = 0.5, y = 4, yend = 4, xend = 6.5, color = "white") +
+  geom_segment(x = 0.5, y = 5, yend = 5, xend = 4.5, color = "white") +
+  geom_segment(x = 0.5, y = 6, yend = 6, xend = 3.5, color = "white") +
+  geom_segment(x = 0.5, y = 7, yend = 7, xend = 2.5, color = "white") +
+  geom_segment(x = 0.5, y = 8, yend = 8, xend = 2.5, color = "white") +
+  geom_segment(x = 0.5, y = 9, yend = 9, xend = 2.5, color = "white") +
+  geom_segment(x = 0.55, y = -0.2, yend = -0.2, xend = 3.5) +
+  geom_segment(x = 3.6, y = -0.2, yend = -0.2, xend = 12.5) +
+  scale_x_continuous(breaks = brks) +
+  labs(
+    x = NULL, y = NULL
+  ) +
+  theme(
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.line.x = element_blank()
+  ) +
+  annotate("text", x = 2, y = -0.5, 
+           label = "24 observações", size = 3) +
+  annotate("text", x = 8, y = -0.5, 
+           label = "24 observações", size = 3) +
+  annotate("text", x = 8.3, y = 8, label = "A mediana é o ponto do \nmeio no conjunto de dados", size = 4) +
+  annotate("rect", xmin = 2.5, xmax = 3.5, ymin = 1,5, ymax = 3,
+  alpha = 0, color = "black") +
+  annotate("segment", x = 3.7, y = 7.1, xend = 3, yend = 2,
+           arrow = arrow(type = "closed", length = unit(0.02, "npc")))
+  
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 70%
+#| fig-dpi: 600 
+
+p_media_hist + p_mediana_hist
+```
+
+## Média ou mediana: um exemplo
+
+```{r}
+#| include: false
+bob_kate_bill <- c(50000,60000, 65000)
+media_bob_kate_bill <- mean(bob_kate_bill)
+media_bob_kate_bill <- format(media_bob_kate_bill, nsmall = 2, big.mark = ".", decimal.mark = ",", small.mark = ",")
+mediana_bob_kate_bill <- median(bob_kate_bill)
+mediana_bob_kate_bill <- format(mediana_bob_kate_bill, nsmall = 2, big.mark = ".", decimal.mark = ",", small.mark = ",")
+```
+
+::: columns
+::: {.column width="50%"}
+![](images/bob_kate_bill.png)
+:::
+
+::: {.column width="50%"}
+-   Rendas
+    -   Bob: R\$ 50000
+    -   Kate: R\$ 60000
+    -   Bill: R\$ 65000
+-   Média: `r format(media_bob_kate_bill, nsmall = 2)`
+-   Mediana: `r  format(mediana_bob_kate_bill, nsmall = 2)`
+:::
+:::
+
+## Média ou mediana: um exemplo
+
+```{r}
+#| echo: false
+bob_kate_bill_jane <- c(50000,60000, 65000, 1000000)
+media_bob_kate_bill_jane <- mean(bob_kate_bill_jane)
+media_bob_kate_bill_jane <- format(media_bob_kate_bill_jane, nsmall = 2, big.mark = ".", decimal.mark = ",", small.mark = ",")
+mediana_bob_kate_bill_jane <- median(bob_kate_bill_jane)
+mediana_bob_kate_bill_jane <- format(mediana_bob_kate_bill_jane, nsmall = 2, big.mark = ".", decimal.mark = ",", small.mark = ",")
+```
+
+::: columns
+::: {.column width="50%"}
+![](images/bob_kate_bill_jane.png)
+:::
+
+::: {.column width="50%"}
+-   Rendas
+    -   Bob: R\$ 50000
+    -   Kate: R\$ 60000
+    -   Bill: R\$ 65000
+    -   Jane: R\$: 1000000
+-   Média: `r media_bob_kate_bill_jane`
+-   Mediana: `r  mediana_bob_kate_bill_jane`
+:::
+:::
+
+## Média ou mediana: um exemplo
+
+::: columns
+::: {.column width="50%"}
+-   Rendas
+    -   Bob: R\$ 50000
+    -   Kate: R\$ 60000
+    -   Bill: R\$ 65000
+-   Média: `r format(media_bob_kate_bill, nsmall = 2)`
+-   Mediana: `r  format(mediana_bob_kate_bill, nsmall = 2)`
+:::
+
+::: {.column width="50%"}
+-   Rendas
+    -   Bob: R\$ 50000
+    -   Kate: R\$ 60000
+    -   Bill: R\$ 65000
+    -   Jane: R\$: 1000000
+-   Média: `r media_bob_kate_bill_jane`
+-   Mediana: `r  mediana_bob_kate_bill_jane`
+:::
+:::
