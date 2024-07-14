@@ -4,7 +4,7 @@ csl: apa.csl
 editor_options: 
   chunk_output_type: console
 number-sections: true
-number-offset: 5
+number-offset: 6
 tbl-cap-location: top
 fig-width: 6
 fig-asp: 0.618

@@ -1,0 +1,166 @@
+---
+bibliography: references.bib
+csl: apa.csl
+editor_options: 
+  chunk_output_type: console
+number-sections: true
+number-offset: 6
+tbl-cap-location: top
+fig-width: 6
+fig-asp: 0.618
+code-link: true
+code-tools: true
+code-line-numbers: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| message: false
+#| warning: false
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(gt)
+library(moderndive)
+library(skimr)
+library(gapminder)
+library(mvtnorm)
+library(cowplot)
+library(ggthemes)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+library(lm.beta)
+library(patchwork)
+extrafont::loadfonts()
+set.seed(76)
+theme_set(theme_cowplot())
+```
+
+# Capítulo 6: Regressão Múltipla {#sec-regressao_multipla .unnumbered}
+
+```{r}
+#| echo: false
+
+evals_ch6 <- evals |> 
+  select(ID, score, gender, age) |> 
+  clean_names()
+```
+
+```{r}
+#| echo: false
+#| message: false
+#| out-width: 70%
+#| fig-dpi: 600
+#| fig-align: center
+evals_ch6 |> 
+  ggplot(aes(age, score, color = gender)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F)
+```
+
+
+### Modelo de Interação {#sec-6.1.2}
+
+Vamos agora quantificar a relação da nossa variável de desfecho $y$ e as duas variáveis explicativas usando um tipo de modelo de regressão múltipla conhecido como modelo de interação. Explicaremos de onde vem o termo "interação" no final desta seção.
+
+Em particular, escreveremos a equação das duas linhas de regressão na Figura 6.1 usando os valores de uma tabela de regressão. Antes de fazer isso, no entanto, vamos revisar brevemente a regressão quando se tem uma variável explicativa categórica $x$.
+
+Lembre-se de que na Subseção 5.2.2 ajustamos um modelo de regressão para a expectativa de vida dos países em função do continente em que o país estava. Em outras palavras, tínhamos uma variável de desfecho numérica $y =$ `lifeexp` e uma variável explicativa categórica $x =$ `continent`, que tinha 5 níveis: `Africa`, `Americas`, `Asia`, `Europe` e `Oceania`. Vamos reexibir a tabela de regressão que você viu na Tabela 5.8:
+
+```{r}
+#| echo: false
+gapminder2007 <- gapminder |> 
+  filter(year == 2007) |> 
+  select(country, lifeExp, continent, gdpPercap) |> 
+  clean_names()
+```
+
+```{r}
+#| echo: false
+lifeExp_model <- lm(life_exp ~ continent, data = gapminder2007)
+```
+
+```{r}
+#| echo: false
+#| label: tbl-62
+#| tbl-cap: Tabela de regressão para expectativa de vida em função do continente
+lifeExp_model |> 
+  tidy(conf.int = T) |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x, 1))
+  ) |> 
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) |> 
+  fmt_number(
+    decimals = 1,
+  )
+```
+
+Lembre-se de nossa interpretação da coluna `estimate`. Como a África era o grupo "base para comparação", o intercepto (`Intercept`) corresponde à expectativa de vida média para todos os países da África, que é de 54,8 anos. Os outros quatro valores de estimativa correspondem aos "desvios" em relação ao grupo base. Então, por exemplo, o "desvio" correspondente às Américas é +18,8 em comparação com o grupo base África. Em outras palavras, a expectativa de vida média para os países das Américas é 18,8 anos maior. Assim, a expectativa de vida média para todos os países das Américas é 54,8 + 18,8 = 73,6. A mesma interpretação vale para Ásia, Europa e Oceania.
+
+Voltando ao nosso modelo de regressão múltipla para a pontuação de ensino (`score`) usando idade (`age`) e gênero (`gender`) na Figura 6.1, geramos a tabela de regressão usando a mesma abordagem em duas etapas do Capítulo 5: primeiro "ajustamos" o modelo usando a função `lm()` ("modelo linear") e, em seguida, aplicamos a função `tidy()`. Desta vez, no entanto, nossa fórmula do modelo não terá a forma `y ~ x`, mas sim a forma `y ~ x1 * x2`. Em outras palavras, nossas duas variáveis explicativas `x1` e `x2` são separadas por um sinal de `*`:
+
+
+
+```{r}
+#| label: tbl-63
+#| tbl-cap: Tabela de regressão para o modelo de interação
+# Ajuste o modelo de regressão:
+modelo_de_interacao_score <- lm(score ~ age * gender, data = evals_ch6)
+
+# Obtenha a tabela de regressão:
+modelo_de_interacao_score |> 
+  tidy(conf.int = T) |> 
+  mutate(
+    across(where(is.double),
+           \(x) round(x, 3))
+  ) |> 
+  gt() |> 
+  tab_options(
+    table.width = pct(100),
+    heading.align ="center"
+  ) |> 
+  cols_align(
+    align = c("center"),
+    columns = everything()
+  ) |> 
+  fmt_number(
+    decimals = 3,
+  )
+```
+
+```{r}
+#| echo: false
+intercept_female <- modelo_de_interacao_score$coefficients[[1]]
+intercept_female <- round(intercept_female, 3)
+slope_female <- modelo_de_interacao_score$coefficients[[2]]
+slope_female <- round(slope_female, 3)
+offset_male <- modelo_de_interacao_score$coefficients[[3]]
+offset_male <- round(offset_male, 3)
+offset_slope_interaction <- modelo_de_interacao_score$coefficients[[4]]
+offset_slope_interaction <- round(offset_slope_interaction, 3)
+slope_male <- slope_female + offset_slope_interaction
+intercept_male <- intercept_female + offset_male
+```
+
+Observando a saída da tabela de regressão na @tbl-63, há quatro linhas de valores na coluna `estimate`. Embora não seja imediatamente aparente, usando esses quatro valores podemos escrever as equações de ambas as linhas na Figura 6.1. Primeiro, como a palavra `female` vem alfabeticamente antes de `male`, as instrutoras são o grupo "base para comparação". Assim, `intercept` é o intercepto *apenas para as instrutoras*.
+
+Isso vale igualmente para `age`. É a inclinação para idade *apenas para as instrutoras*. Portanto, a linha de regressão vermelha na Figura 6.1 tem um intercepto de `r intercept_female` e inclinação para idade de `r slope_female`. Lembre-se de que, para esses dados, embora o intercepto tenha uma interpretação matemática, ele não tem uma interpretação *prática* uma vez que os instrutores não podem ter idade zero.
+
+E quanto ao intercepto e à inclinação para idade dos instrutores homens na linha na Figura 6.1? É aqui que nossa noção de "desvios" entra em jogo novamente.
+
+O valor de `gendermale` de `r offset_male` não é o intercepto para os instrutores homens, mas sim o *desvio* no intercepto para os instrutores homens em relação às instrutoras. O intercepto para os instrutores homens é `intercept + gendermale` = `r intercept_female` + (`r offset_male`) = `r intercept_female` - `r -1*offset_male` = `r intercept_female + offset_male`.
+
+Da mesma forma, `age:gendermale` = `r offset_slope_interaction` não é a inclinação para idade para os instrutores homens, mas sim o *desvio* na inclinação para os instrutores homens. Portanto, a inclinação para idade para os instrutores homens é `age + age:gendermale` $=  `r slope_female` + `r offset_slope_interaction` = `r slope_male`$. Assim, a linha de regressão azul na Figura 6.1 tem intercepto `r intercept_female + offset_male` e inclinação para idade de `r slope_male`. Vamos resumir esses valores na Tabela  e focar nas duas inclinações para idade:
+
+
