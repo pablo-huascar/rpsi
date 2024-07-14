@@ -32,6 +32,7 @@ editor_options:
 #| warning: false
 
 library(tidyverse)
+library(tidymodels)
 library(cowplot)
 library(ggthemes)
 library(patchwork)
@@ -87,7 +88,6 @@ Livro base para este módulo
 #| warning: false
 #| message: false
 library(tidyverse)
-library(summarytools)
 
 ```
 
@@ -199,19 +199,16 @@ A média dos pontos dos cinco primeiros times do campeonato brasileiro de 2023 �
 
 ## Calculando a média no R
 
--   Caminho mais rápido: funções embrulhadas que fornecem várias estatísticas ao mesmo tempo
--   [`summarytools`](https://cran.r-project.org/web/packages/summarytools/vignettes/introduction.html)
-    -   `descr()`
-
-## `descr()`
-
 ```{r}
-tabela_brasileiro |> 
-  select(pontos) |> 
-  descr()
-```
+# Base R
+mean(tabela_brasileiro$pontos, na.rm = T)
 
-## Calculando a média no R
+# Tidyverse
+tabela_brasileiro |> 
+  summarise(
+    M = mean(tabela_brasileiro$pontos)
+  )
+```
 
 -   Média (Mean) = `r mean(tabela_brasileiro$pontos)`
 
@@ -258,6 +255,19 @@ tabela_brasileiro |>
 -   Mediana: média dos dois valores do meio
 
 -   `r median(tabela_brasileiro[tabela_brasileiro$campeonato == 2022, ]$pontos[1:6])`
+
+## Calculando a mediana no R
+
+```{r}
+# Base R
+median(tabela_brasileiro$pontos, na.rm = T)
+
+# Tidyverse
+tabela_brasileiro |> 
+  summarise(
+    M = median(tabela_brasileiro$pontos)
+  )
+```
 
 ## Média ou mediana? Qual é a diferença?
 
@@ -415,11 +425,11 @@ mediana_bob_kate_bill <- format(mediana_bob_kate_bill, nsmall = 2, big.mark = ".
 
 ::: {.column width="50%"}
 -   Rendas
-    -   Bob: R\$ 50000
-    -   Kate: R\$ 60000
-    -   Bill: R\$ 65000
--   Média: `r format(media_bob_kate_bill, nsmall = 2)`
--   Mediana: `r  format(mediana_bob_kate_bill, nsmall = 2)`
+    -   Bob: R\$ 50.000
+    -   Kate: R\$ 60.000
+    -   Bill: R\$ 65.000
+-   Média: `r media_bob_kate_bill`
+-   Mediana: `r  mediana_bob_kate_bill`
 :::
 :::
 
@@ -441,10 +451,10 @@ mediana_bob_kate_bill_jane <- format(mediana_bob_kate_bill_jane, nsmall = 2, big
 
 ::: {.column width="50%"}
 -   Rendas
-    -   Bob: R\$ 50000
-    -   Kate: R\$ 60000
-    -   Bill: R\$ 65000
-    -   Jane: R\$: 1000000
+    -   Bob: R\$ 50.000
+    -   Kate: R\$ 60.000
+    -   Bill: R\$ 65.000
+    -   Jane: R\$: 1.000.000
 -   Média: `r media_bob_kate_bill_jane`
 -   Mediana: `r  mediana_bob_kate_bill_jane`
 :::
@@ -472,3 +482,41 @@ mediana_bob_kate_bill_jane <- format(mediana_bob_kate_bill_jane, nsmall = 2, big
 -   Mediana: `r  mediana_bob_kate_bill_jane`
 :::
 :::
+
+## Moda
+
+-   Valor que mais ocorre frequentemente
+-   Qual time mais terminou o campeonato brasileiro no G4?
+    -   `g4_brasileiro`: times que terminaram o campeonato no g4
+
+## Moda
+
+```{r}
+g4_brasileiro
+```
+
+## Moda
+
+-   Como fazer?
+    -   ler todas as 40 entradas
+    -   Contar o número de ocasiões em que o nome de cada equipe aparece
+    -   Produzir     uma tabela de frequência
+    
+## Moda
+
+-   Como fazer no R?
+
+```{r}
+#g4_brasileiro |> 
+ # select(time) |> 
+  #freq(order = "freq")
+```
+
+# Medidas de dispersão
+
+## Amplitude
+
+-   Maior valor menos o menor valor
+-   Influenciada por valores extremos
+
+

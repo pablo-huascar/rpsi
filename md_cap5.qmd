@@ -43,6 +43,7 @@ library(ggthemes)
 library(DiagrammeR)
 library(DiagrammeRsvg)
 library(rsvg)
+library(lm.beta)
 library(patchwork)
 extrafont::loadfonts()
 set.seed(76)
@@ -77,9 +78,9 @@ Por exemplo, digamos que você está interessado em uma variável de resultado $
 
 Neste livro, focaremos na modelagem para explicação e, portanto, nos referiremos a $x$ como variáveis explicativas. Se você estiver interessado em aprender sobre modelagem para previsão, sugerimos que você confira livros e cursos na área de aprendizado de máquina (*machine learning*), como [*An Introduction to Statistical Learning with Applications in R (ISLR)*](https://www.statlearning.com/){target="_blank"} [@islr2017]. Além disso, embora existam muitas técnicas para modelagem, como modelos baseados em árvores e redes neurais, neste livro focaremos em uma técnica específica: regressão linear. A regressão linear é uma das abordagens mais comumente usadas e fáceis de entender para modelagem.
 
-A regressão linear envolve uma variável de resultado numérica $y$ e variáveis explicativas $x$ que são numéricas ou categóricas. Além disso, a relação entre $y$ e $x$ é assumida como linear, ou em outras palavras, uma linha. No entanto, veremos que o que constitui uma "linha" variará dependendo da natureza de suas variáveis explicativas x.
+A regressão linear envolve uma variável de resultado numérica $y$ e variáveis explicativas $x$ que são numéricas ou categóricas. Além disso, a relação entre $y$ e $x$ é assumida como linear, ou em outras palavras, uma linha. No entanto, veremos que o que constitui uma "linha" variará dependendo da natureza de suas variáveis explicativas $x$.
 
-No Capítulo 5 sobre regressão básica, consideraremos apenas modelos com uma única variável explicativa $x$. Na @sec-5.1, a variável explicativa será numérica. Esse cenário é conhecido como regressão linear simples. Na Seção 5.2, a variável explicativa será categórica.
+No Capítulo 5 sobre regressão básica, consideraremos apenas modelos com uma única variável explicativa $x$. Na @sec-5.1, a variável explicativa será numérica. Esse cenário é conhecido como regressão linear simples. Na @sec-5.2, a variável explicativa será categórica.
 
 No Capítulo 6 sobre regressão múltipla, estenderemos as ideias por trás da regressão básica e consideraremos modelos com duas variáveis explicativas $x_1$ e $x_2$ . Na Seção 6.1, teremos duas variáveis explicativas numéricas. Na Seção 6.2, teremos uma variável explicativa numérica e outra categórica. Em particular, consideraremos dois desses modelos: modelos de interação e de inclinações paralelas.
 
@@ -595,7 +596,7 @@ $$
 \hat{y} = b_0 + b_1 \cdot x = 3.88 + 0.067 \cdot 7.333 = 4.369
 $$
 
--   Seta: O comprimento desta seta é o resíduo e é calculado subtraindo o valor ajustado $\hat{y}$ do valor observado $y$. O resíduo pode ser pensado como um erro do modelo ou “falta de ajuste” para uma observação específica. No caso do instrutor deste curso, é \$y - \hat{y} = 4.9 - 4.369 = 0.531.
+-   Seta: O comprimento desta seta é o resíduo e é calculado subtraindo o valor ajustado $\hat{y}$ do valor observado $y$. O resíduo pode ser pensado como um erro do modelo ou “falta de ajuste” para uma observação específica. No caso do instrutor deste curso, é $y - \hat{y} = 4.9 - 4.369 = 0.531$.
 
 ```{r}
 circulo <- evals_ch5 |> 
@@ -743,7 +744,7 @@ gapminder2007 |>
   glimpse()
 ```
 
-Observe que "Linhas: 142" indica que existem 142 linhas/observações em `gapminder2007`, onde cada linha corresponde a um país. Em outras palavras, a unidade de observação é um país individual. Além disso, observe que a variável `continent` é do tipo `<fct>`, que significa fator, que é a maneira do R de codificar variáveis categóricas.
+Observe que `Rows: 142` indica que existem 142 linhas/observações em `gapminder2007`, onde cada linha corresponde a um país. Em outras palavras, a unidade de observação é um país individual. Além disso, observe que a variável `continent` é do tipo `<fct>`, que significa fator, que é a maneira do R de codificar variáveis categóricas.
 
 Uma descrição completa de todas as variáveis incluídas em `gapminder` pode ser encontrada lendo o arquivo de ajuda associado (execute `?gapminder` no console). No entanto, vamos descrever completamente apenas as 4 variáveis que selecionamos em `gapminder2007`:
 
@@ -1051,7 +1052,7 @@ lifeExp_model |>
   )
 ```
 
-Vamos nos concentrar novamente nos valores nas colunas termo e estimativa da Tabela @tbl-58. Por que há agora 5 linhas? Vamos analisá-las uma a uma:
+Vamos nos concentrar novamente nos valores nas colunas termo e estimativa da @tbl-58. Por que há agora 5 linhas? Vamos analisá-las uma a uma:
 
 -   `intercept` corresponde à expectativa de vida média dos países da África, que é de $54.8$ anos.
 -   `continentAmericas` corresponde aos países das Américas e o valor $+18.8$ é a mesma diferença na expectativa de vida média em relação à África, que exibimos na @tbl-57. Ou seja, a expectativa de vida média dos países das Américas é $54.8 + 18.8 = 73.6$.
@@ -1601,4 +1602,4 @@ Como sugerimos na @sec-5.1.1, interpretar coeficientes que não estão próximos
 
 ### O que virá a seguir? {#sec-5.4.2}
 
-Neste capítulo, você estudou a regressão básica, onde ajustou modelos que tinham apenas uma variável explicativa. No Capítulo 6, estudaremos a regressão múltipla, onde nossos modelos de regressão poderão agora ter mais de uma variável explicativa! Em particular, consideraremos dois cenários: modelos de regressão com uma variável explicativa numérica e uma categórica e modelos de regressão com duas variáveis explicativas numéricas. Isso permitirá que você construa modelos mais sofisticados e poderosos, com a expectativa de explicar melhor sua variável de resultado `$y$`.
+Neste capítulo, você estudou a regressão básica, onde ajustou modelos que tinham apenas uma variável explicativa. No Capítulo 6, estudaremos a regressão múltipla, onde nossos modelos de regressão poderão agora ter mais de uma variável explicativa! Em particular, consideraremos dois cenários: modelos de regressão com uma variável explicativa numérica e uma categórica e modelos de regressão com duas variáveis explicativas numéricas. Isso permitirá que você construa modelos mais sofisticados e poderosos, com a expectativa de explicar melhor sua variável de resultado $y$.

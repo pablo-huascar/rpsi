@@ -1,0 +1,101 @@
+---
+title: "Introdução ao R para análise de dados em Psicologia"
+execute:
+  echo: true
+author: 
+  - name:  "Francisco Pablo Huascar Aragão Pinheiro"
+    orcid: 0000-0001-9289-845X
+institute: <img src="images/ufc_horizontal.png" width="250">
+format: 
+  revealjs:
+      code-link: true
+      code-tools: true
+      code-line-numbers: false
+      theme: simple
+      fig-width: 6
+      fig-asp: 0.618
+      scrollable: true
+progress: true
+slide-number: true
+logo: images/lappsie.png
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(olsrr)
+library(car)
+library(conflicted)
+conflicts_prefer(dplyr::select)
+```
+
+```{r}
+prestige <- Prestige |> 
+  tibble() |> 
+  rownames_to_column() |> 
+  mutate(
+    type = case_when(type == "<NA>" ~ NA_character_,
+                     .default = type)
+  )
+```
+
+
+```{r}
+#| echo: false
+#| include: false
+modelo <- lm(prestige ~ type + income, prestige)
+f <-list(ols_coll_diag,
+         ols_test_breusch_pagan,
+         durbinWatsonTest,
+         ols_test_normality)
+map(f, ~ .(modelo))
+rstatix::levene_test(Prestige, formula = prestige ~ type)
+```
+
+```{r}
+prestige |> 
+  summarise(
+    M =  mean(prestige, na.rm = T),
+    SD = sd(prestige, na.rm = T),
+    .by = type
+  )
+```
+
+
+```{r}
+prestige |> 
+  drop_na(type) |> 
+  ggplot(aes(income, prestige)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F)
+```
+
+```{r}
+modelo <- lm(prestige ~ income + type, prestige)
+
+modelo |> 
+  lm.beta::lm.beta() |> 
+  tidy() |> 
+  mutate(
+    across(where(is.double), 
+           \(x) round(x, 3))
+  )
+
+modelo |> 
+  lm.beta::lm.beta() |> 
+  tidy()
+
+plot(modelo)
+```
+
+```{r}
+prestige <- prestige |> 
+  drop_na(type)
+
+prestige <- fastDummies::dummy_cols(prestige, 
+                                    select_columns = "type", 
+                                    remove_first_dummy = F)
+```
+
